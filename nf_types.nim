@@ -25,16 +25,22 @@ type
         cards*: seq[Card]
         score*: uint8
 
-    Teyaku* = object
+    SetTeyaku* = object
         name*: string
-        subtype*: string
+        singles*: uint8
         doubles*: uint8
         triples*: uint8
+        special_triples*: uint8
         quads*: uint8
+        score*: uint8
+
+    ChaffTeyaku* = object
+        name*: string
         chaff*: uint8
         ribbons*: uint8
         animals*: uint8
         brights*: uint8
+        score*: uint8
 
     Ruleset* = object
         name*: string
@@ -44,7 +50,8 @@ type
         wild_cards*: seq[Card]
         wild_card_rules*: string
         yaku_set*: seq[Yaku]
-        teyaku_set*: seq[Teyaku]
+        set_teyaku_list*: seq[SetTeyaku]
+        chaff_teyaku_list*: seq[ChaffTeyaku]
         can_koikoi*: bool
         zero_sum*: bool
         cards_stripped*: seq[Card]
