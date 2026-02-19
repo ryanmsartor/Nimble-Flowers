@@ -44,6 +44,9 @@ type
         wild_cards*: seq[Card]
         wild_card_rules*: string
         yaku_set*: seq[Yaku]
+        teyaku_set*: seq[Teyaku]
         can_koikoi*: bool
+        zero_sum*: bool
         cards_stripped*: seq[Card]
         cards_added*: seq[Card]
+        point_values*: string

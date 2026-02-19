@@ -374,7 +374,79 @@ const
         hachi_value: 10
     )
 
+    willow_bright* = Card(
+        full_name: "Willow with Calligrapher",
+        alt_names: @[""],
+        standard_suit: 11,
+        mushi_suit: 6,
+        nagoya_suit: 2,
+        hachihachi_value: 20,
+        hachi_value: 10
+    )
+    willow_animal* = Card(
+        full_name: "Willow with Swallow",
+        alt_names: @[""],
+        standard_suit: 11,
+        mushi_suit: 6,
+        nagoya_suit: 2,
+        hachihachi_value: 10,
+        hachi_value: 10
+    )
+    willow_ribbon* = Card(
+        full_name: "Willow with Ribbon",
+        alt_names: @[""],
+        standard_suit: 11,
+        mushi_suit: 6,
+        nagoya_suit: 2,
+        hachihachi_value: 5,
+        hachi_value: 1
+    )
+    willow_chaff* = Card(
+        full_name: "Willow with Lightning",
+        alt_names: @[""],
+        standard_suit: 11,
+        mushi_suit: 6,
+        nagoya_suit: 2,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
 
+    paulownia_bright* = Card(
+        full_name: "Paulownia with Phoenix",
+        alt_names: @[""],
+        standard_suit: 12,
+        mushi_suit: 7,
+        nagoya_suit: 6,
+        hachihachi_value: 20,
+        hachi_value: 10
+    )
+    paulownia_chaff_1* = Card(
+        full_name: "Paulownia with yellow chaff",
+        alt_names: @[""],
+        standard_suit: 12,
+        mushi_suit: 7,
+        nagoya_suit: 6,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+    paulownia_chaff_2* = Card(
+        full_name: "Paulownia chaff",
+        alt_names: @[""],
+        standard_suit: 12,
+        mushi_suit: 7,
+        nagoya_suit: 6,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+    paulownia_chaff_3* = Card(
+        full_name: "Paulownia chaff",
+        alt_names: @[""],
+        standard_suit: 12,
+        mushi_suit: 7,
+        nagoya_suit: 6,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
 
     full_deck* = [
         pine_bright, pine_ribbon, pine_chaff_1, pine_chaff_2,
@@ -386,5 +458,7 @@ const
         clover_animal, clover_ribbon, clover_chaff_1, clover_chaff_2,
         grass_bright, grass_animal, grass_chaff_1, grass_chaff_2,
         mum_animal, mum_ribbon, mum_chaff_1, mum_chaff_2,
-        maple_animal, maple_ribbon, maple_chaff_1, maple_chaff_2
+        maple_animal, maple_ribbon, maple_chaff_1, maple_chaff_2,
+        willow_bright, willow_animal, willow_ribbon, willow_chaff,
+        paulownia_bright, paulownia_chaff_1, paulownia_chaff_2, paulownia_chaff_3
     ]
