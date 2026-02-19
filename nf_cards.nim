@@ -226,11 +226,87 @@ const
         hachi_value: 10
     )
 
+    clover_animal* = Card(
+        full_name: "Bush Clover with Boar",
+        alt_names: @[""],
+        standard_suit: 7,
+        mushi_suit: 0,
+        nagoya_suit: 7,
+        hachihachi_value: 10,
+        hachi_value: 10
+    )
+    clover_ribbon* = Card(
+        full_name: "Bush Clover with Ribbon",
+        alt_names: @[""],
+        standard_suit: 7,
+        mushi_suit: 0,
+        nagoya_suit: 7,
+        hachihachi_value: 5,
+        hachi_value: 1
+    )
+    clover_chaff_1* = Card(
+        full_name: "Bush Clover chaff",
+        alt_names: @[""],
+        standard_suit: 7,
+        mushi_suit: 0,
+        nagoya_suit: 7,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+    clover_chaff_2* = Card(
+        full_name: "Bush Clover chaff",
+        alt_names: @[""],
+        standard_suit: 7,
+        mushi_suit: 0,
+        nagoya_suit: 7,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+
+    grass_bright* = Card(
+        full_name: "Silvergrass with Full Moon",
+        alt_names: @[""],
+        standard_suit: 8,
+        mushi_suit: 8, 
+        nagoya_suit: 8, 
+        hachihachi_value: 20,
+        hachi_value: 10
+    )
+    grass_animal* = Card(
+        full_name: "Silvergrass with Geese",
+        alt_names: @[""],
+        standard_suit: 8,
+        mushi_suit: 8,
+        nagoya_suit: 8,
+        hachihachi_value: 10,
+        hachi_value: 10
+    )
+    grass_chaff_1* = Card(
+        full_name: "Silvergrass chaff",
+        alt_names: @[""],
+        standard_suit: 8,
+        mushi_suit: 8,
+        nagoya_suit: 8,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+    grass_chaff_2* = Card(
+        full_name: "Silvergrass chaff",
+        alt_names: @[""],
+        standard_suit: 8,
+        mushi_suit: 8,
+        nagoya_suit: 8,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+
     full_deck* = [
         pine_bright, pine_ribbon, pine_chaff_1, pine_chaff_2,
         plum_animal, plum_ribbon, plum_chaff_1, plum_chaff_2,
         cherry_bright, cherry_ribbon, cherry_chaff_1, cherry_chaff_2,
         wisteria_animal, wisteria_ribbon, wisteria_chaff_1, wisteria_chaff_2,
         iris_animal, iris_ribbon, iris_chaff_1, iris_chaff_2,
-        peony_animal, peony_ribbon, peony_chaff_1, peony_chaff_2
+        peony_animal, peony_ribbon, peony_chaff_1, peony_chaff_2,
+        clover_animal, clover_ribbon, clover_chaff_1, clover_chaff_2,
+        grass_bright, grass_animal, grass_chaff_1, grass_chaff_2
     ]
