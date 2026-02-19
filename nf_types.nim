@@ -25,6 +25,17 @@ type
         cards*: seq[Card]
         score*: uint8
 
+    Teyaku* = object
+        name*: string
+        subtype*: string
+        doubles*: uint8
+        triples*: uint8
+        quads*: uint8
+        chaff*: uint8
+        ribbons*: uint8
+        animals*: uint8
+        brights*: uint8
+
     Ruleset* = object
         name*: string
         num_players*: NumPlayers

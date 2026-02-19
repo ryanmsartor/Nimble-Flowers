@@ -300,6 +300,82 @@ const
         hachi_value: 10
     )
 
+    mum_animal* = Card(
+        full_name: "Chrysanthemums with Sake Cup",
+        alt_names: @[""],
+        standard_suit: 9,
+        mushi_suit: 9,
+        nagoya_suit: 9,
+        hachihachi_value: 10,
+        hachi_value: 10
+    )
+    mum_ribbon* = Card(
+        full_name: "Chrysanthemums with Blue Ribbon",
+        alt_names: @[""],
+        standard_suit: 9,
+        mushi_suit: 9,
+        nagoya_suit: 9,
+        hachihachi_value: 5,
+        hachi_value: 1
+    )
+    mum_chaff_1* = Card(
+        full_name: "Chrysanthemum chaff",
+        alt_names: @[""],
+        standard_suit: 9,
+        mushi_suit: 9,
+        nagoya_suit: 9,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+    mum_chaff_2* = Card(
+        full_name: "Chrysanthemum chaff",
+        alt_names: @[""],
+        standard_suit: 9,
+        mushi_suit: 9,
+        nagoya_suit: 9,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+
+    maple_animal* = Card(
+        full_name: "Maple Tree with Deer",
+        alt_names: @[""],
+        standard_suit: 10,
+        mushi_suit: 10,
+        nagoya_suit: 10,
+        hachihachi_value: 10,
+        hachi_value: 10
+    )
+    maple_ribbon* = Card(
+        full_name: "Maple Leaves with Blue Ribbon",
+        alt_names: @[""],
+        standard_suit: 10,
+        mushi_suit: 10,
+        nagoya_suit: 10,
+        hachihachi_value: 5,
+        hachi_value: 1
+    )
+    maple_chaff_1* = Card(
+        full_name: "Maple chaff",
+        alt_names: @[""],
+        standard_suit: 10,
+        mushi_suit: 10,
+        nagoya_suit: 10,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+    maple_chaff_2* = Card(
+        full_name: "Maple chaff",
+        alt_names: @[""],
+        standard_suit: 10,
+        mushi_suit: 10,
+        nagoya_suit: 10,
+        hachihachi_value: 1,
+        hachi_value: 10
+    )
+
+
+
     full_deck* = [
         pine_bright, pine_ribbon, pine_chaff_1, pine_chaff_2,
         plum_animal, plum_ribbon, plum_chaff_1, plum_chaff_2,
@@ -308,5 +384,7 @@ const
         iris_animal, iris_ribbon, iris_chaff_1, iris_chaff_2,
         peony_animal, peony_ribbon, peony_chaff_1, peony_chaff_2,
         clover_animal, clover_ribbon, clover_chaff_1, clover_chaff_2,
-        grass_bright, grass_animal, grass_chaff_1, grass_chaff_2
+        grass_bright, grass_animal, grass_chaff_1, grass_chaff_2,
+        mum_animal, mum_ribbon, mum_chaff_1, mum_chaff_2,
+        maple_animal, maple_ribbon, maple_chaff_1, maple_chaff_2
     ]
