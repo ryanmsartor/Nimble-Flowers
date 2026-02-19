@@ -19,10 +19,13 @@ type
         name*: string
         cards*: seq[Card]
 
-    Yaku* = object
+    Dekiyaku* = object
         name*: string
         subtype*: string
-        cards*: seq[Card]
+        cards_group_1*: seq[Card]
+        cards_group_2*: seq[Card]
+        num_group_1*: uint8
+        num_group_2*: uint8
         score*: uint8
 
     SetTeyaku* = object
@@ -49,7 +52,7 @@ type
         num_cards_field*: uint8
         wild_cards*: seq[Card]
         wild_card_rules*: string
-        yaku_set*: seq[Yaku]
+        yaku_set*: seq[Dekiyaku]
         set_teyaku_list*: seq[SetTeyaku]
         chaff_teyaku_list*: seq[ChaffTeyaku]
         can_koikoi*: bool
