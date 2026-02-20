@@ -3,7 +3,7 @@
 type
     Suit* = range[0..14]
     Decksize* = range[24..64]
-    NumPlayers* = range[1..12]
+    NumPlayers* = range[0..12]
     CardPointValue* = range[0..50]
 
     Card* = object
@@ -44,7 +44,7 @@ type
         brights*: uint8
         score*: uint8
 
-    Ruleset* = object
+    RuleSet* = object
         name*: string
         num_players*: NumPlayers
         num_cards_hand*: uint8
