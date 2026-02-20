@@ -1,9 +1,9 @@
 # to be imported by most (all?) other .nim files
 
 type
-    Suit* = range[0..14]
+    Suit* = range[0..15]
     Decksize* = range[24..64]
-    NumPlayers* = range[0..12]
+    NumPlayers* = range[0..15]
     CardPointValue* = range[0..50]
 
     Card* = object

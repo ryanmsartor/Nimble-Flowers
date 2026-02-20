@@ -10,9 +10,10 @@ import nf_types
 import nf_cards
 import nf_yaku
 import nf_menus
+import nf_games
 
 var 
-    user_selection = ""
+    
     game_mode: RuleSet
 
 #   ########   #
@@ -20,18 +21,6 @@ var
 #   ########   #
 
 print_title_card()
-
-while user_selection notin @["1","2","3","4"] & quit_commands:
-    present_main_menu()
-    user_selection = prompt("> ")
-case user_selection:
-    of quit_commands:
-        quit_game()
-    of "1":
-        discard
-    of "2":
-        discard
-    of "3":
-        discard
-    of "4":
-        discard
+game_mode = select_game_mode()
+game_mode.tell_default_rules()
+game_mode.offer_to_customize()
