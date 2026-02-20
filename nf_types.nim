@@ -21,12 +21,11 @@ type
 
     Dekiyaku* = object
         name*: string
-        subtype*: string
+        excludes*: seq[string]      # name field of other Dekiyaku
         cards_group_1*: seq[Card]
         cards_group_2*: seq[Card]
         num_group_1*: uint8
         num_group_2*: uint8
-        score*: uint8
 
     SetTeyaku* = object
         name*: string
