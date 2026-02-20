@@ -8,4 +8,11 @@ import strutils
 
 import nf_types
 import nf_cards
+import nf_yaku
+import nf_menus
 
+#   ########   #
+##### MAIN #####
+#   ########   #
+
+print_title_card()
