@@ -17,7 +17,7 @@ const
         num_players: 2,
         num_cards_hand: 8,
         num_cards_field: 8,
-        wild_cards: @[willow_chaff],
+        wild_card: willow_chaff,
         wild_card_rules: "Mushi",
         yaku_set: @[
             gokou,

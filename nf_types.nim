@@ -16,6 +16,7 @@ type
         nagoya_suit*: Suit
         hachihachi_value*: CardPointValue
         hachi_value*: CardPointValue
+        ropyakken_value*: CardPointValue
 
     Zone* = object
         name*: string
@@ -51,7 +52,7 @@ type
         num_players*: NumPlayers
         num_cards_hand*: NumHands
         num_cards_field*: NumField
-        wild_cards*: seq[Card]
+        wild_card*: Card
         wild_card_rules*: string
         yaku_set*: seq[Dekiyaku]
         set_teyaku_list*: seq[SetTeyaku]

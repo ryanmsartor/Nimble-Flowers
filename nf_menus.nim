@@ -5,18 +5,55 @@
 # 15 -> "               "
 # 10 -> "          "
 
-
 import strutils
 import nf_types
 import nf_rulesets
 
-
 const
     quit_commands* = @["q","Q","quit","Quit","QUIT",
                          "exit","Exit","EXIT"]
+    max_line_width = 60
 
+#   #################   #
+##### UTILITY PROCS #####
+#   #################   #
 
-proc generate_string_range(min:int, max:int): seq[string] =
+proc echo_centered_one_line(str: string) =
+    let whitespace_remaining = max_line_width - str.len
+    var
+        whitespace_left = whitespace_remaining div 2
+        whitespace_right = whitespace_remaining - whitespace_left
+        new_str = ""
+    while whitespace_left > 0:
+        new_str.add(" ")
+        whitespace_left.dec(1)
+    new_str.add(str)
+    while whitespace_right > 0:
+        new_str.add(" ")
+        whitespace_right.dec(1)
+    echo new_str
+
+proc echo_centered_two_lines(str: string) =
+    let splitpoint = str.rfind(' ')
+    var line_1, line_2 = ""
+    if splitpoint >= 0 and splitpoint <= 60:
+        line_1 = str[0..(splitpoint-1)]
+        line_2 = str[(splitpoint+1)..(-1)]
+    else:
+        line_1 = str[0..59]
+        line_2 = str[60..(-1)]
+    echo_centered_one_line(line_1)
+    echo_centered_one_line(line_2)
+
+proc echo_centered*(str: string) =
+    let stripped = str.strip()
+    let whitespace_remaining = max_line_width - stripped.len
+    if whitespace_remaining >= 0:
+        echo_centered_one_line(stripped)
+    else:
+        echo_centered_two_lines(stripped)
+
+proc generate_string_range*(min:int, max:int): seq[string] =
     for i in min..max:
         result.add($i)
 
@@ -27,19 +64,22 @@ proc prompt*(text: string): string =
 
 proc quit_game*() =
     echo ""
-    echo "                         ~Goodbye!~               "
+    echo_centered "~Goodbye!~"
     echo ""
     quit(0)
 
+#   ################   #
+##### ACTUAL MENUS #####
+#   ################   #
 
 proc print_title_card*() =
     echo "\n"
-    echo "                    ~~ Nimble Flowers ~~                    "
-    echo "                        (c) RMS 2026                        "
+    echo_centered "~~ Nimble Flowers ~~"
+    echo_centered "(c) RMS 2026"
     echo ""
 
 proc present_game_modes*() =
-    echo "          Choose a game mode by typing its number."
+    echo_centered "Choose a game mode by typing its number."
     echo ""
     echo "               1) Bakappana (Foolish Flowers)"
     echo "               2) Ropyakken (Six Hundred)"
@@ -63,18 +103,31 @@ proc select_game_mode*(): RuleSet =
         of "2":
             discard
         of "3":
-            discard
+            return mushi
         of "4":
             discard
 
+proc list_yaku_names*(game: RuleSet) =
+    if game.yaku_set == @[]:
+        return
+    else:
+        echo "               Yaku:"
+        for yaku in game.yaku_set:
+            echo "               ", yaku.name
+
+    
+
 proc list_current_rules*(game: RuleSet) =
     echo ""
-    echo "             Current ruleset:    " & game.name
-    echo "          --------------------+--------------------"
-    echo "           Number of players: |  " & $game.num_players
-    echo "               Cards in hand: |  " & $game.num_cards_hand
-    echo "              Cards on field: |  " & $game.num_cards_field
-    echo "                Point values: |  " & $game.point_values
+    echo "            Current ruleset:    " & game.name
+    echo_centered "--------------------+--------------------"
+    echo "          Number of players: |  " & $game.num_players
+    echo "              Cards in hand: |  " & $game.num_cards_hand
+    echo "             Cards on field: |  " & $game.num_cards_field
+    echo "               Point values: |  " & $game.point_values
+    echo "            Wild card rules: |  " & game.wild_card_rules
+    echo "                  Wild card: |  " & game.wild_card.full_name
+    game.list_yaku_names
     echo ""
 
 proc let_user_specify_num(rule_name: string, min: int, max: int): string =

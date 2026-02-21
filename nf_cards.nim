@@ -11,7 +11,8 @@ const
         mushi_suit: 1, 
         nagoya_suit: 1, 
         hachihachi_value: 20,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 50
     )
     pine_ribbon* = Card(
         full_name: "Pine with Poetry Ribbon",
@@ -20,7 +21,8 @@ const
         mushi_suit: 1,
         nagoya_suit: 1,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     pine_chaff_1* = Card(
         full_name: "Pine chaff",
@@ -48,7 +50,8 @@ const
         mushi_suit: 2,
         nagoya_suit: 12,
         hachihachi_value: 10,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 50
     )
     plum_ribbon* = Card(
         full_name: "Plum Blossoms with Poetry Ribbon",
@@ -57,7 +60,8 @@ const
         mushi_suit: 2,
         nagoya_suit: 12,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     plum_chaff_1* = Card(
         full_name: "Plum Blossom chaff",
@@ -85,7 +89,8 @@ const
         mushi_suit: 3, 
         nagoya_suit: 3, 
         hachihachi_value: 20,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 50
     )
     cherry_ribbon* = Card(
         full_name: "Cherry Blossoms with Poetry Ribbon",
@@ -94,7 +99,8 @@ const
         mushi_suit: 3,
         nagoya_suit: 3,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     cherry_chaff_1* = Card(
         full_name: "Cherry Blossom chaff",
@@ -122,7 +128,8 @@ const
         mushi_suit: 4,
         nagoya_suit: 4,
         hachihachi_value: 10,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 10
     )
     wisteria_ribbon* = Card(
         full_name: "Wisteria with Ribbon",
@@ -131,7 +138,8 @@ const
         mushi_suit: 4,
         nagoya_suit: 4,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     wisteria_chaff_1* = Card(
         full_name: "Wisteria chaff",
@@ -159,7 +167,8 @@ const
         mushi_suit: 5,
         nagoya_suit: 5,
         hachihachi_value: 10,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 10
     )
     iris_ribbon* = Card(
         full_name: "Iris with Ribbon",
@@ -168,7 +177,8 @@ const
         mushi_suit: 5,
         nagoya_suit: 5,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     iris_chaff_1* = Card(
         full_name: "Iris chaff",
@@ -193,25 +203,24 @@ const
         full_name: "Peony with Butterflies",
         alt_names: @[""],
         standard_suit: 6,
-        mushi_suit: 0,
         nagoya_suit: 11,
         hachihachi_value: 10,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 10
     )
     peony_ribbon* = Card(
         full_name: "Peony with Blue Ribbon",
         alt_names: @[""],
         standard_suit: 6,
-        mushi_suit: 0,
         nagoya_suit: 11,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     peony_chaff_1* = Card(
         full_name: "Peony chaff",
         alt_names: @[""],
         standard_suit: 6,
-        mushi_suit: 0,
         nagoya_suit: 11,
         hachihachi_value: 1,
         hachi_value: 10
@@ -220,7 +229,6 @@ const
         full_name: "Peony chaff",
         alt_names: @[""],
         standard_suit: 6,
-        mushi_suit: 0,
         nagoya_suit: 11,
         hachihachi_value: 1,
         hachi_value: 10
@@ -230,25 +238,24 @@ const
         full_name: "Bush Clover with Boar",
         alt_names: @[""],
         standard_suit: 7,
-        mushi_suit: 0,
         nagoya_suit: 7,
         hachihachi_value: 10,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 10
     )
     clover_ribbon* = Card(
         full_name: "Bush Clover with Ribbon",
         alt_names: @[""],
         standard_suit: 7,
-        mushi_suit: 0,
         nagoya_suit: 7,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     clover_chaff_1* = Card(
         full_name: "Bush Clover chaff",
         alt_names: @[""],
         standard_suit: 7,
-        mushi_suit: 0,
         nagoya_suit: 7,
         hachihachi_value: 1,
         hachi_value: 10
@@ -257,7 +264,6 @@ const
         full_name: "Bush Clover chaff",
         alt_names: @[""],
         standard_suit: 7,
-        mushi_suit: 0,
         nagoya_suit: 7,
         hachihachi_value: 1,
         hachi_value: 10
@@ -270,7 +276,8 @@ const
         mushi_suit: 8, 
         nagoya_suit: 8, 
         hachihachi_value: 20,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 50
     )
     grass_animal* = Card(
         full_name: "Silvergrass with Geese",
@@ -279,7 +286,8 @@ const
         mushi_suit: 8,
         nagoya_suit: 8,
         hachihachi_value: 10,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 10
     )
     grass_chaff_1* = Card(
         full_name: "Silvergrass chaff",
@@ -307,7 +315,8 @@ const
         mushi_suit: 9,
         nagoya_suit: 9,
         hachihachi_value: 10,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 10
     )
     mum_ribbon* = Card(
         full_name: "Chrysanthemums with Blue Ribbon",
@@ -316,7 +325,8 @@ const
         mushi_suit: 9,
         nagoya_suit: 9,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     mum_chaff_1* = Card(
         full_name: "Chrysanthemum chaff",
@@ -344,7 +354,8 @@ const
         mushi_suit: 10,
         nagoya_suit: 10,
         hachihachi_value: 10,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 10
     )
     maple_ribbon* = Card(
         full_name: "Maple Leaves with Blue Ribbon",
@@ -353,7 +364,8 @@ const
         mushi_suit: 10,
         nagoya_suit: 10,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     maple_chaff_1* = Card(
         full_name: "Maple chaff",
@@ -381,7 +393,8 @@ const
         mushi_suit: 6,
         nagoya_suit: 2,
         hachihachi_value: 20,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 50
     )
     willow_animal* = Card(
         full_name: "Willow with Swallow",
@@ -390,7 +403,8 @@ const
         mushi_suit: 6,
         nagoya_suit: 2,
         hachihachi_value: 10,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 10
     )
     willow_ribbon* = Card(
         full_name: "Willow with Ribbon",
@@ -399,7 +413,8 @@ const
         mushi_suit: 6,
         nagoya_suit: 2,
         hachihachi_value: 5,
-        hachi_value: 1
+        hachi_value: 1,
+        ropyakken_value: 10
     )
     willow_chaff* = Card(
         full_name: "Willow with Lightning",
@@ -418,7 +433,8 @@ const
         mushi_suit: 7,
         nagoya_suit: 6,
         hachihachi_value: 20,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 50
     )
     paulownia_chaff_1* = Card(
         full_name: "Paulownia with yellow chaff",
@@ -427,7 +443,8 @@ const
         mushi_suit: 7,
         nagoya_suit: 6,
         hachihachi_value: 1,
-        hachi_value: 10
+        hachi_value: 10,
+        ropyakken_value: 10
     )
     paulownia_chaff_2* = Card(
         full_name: "Paulownia chaff",
