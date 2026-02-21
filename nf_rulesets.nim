@@ -1,6 +1,7 @@
 
 import nf_types
 import nf_cards
+import nf_yaku
 
 const
     bakappana* = RuleSet(
@@ -18,6 +19,22 @@ const
         num_cards_field: 8,
         wild_cards: @[willow_chaff],
         wild_card_rules: "Mushi",
-        yaku_set: @[],
+        yaku_set: @[
+            gokou,
+            oozan,
+            fujishima,
+            kirishima
+        ],
+        zero_sum: true,
+        cards_stripped: @[
+            peony_animal, 
+            peony_ribbon,
+            peony_chaff_1,
+            peony_chaff_2,
+            clover_animal,
+            clover_ribbon,
+            clover_chaff_1,
+            clover_chaff_2
+        ],
         point_values: "1, 5, 10, 20"
     )

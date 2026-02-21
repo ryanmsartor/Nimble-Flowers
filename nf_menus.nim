@@ -1,8 +1,14 @@
 # contains the procedures for the main menu, etc.
 
+# we always aim for a width of 60 characters.
+# pseudo-centered text should have 15 spaces in front.
+# 15 -> "               "
+# 10 -> "          "
+
+
 import strutils
 import nf_types
-import nf_games
+import nf_rulesets
 
 
 const
@@ -21,26 +27,26 @@ proc prompt*(text: string): string =
 
 proc quit_game*() =
     echo ""
-    echo "               ~Goodbye!~               "
+    echo "                         ~Goodbye!~               "
     echo ""
     quit(0)
 
 
 proc print_title_card*() =
     echo "\n"
-    echo "          ~~ Nimble Flowers ~~          "
-    echo "              (c) RMS 2026              "
+    echo "                    ~~ Nimble Flowers ~~                    "
+    echo "                        (c) RMS 2026                        "
     echo ""
 
 proc present_game_modes*() =
-    echo "Choose a game mode by typing its number."
+    echo "          Choose a game mode by typing its number."
     echo ""
-    echo "     1) Bakappana (Foolish Flowers)"
-    echo "     2) Ropyakken (Six Hundred)"
-    echo "     3) Mushi     (Insect Flowers)"
-    echo "     4) Hachi     (Eight)"
+    echo "               1) Bakappana (Foolish Flowers)"
+    echo "               2) Ropyakken (Six Hundred)"
+    echo "               3) Mushi     (Insect Flowers)"
+    echo "               4) Hachi     (Eight)"
     echo ""
-    echo "     q) QUIT Nimble Flowers"
+    echo "               q) QUIT Nimble Flowers"
     echo ""
 
 proc select_game_mode*(): RuleSet =
@@ -63,12 +69,12 @@ proc select_game_mode*(): RuleSet =
 
 proc list_current_rules*(game: RuleSet) =
     echo ""
-    echo "   Current ruleset:    " & game.name
-    echo "--------------------+--------------------"
-    echo " Number of players: |  " & $game.num_players
-    echo "     Cards in hand: |  " & $game.num_cards_hand
-    echo "    Cards on field: |  " & $game.num_cards_field
-    echo "      Point values: |  " & $game.point_values
+    echo "             Current ruleset:    " & game.name
+    echo "          --------------------+--------------------"
+    echo "           Number of players: |  " & $game.num_players
+    echo "               Cards in hand: |  " & $game.num_cards_hand
+    echo "              Cards on field: |  " & $game.num_cards_field
+    echo "                Point values: |  " & $game.point_values
     echo ""
 
 proc let_user_specify_num(rule_name: string, min: int, max: int): string =
@@ -89,8 +95,8 @@ proc offer_to_customize_rules*(game: RuleSet): RuleSet =
     var user_selection = "";
     while user_selection notin @["1","2"] & quit_commands:
         game.list_current_rules
-        echo "1) Keep current settings"
-        echo "2) Customize settings"
+        echo "               1) Keep current settings"
+        echo "               2) Customize settings"
         echo ""
         user_selection = prompt("> ")
     case user_selection:
@@ -109,5 +115,5 @@ proc offer_to_customize_rules*(game: RuleSet): RuleSet =
             result.num_cards_field = let_user_specify_num("cards on the field",0,max_cards_field).parseInt()
 
     result.list_current_rules
-    echo "               Let's begin!"
+    echo "                         Let's begin!"
     return result

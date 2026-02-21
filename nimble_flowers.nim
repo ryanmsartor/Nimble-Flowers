@@ -2,11 +2,7 @@
 # a CLI hanafuda game written in Nim
 # (c) Ryan Sartor 2026
 
-import nf_types
-import nf_cards
-import nf_yaku
-import nf_menus
-import nf_games
+import nf_types, nf_menus
 
 var 
     game_mode: RuleSet

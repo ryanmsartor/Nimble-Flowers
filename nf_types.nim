@@ -23,7 +23,7 @@ type
 
     Dekiyaku* = object
         name*: string
-        excludes*: seq[string]      # name field of other Dekiyaku
+        exclusivity_group*: string
         cards_group_1*: seq[Card]
         cards_group_2*: seq[Card]
         num_group_1*: uint8

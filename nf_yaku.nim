@@ -238,5 +238,64 @@ const
 
 const
     gokou* = Dekiyaku(
-        name: "Five Brights"
+        name: "Five Brights",
+        exclusivity_group: "brights",
+        cards_group_1: @[
+            pine_bright,
+            cherry_bright,
+            grass_bright,
+            willow_bright,
+            paulownia_bright
+        ],
+        num_group_1: 5
+    )
+    shikou* = Dekiyaku(
+        name: "Four Brights",
+        exclusivity_group: "brights",
+        cards_group_1: @[
+            pine_bright,
+            cherry_bright,
+            grass_bright,
+            willow_bright,
+            paulownia_bright
+        ],
+        num_group_1: 4
+    )
+    ame_shikou* = Dekiyaku(
+        name: "Rainy Four Brights",
+        exclusivity_group: "brights",
+        cards_group_1: @[
+            pine_bright,
+            cherry_bright,
+            grass_bright,
+            paulownia_bright
+        ],
+        num_group_1: 3,
+        cards_group_2: @[
+            willow_bright
+        ],
+        num_group_2: 1
+    )
+    sankou* = Dekiyaku(
+        name: "Four Brights",
+        exclusivity_group: "brights",
+        cards_group_1: @[
+            pine_bright,
+            cherry_bright,
+            grass_bright,
+            willow_bright,
+            paulownia_bright
+        ],
+        num_group_1: 3
+    )
+
+    oozan* = Dekiyaku(
+        name: "Big Three",
+        exclusivity_group: "none",
+        cards_group_1: @[
+            pine_bright,
+            plum_animal,
+            cherry_bright
+        ],
+        num_group_1: 3
     )
