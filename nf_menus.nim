@@ -1,15 +1,18 @@
 # contains the procedures for the main menu, etc.
 
 import strutils
-
 import nf_types
 import nf_games
 
-const quit_commands* = @["q","Q","quit","Quit","QUIT",
+
+const
+    quit_commands* = @["q","Q","quit","Quit","QUIT",
                          "exit","Exit","EXIT"]
 
-var user_selection: string
 
+proc generate_string_range(min:int, max:int): seq[string] =
+    for i in min..max:
+        result.add($i)
 
 proc prompt*(text: string): string =
     stdout.write(text)
@@ -41,10 +44,11 @@ proc present_game_modes*() =
     echo ""
 
 proc select_game_mode*(): RuleSet =
-    user_selection = "0"
+    var user_selection = ""
     while user_selection notin @["1","2","3","4"] & quit_commands:
         present_game_modes()
         user_selection = prompt("> ")
+        echo ""
     case user_selection:
         of quit_commands:
             quit_game()
@@ -57,11 +61,9 @@ proc select_game_mode*(): RuleSet =
         of "4":
             discard
 
-proc tell_default_rules*(game: RuleSet) =
+proc list_current_rules*(game: RuleSet) =
     echo ""
-    echo "You have chosen " & game.name & "."
-    echo ""
-    echo "Default rules:"
+    echo "   Current ruleset:    " & game.name
     echo "--------------------+--------------------"
     echo " Number of players: |  " & $game.num_players
     echo "     Cards in hand: |  " & $game.num_cards_hand
@@ -69,6 +71,43 @@ proc tell_default_rules*(game: RuleSet) =
     echo "      Point values: |  " & $game.point_values
     echo ""
 
-proc offer_to_customize*(game: RuleSet) =
-    echo "Type 1 to keep defaults, or 2 to customize rules."
-    echo ""
+proc let_user_specify_num(rule_name: string, min: int, max: int): string =
+    var user_selection = "";
+    let options = generate_string_range(min, max)
+    while user_selection notin options & quit_commands:
+        user_selection = prompt("How many " & rule_name & "? [" & $min & "-" & $max & "] > ")
+        if user_selection in quit_commands:
+            quit_game()
+        elif user_selection notin options:
+            echo ""
+            echo user_selection, " is not a valid selection. Please select a value between ", min, " and ", max, "."
+            echo ""
+    return user_selection
+
+
+proc offer_to_customize_rules*(game: RuleSet): RuleSet =
+    var user_selection = "";
+    while user_selection notin @["1","2"] & quit_commands:
+        game.list_current_rules
+        echo "1) Keep current settings"
+        echo "2) Customize settings"
+        echo ""
+        user_selection = prompt("> ")
+    case user_selection:
+        of quit_commands:
+            quit_game()
+        of "1":
+            result = game
+        of "2":
+            result = game
+            result.num_players = let_user_specify_num("players",2,16).parseInt()
+
+            let max_cards_hand = 24 div result.num_players
+            result.num_cards_hand = let_user_specify_num("cards in the hand",1,max_cards_hand).parseInt()
+
+            let max_cards_field = 48 - (2 * result.num_players * result.num_cards_hand)
+            result.num_cards_field = let_user_specify_num("cards on the field",0,max_cards_field).parseInt()
+
+    result.list_current_rules
+    echo "               Let's begin!"
+    return result

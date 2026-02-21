@@ -3,7 +3,9 @@
 type
     Suit* = range[0..15]
     Decksize* = range[24..64]
-    NumPlayers* = range[0..15]
+    NumPlayers* = range[0..16]
+    NumHands* = range[0..24]
+    NumField* = range[0..48]
     CardPointValue* = range[0..50]
 
     Card* = object
@@ -47,8 +49,8 @@ type
     RuleSet* = object
         name*: string
         num_players*: NumPlayers
-        num_cards_hand*: uint8
-        num_cards_field*: uint8
+        num_cards_hand*: NumHands
+        num_cards_field*: NumField
         wild_cards*: seq[Card]
         wild_card_rules*: string
         yaku_set*: seq[Dekiyaku]
