@@ -19,12 +19,7 @@ const
         num_cards_field: 8,
         wild_card: willow_chaff,
         wild_card_rules: "Osaka style",
-        yaku_set: @[
-            gokou,
-            oozan,
-            fujishima,
-            kirishima
-        ],
+        yaku_set: yaku_table_mushi,
         zero_sum: true,
         cards_stripped: @[
             peony_animal, 

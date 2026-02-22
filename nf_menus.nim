@@ -6,6 +6,7 @@
 # 10 -> "          "
 
 import strutils
+import std/tables
 import nf_types
 import nf_rulesets
 
@@ -155,11 +156,12 @@ proc select_game_mode*(): RuleSet =
             discard
 
 proc list_yaku_names*(game: RuleSet) =
-    if game.yaku_set == @[]:
+    const blank = initTable[Dekiyaku,uint8]()
+    if game.yaku_set == blank:
         return
     else:
         echo_indented "Yaku:"
-        for yaku in game.yaku_set:
+        for yaku, score in game.yaku_set:
             echo_indented yaku.name
 
     

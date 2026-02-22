@@ -1,5 +1,7 @@
 # to be imported by most (all?) other .nim files
 
+import std/tables
+
 type
     Suit* = range[0..15]
     Decksize* = range[24..64]
@@ -7,7 +9,7 @@ type
     NumHands* = range[0..24]
     NumField* = range[0..48]
     CardPointValue* = range[0..50]
-
+    
     Card* = object
         full_name*: string
         alt_names*: seq[string]
@@ -54,7 +56,7 @@ type
         num_cards_field*: NumField
         wild_card*: Card
         wild_card_rules*: string
-        yaku_set*: seq[Dekiyaku]
+        yaku_set*: Table[Dekiyaku,uint8]
         set_teyaku_list*: seq[SetTeyaku]
         chaff_teyaku_list*: seq[ChaffTeyaku]
         can_koikoi*: bool

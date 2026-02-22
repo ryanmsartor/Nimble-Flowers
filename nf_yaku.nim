@@ -2,6 +2,7 @@
 
 import nf_types
 import nf_cards
+import std/tables
 
 #   ##############   #
 ##### SET TEYAKU #####
@@ -299,3 +300,12 @@ const
         ],
         num_group_1: 3
     )
+
+
+
+    yaku_table_mushi* = {
+        gokou: 30'u8,
+        oozan: 25'u8,
+        fujishima: 10'u8,
+        kirishima: 10'u8
+    }.toTable()
