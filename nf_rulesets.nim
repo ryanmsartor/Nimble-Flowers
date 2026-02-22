@@ -18,7 +18,7 @@ const
         num_cards_hand: 8,
         num_cards_field: 8,
         wild_card: willow_chaff,
-        wild_card_rules: "Mushi",
+        wild_card_rules: "Osaka style",
         yaku_set: @[
             gokou,
             oozan,

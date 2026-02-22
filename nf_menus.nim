@@ -18,6 +18,18 @@ const
 ##### UTILITY PROCS #####
 #   #################   #
 
+proc echo_centered*(str: string)    # pre-declared proc to enable recursion
+
+proc echo_indented*(str: string,num:uint8=15) =
+    var
+        new_string = ""
+        i = num
+    while i > 0:
+        new_string.add(" ")
+        i.dec(1)
+    new_string.add(str.strip())
+    echo new_string
+
 proc echo_centered_one_line(str: string) =
     let whitespace_remaining = max_line_width - str.len
     var
@@ -33,17 +45,18 @@ proc echo_centered_one_line(str: string) =
         whitespace_right.dec(1)
     echo new_str
 
-proc echo_centered_two_lines(str: string) =
+proc echo_centered_multi_lines(str: string) =
     let splitpoint = str.rfind(' ')
     var line_1, line_2 = ""
-    if splitpoint >= 0 and splitpoint <= 60:
+    if splitpoint >= 0 and splitpoint < max_line_width:
         line_1 = str[0..(splitpoint-1)]
         line_2 = str[(splitpoint+1)..(-1)]
     else:
-        line_1 = str[0..59]
-        line_2 = str[60..(-1)]
+        line_1 = str[0..(max_line_width-1)]
+        line_2 = str[max_line_width..(-1)]
     echo_centered_one_line(line_1)
-    echo_centered_one_line(line_2)
+    if line_2.len > 0:
+        echo_centered(line_2)
 
 proc echo_centered*(str: string) =
     let stripped = str.strip()
@@ -51,7 +64,41 @@ proc echo_centered*(str: string) =
     if whitespace_remaining >= 0:
         echo_centered_one_line(stripped)
     else:
-        echo_centered_two_lines(stripped)
+        echo_centered_multi_lines(stripped)
+
+# let's just use this one responsibly and not deal with multilines...
+proc echo_centered_on*(sides: array[2,string], centerpiece: string) =
+    let
+        left_side = sides[0].strip()
+        right_side = sides[1].strip()
+        space_per_side = (max_line_width - centerpiece.len) div 2
+        content_width = left_side.len + centerpiece.len + right_side.len
+    var
+        whitespace_left = space_per_side - left_side.len
+        whitespace_right = max_line_width - (content_width + whitespace_left)
+        new_left = ""
+        new_right = right_side
+        full_string = ""
+    while whitespace_left > 0:
+        new_left.add(" ")
+        whitespace_left.dec(1)
+    new_left.add(left_side)
+    while whitespace_right > 0:
+        new_right.add(" ")
+        whitespace_right.dec(1)
+    full_string = new_left & centerpiece & new_right
+    echo full_string
+
+proc draw_horizontal_div*(line="-",center="+",side_length:uint8=20) = 
+    var
+        one_bar = ""
+        i = side_length
+    while i > 0:
+        one_bar.add(line)
+        i.dec(1)
+    [one_bar,one_bar].echo_centered_on(center)
+    
+
 
 proc generate_string_range*(min:int, max:int): seq[string] =
     for i in min..max:
@@ -81,12 +128,12 @@ proc print_title_card*() =
 proc present_game_modes*() =
     echo_centered "Choose a game mode by typing its number."
     echo ""
-    echo "               1) Bakappana (Foolish Flowers)"
-    echo "               2) Ropyakken (Six Hundred)"
-    echo "               3) Mushi     (Insect Flowers)"
-    echo "               4) Hachi     (Eight)"
+    echo_indented "1) Bakappana (Foolish Flowers)"
+    echo_indented "2) Ropyakken (Six Hundred)"
+    echo_indented "3) Mushi     (Insect Flowers)"
+    echo_indented "4) Hachi     (Eight)"
     echo ""
-    echo "               q) QUIT Nimble Flowers"
+    echo_indented "q) QUIT Nimble Flowers"
     echo ""
 
 proc select_game_mode*(): RuleSet =
@@ -111,22 +158,29 @@ proc list_yaku_names*(game: RuleSet) =
     if game.yaku_set == @[]:
         return
     else:
-        echo "               Yaku:"
+        echo_indented "Yaku:"
         for yaku in game.yaku_set:
-            echo "               ", yaku.name
+            echo_indented yaku.name
 
     
 
 proc list_current_rules*(game: RuleSet) =
     echo ""
-    echo "            Current ruleset:    " & game.name
-    echo_centered "--------------------+--------------------"
-    echo "          Number of players: |  " & $game.num_players
-    echo "              Cards in hand: |  " & $game.num_cards_hand
-    echo "             Cards on field: |  " & $game.num_cards_field
-    echo "               Point values: |  " & $game.point_values
-    echo "            Wild card rules: |  " & game.wild_card_rules
-    echo "                  Wild card: |  " & game.wild_card.full_name
+    ["Current ruleset:",game.name].echo_centered_on(" | ")
+    draw_horizontal_div()
+
+    ["Number of players:",  $game.num_players       ].echo_centered_on(" | ")
+    ["Cards in hand:",      $game.num_cards_hand    ].echo_centered_on(" | ")
+    ["Cards on field:",     $game.num_cards_field   ].echo_centered_on(" | ")
+    ["Cards on field:",     $game.num_cards_field   ].echo_centered_on(" | ")
+    ["Point values:",       $game.point_values      ].echo_centered_on(" | ")
+
+    if game.wild_card_rules != "":
+        ["Wild card rules:",    game.wild_card_rules    ].echo_centered_on(" | ")
+    if game.wild_card.full_name != "":
+        ["Wild card:",          game.wild_card.full_name].echo_centered_on(" | ")
+
+    draw_horizontal_div()
     game.list_yaku_names
     echo ""
 
@@ -148,8 +202,8 @@ proc offer_to_customize_rules*(game: RuleSet): RuleSet =
     var user_selection = "";
     while user_selection notin @["1","2"] & quit_commands:
         game.list_current_rules
-        echo "               1) Keep current settings"
-        echo "               2) Customize settings"
+        echo_indented "1) Keep current settings"
+        echo_indented "2) Customize settings"
         echo ""
         user_selection = prompt("> ")
     case user_selection:
@@ -168,5 +222,5 @@ proc offer_to_customize_rules*(game: RuleSet): RuleSet =
             result.num_cards_field = let_user_specify_num("cards on the field",0,max_cards_field).parseInt()
 
     result.list_current_rules
-    echo "                         Let's begin!"
+    echo_centered "Let's begin!"
     return result
