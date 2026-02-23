@@ -253,13 +253,14 @@ proc list_yaku_names*(game: RuleSet) =
     
 
 proc list_current_rules*(game: RuleSet) =
+    let decksize = 48 - game.cards_stripped.len
     current_table_style = defaultStyle
     insert_div()
     insert_row("Current ruleset:",game.name)
     insert_div()
-    insert_row("Number of players:", $game.num_players)
+    insert_row("Players:", $game.num_players, "Deck size:", $decksize & " cards")
     insert_div()
-    insert_row("Hand size:",$game.num_cards_hand,"Field size:", $game.num_cards_field)
+    insert_row("Hand size:",$game.num_cards_hand & " cards","Field size:", $game.num_cards_field & " cards")
     insert_div()
     insert_row("Point values:", $game.point_values)
     insert_div()
@@ -303,10 +304,11 @@ proc offer_to_customize_rules*(game: RuleSet): RuleSet =
             result = game
             result.num_players = let_user_specify_num("players",2,8).parseInt()
 
-            let max_cards_hand = 24 div result.num_players
+            let decksize = 48 - game.cards_stripped.len
+            let max_cards_hand = (decksize div 2) div result.num_players
             result.num_cards_hand = let_user_specify_num("cards in the hand",1,max_cards_hand).parseInt()
 
-            let max_cards_field = 48 - (2 * result.num_players * result.num_cards_hand)
+            let max_cards_field = decksize - (2 * result.num_players * result.num_cards_hand)
             result.num_cards_field = let_user_specify_num("cards on the field",0,max_cards_field).parseInt()
 
     result.list_current_rules
