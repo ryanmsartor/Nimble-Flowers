@@ -1,10 +1,5 @@
 # contains the procedures for the main menu, etc.
 
-# we always aim for a width of 60 characters.
-# pseudo-centered text should have 15 spaces in front.
-# 15 -> "               "
-# 10 -> "          "
-
 import strutils
 import std/tables
 import nf_types
@@ -16,6 +11,23 @@ const
     affirmative_answers* = @["yes","Yes","YES","y","Y:"]
     negative_answers* = @["no","No","NO","n","N"]
     max_line_width* = 60
+
+const
+    defaultStyle = TableStyle(
+        divider: "|",
+        border: "|",
+        padding: ' ',
+        width: 52
+    ) 
+    narrowStyle = TableStyle(
+        divider: "",
+        border: "|",
+        padding: ' ',
+        width: 44
+    )
+
+# this global should be explicitly set every time you make a new table
+var current_table_style = defaultStyle
 
 #   #################   #
 ##### UTILITY PROCS #####
@@ -92,7 +104,7 @@ proc echo_centered_on*(sides: array[2,string], centerpiece: string) =
     full_string = new_left & centerpiece & new_right
     echo full_string
 
-proc draw_horizontal_div*(line="-",center="+",side_length:uint8=25) = 
+proc draw_horizontal_div*(line="-",center="",side_length:uint8=(current_table_style.width div 2)) = 
     var
         one_bar = ""
         i = side_length
@@ -102,45 +114,68 @@ proc draw_horizontal_div*(line="-",center="+",side_length:uint8=25) =
     [one_bar,one_bar].echo_centered_on(center)
     
 
-# overload this proc so we don't have to pass num columns to it
-proc create_table_row(divider="|", border="|", table_width=52'u8, mystrings: varargs[string]) =
+proc create_table_row(mystrings: varargs[string]) =
     let
+        divider = current_table_style.divider
+        border = current_table_style.border
+        table_width = current_table_style.width
+        pad_char = current_table_style.padding
         num_columns = uint8(mystrings.len)
         div_width = uint8(divider.len)
         border_width = uint8(border.len)
         usable_width = table_width - (2 * border_width) - ((num_columns - 1) * div_width)
         width_per_col = usable_width div num_columns
-        extra_width = usable_width mod num_columns
+        excess_width = usable_width mod num_columns
         left_edge_pad = (max_line_width - table_width) div 2
     var
         final_string = ""
-        inner_pad_total, inner_pad_left, inner_pad_right: uint8
+        inner_pad_total, inner_pad_left, inner_pad_right: int
 
+    # per-column widths ---
+    var colWidths = newSeq[int](num_columns)
+    for i in 0'u8 ..< num_columns:
+        colWidths[i] = int(width_per_col)
+
+    # distribute remainder to middle columns
+    var remaining = int(excess_width)
+    let mid = int(num_columns div 2)
+    var offset = 0
+    while remaining > 0:
+        let idx = mid + offset
+        if idx >= 0 and idx < int(num_columns):
+            colWidths[idx].inc
+            remaining.dec
+        if offset <= 0:
+            offset = -offset + 1
+        else:
+            offset = -offset
+
+    # pad left side
     while uint8(final_string.len) < left_edge_pad:
-        final_string.add(" ")
+        final_string.add(pad_char)
     final_string.add(border)
-    for str in mystrings:
-        inner_pad_total = width_per_col - uint8(str.len)
+
+    # print each column
+    for i, str in mystrings:
+        inner_pad_total = colWidths[i] - str.len
         inner_pad_left = inner_pad_total div 2
         inner_pad_right = inner_pad_left + (inner_pad_total mod 2)
-        if inner_pad_left > 0:
-            for i in 1'u8 .. inner_pad_left:
-                final_string.add(" ")
+
+        for _ in 0 ..< inner_pad_left:
+            final_string.add(pad_char)
         final_string.add(str)
-        if inner_pad_right > 0:
-            for i in 1'u8 .. inner_pad_right:
-                final_string.add(" ")
-        if str != mystrings[^1]:
+        for _ in 0 ..< inner_pad_right:
+            final_string.add(pad_char)
+
+        if i < mystrings.len - 1:
             final_string.add(divider)
+
+    # close table and add right pad
     final_string.add(border)
-    while final_string.len() < max_line_width:
-        final_string.add(" ")
+    while final_string.len < max_line_width:
+        final_string.add(pad_char)
+
     echo final_string
-
-create_table_row(r"/|\",r"\|/",42,"poopoo","peepee")
-
-
-
 
 proc generate_string_range*(min:int, max:int): seq[string] =
     for i in min..max:
@@ -168,15 +203,17 @@ proc print_title_card*() =
     echo ""
 
 proc present_game_modes*() =
-    echo_centered "Choose a game mode by typing its number."
-    echo ""
-    echo_indented "1) Bakappana (Foolish Flowers)"
-    echo_indented "2) Ropyakken (Six Hundred)"
-    echo_indented "3) Mushi     (Insect Flowers)"
-    echo_indented "4) Hachi     (Eight)"
-    echo ""
-    echo_indented "q) QUIT Nimble Flowers"
-    echo ""
+    current_table_style = narrowStyle
+    draw_horizontal_div()
+    create_table_row("Choose a game mode by typing its number.")
+    create_table_row("")
+    create_table_row("","1)", "Bakappana","")
+    create_table_row("","2)", "Ropyakken","")
+    create_table_row("","3)","Mushi", "")
+    create_table_row("","4)", "Hachi","")
+    draw_horizontal_div()
+    create_table_row("q) QUIT Nimble Flowers")
+    draw_horizontal_div()
 
 proc select_game_mode*(): RuleSet =
     var user_selection = ""

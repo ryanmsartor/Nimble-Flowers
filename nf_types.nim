@@ -75,3 +75,9 @@ type
         cards_stripped*: seq[Card]
         cards_added*: seq[Card]
         point_values*: string
+
+    TableStyle* = object
+        divider*: string
+        border*: string
+        padding*: char
+        width*: uint8

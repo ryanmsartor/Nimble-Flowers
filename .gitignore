@@ -1,3 +1,9 @@
 workspace
 out
 nimble_flowers
+nf_cards
+nf_menus
+nf_play
+nf_rulesets
+nf_types
+nf_yaku
