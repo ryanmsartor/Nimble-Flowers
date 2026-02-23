@@ -587,7 +587,7 @@ const
         oozan: 25,
         fujishima: 10,
         kirishima: 10
-    }.toTable()
+    }.toOrderedTable()
 
     yaku_table_shima* = {
         matsushima: 20,
@@ -602,7 +602,7 @@ const
         momijishima: 20,
         yanagishima: 20,
         kirishima: 20
-    }.toTable()
+    }.toOrderedTable()
 
     yaku_table_ropyakken* = {
         shikou: 600,
@@ -616,7 +616,7 @@ const
         nomi: 300,
         hanami: 100,
         tsukimi: 100,
-        ayameshima: 200,
+        yanagishima: 200,
         matsushima: 50,
         umeshima: 50,
         sakurashima: 50,
@@ -624,7 +624,7 @@ const
         susukishima: 50,
         momijishima: 50,
         kirishima: 50
-    }.toTable()
+    }.toOrderedTable()
 
     yaku_table_yamayaku* = {
         matsukiribouzu: 150,
@@ -635,7 +635,7 @@ const
         inoshikachou: 300,
         nomi: 300,
         yanagishima: 200
-    }.toTable()
+    }.toOrderedTable()
 
     yaku_table_hachi* = {
         hi_12_4_11: 10,
@@ -659,4 +659,4 @@ const
         hi_3_5_6: 10,
         lo_3_5_6: 20,
         lo_10_7_8: 20
-    }.toTable()
+    }.toOrderedTable()

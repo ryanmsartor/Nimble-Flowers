@@ -65,7 +65,7 @@ type
         num_cards_field*: NumField
         wild_card*: Card
         wild_card_rules*: string
-        yaku_set*: Table[Dekiyaku,int]
+        yaku_set*: OrderedTable[Dekiyaku,int]
         set_teyaku_list*: seq[SetTeyaku]
         chaff_teyaku_list*: seq[ChaffTeyaku]
         can_koikoi*: bool

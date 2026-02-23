@@ -4,6 +4,7 @@ import strutils
 import std/tables
 import nf_types
 import nf_rulesets
+import re
 
 const
     quit_commands* = @["q","Q","quit","Quit","QUIT",
@@ -11,13 +12,15 @@ const
     affirmative_answers* = @["yes","Yes","YES","y","Y:"]
     negative_answers* = @["no","No","NO","n","N"]
     max_line_width* = 60
+    
+let ansiRegex = re"\x1b\[[0-9;]*m"
 
 const
     defaultStyle = TableStyle(
         divider: "|",
         border: "|",
         padding: ' ',
-        width: 52
+        width: 54
     ) 
     narrowStyle = TableStyle(
         divider: "",
@@ -33,6 +36,9 @@ var current_table_style = defaultStyle
 ##### UTILITY PROCS #####
 #   #################   #
 
+proc visibleLen*(s: string): int =
+    result = s.replace(ansiRegex, "").len
+
 proc echo_centered*(str: string)    # pre-declared proc to enable recursion
 
 proc echo_indented*(str: string,num:uint8=15) =
@@ -46,7 +52,7 @@ proc echo_indented*(str: string,num:uint8=15) =
     echo new_string
 
 proc echo_centered_one_line(str: string) =
-    let whitespace_remaining = max_line_width - str.len
+    let whitespace_remaining = max_line_width - str.visibleLen()
     var
         whitespace_left = whitespace_remaining div 2
         whitespace_right = whitespace_remaining - whitespace_left
@@ -70,12 +76,12 @@ proc echo_centered_multi_lines(str: string) =
         line_1 = str[0..(max_line_width-1)]
         line_2 = str[max_line_width..(-1)]
     echo_centered_one_line(line_1)
-    if line_2.len > 0:
+    if line_2.visibleLen > 0:
         echo_centered(line_2)
 
 proc echo_centered*(str: string) =
     let stripped = str.strip()
-    let whitespace_remaining = max_line_width - stripped.len
+    let whitespace_remaining = max_line_width - stripped.visibleLen()
     if whitespace_remaining >= 0:
         echo_centered_one_line(stripped)
     else:
@@ -86,10 +92,10 @@ proc echo_centered_on*(sides: array[2,string], centerpiece: string) =
     let
         left_side = sides[0].strip()
         right_side = sides[1].strip()
-        space_per_side = (max_line_width - centerpiece.len) div 2
-        content_width = left_side.len + centerpiece.len + right_side.len
+        space_per_side = (max_line_width - centerpiece.visibleLen()) div 2
+        content_width = left_side.visibleLen() + centerpiece.visibleLen() + right_side.visibleLen()
     var
-        whitespace_left = space_per_side - left_side.len
+        whitespace_left = space_per_side - left_side.visibleLen()
         whitespace_right = max_line_width - (content_width + whitespace_left)
         new_left = ""
         new_right = right_side
@@ -104,7 +110,7 @@ proc echo_centered_on*(sides: array[2,string], centerpiece: string) =
     full_string = new_left & centerpiece & new_right
     echo full_string
 
-proc draw_horizontal_div*(line="-",center="",side_length:uint8=(current_table_style.width div 2)) = 
+proc insert_div*(line="-",center="",side_length:uint8=(current_table_style.width div 2)) = 
     var
         one_bar = ""
         i = side_length
@@ -114,15 +120,15 @@ proc draw_horizontal_div*(line="-",center="",side_length:uint8=(current_table_st
     [one_bar,one_bar].echo_centered_on(center)
     
 
-proc create_table_row(mystrings: varargs[string]) =
+proc insert_row(mystrings: varargs[string]) =
     let
         divider = current_table_style.divider
         border = current_table_style.border
         table_width = current_table_style.width
         pad_char = current_table_style.padding
         num_columns = uint8(mystrings.len)
-        div_width = uint8(divider.len)
-        border_width = uint8(border.len)
+        div_width = uint8(divider.visibleLen())
+        border_width = uint8(border.visibleLen())
         usable_width = table_width - (2 * border_width) - ((num_columns - 1) * div_width)
         width_per_col = usable_width div num_columns
         excess_width = usable_width mod num_columns
@@ -151,13 +157,13 @@ proc create_table_row(mystrings: varargs[string]) =
             offset = -offset
 
     # pad left side
-    while uint8(final_string.len) < left_edge_pad:
+    while uint8(final_string.visibleLen()) < left_edge_pad:
         final_string.add(pad_char)
     final_string.add(border)
 
     # print each column
     for i, str in mystrings:
-        inner_pad_total = colWidths[i] - str.len
+        inner_pad_total = colWidths[i] - str.visibleLen()
         inner_pad_left = inner_pad_total div 2
         inner_pad_right = inner_pad_left + (inner_pad_total mod 2)
 
@@ -172,7 +178,7 @@ proc create_table_row(mystrings: varargs[string]) =
 
     # close table and add right pad
     final_string.add(border)
-    while final_string.len < max_line_width:
+    while final_string.visibleLen() < max_line_width:
         final_string.add(pad_char)
 
     echo final_string
@@ -204,16 +210,16 @@ proc print_title_card*() =
 
 proc present_game_modes*() =
     current_table_style = narrowStyle
-    draw_horizontal_div()
-    create_table_row("Choose a game mode by typing its number.")
-    create_table_row("")
-    create_table_row("","1)", "Bakappana","")
-    create_table_row("","2)", "Ropyakken","")
-    create_table_row("","3)","Mushi", "")
-    create_table_row("","4)", "Hachi","")
-    draw_horizontal_div()
-    create_table_row("q) QUIT Nimble Flowers")
-    draw_horizontal_div()
+    insert_div()
+    insert_row("Choose a game mode by typing its number.")
+    insert_row("")
+    insert_row("","1)", "Bakappana","")
+    insert_row("","2)", "Ropyakken","")
+    insert_row("","3)","Mushi", "")
+    insert_row("","4)", "Hachi","")
+    insert_div()
+    insert_row("q) QUIT Nimble Flowers")
+    insert_div()
 
 proc select_game_mode*(): RuleSet =
     var user_selection = ""
@@ -234,35 +240,35 @@ proc select_game_mode*(): RuleSet =
             return hachi
 
 proc list_yaku_names*(game: RuleSet) =
-    const blank = initTable[Dekiyaku,int]()
+    const blank = initOrderedTable[Dekiyaku,int]()
     if game.yaku_set == blank:
         return
     else:
         #echo_indented(r"\_Yaku:_/", 8)
-        echo_centered(r"\_Yaku:_/")
+        insert_row(r"\_Yaku:_/")
         for yaku, score in game.yaku_set:
             #echo_indented(yaku.name & " : " & $score, 5)
-            [yaku.name, $score & " pts"].echo_centered_on(" : ")
-
+            insert_row(yaku.name, $score & " pts")
+    insert_div()
     
 
 proc list_current_rules*(game: RuleSet) =
-    draw_horizontal_div()
-    ["Current ruleset:",game.name].echo_centered_on(" | ")
-    draw_horizontal_div()
-
-    ["Number of players:",  $game.num_players       ].echo_centered_on(" | ")
-    ["Cards in hand:",      $game.num_cards_hand    ].echo_centered_on(" | ")
-    ["Cards on field:",     $game.num_cards_field   ].echo_centered_on(" | ")
-    ["Cards on field:",     $game.num_cards_field   ].echo_centered_on(" | ")
-    ["Point values:",       $game.point_values      ].echo_centered_on(" | ")
-
+    current_table_style = defaultStyle
+    insert_div()
+    insert_row("Current ruleset:",game.name)
+    insert_div()
+    insert_row("Number of players:", $game.num_players)
+    insert_div()
+    insert_row("Hand size:",$game.num_cards_hand,"Field size:", $game.num_cards_field)
+    insert_div()
+    insert_row("Point values:", $game.point_values)
+    insert_div()
     if game.wild_card_rules != "":
-        ["Wild card rules:",    game.wild_card_rules    ].echo_centered_on(" | ")
+        insert_row("Wild card rules:",game.wild_card_rules)
     if game.wild_card.full_name != "":
-        ["Wild card:",          game.wild_card.full_name].echo_centered_on(" | ")
+        insert_row("Wild card:",          game.wild_card.full_name)
+    insert_div()
 
-    draw_horizontal_div()
     game.list_yaku_names
     echo ""
 
