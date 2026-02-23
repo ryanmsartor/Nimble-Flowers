@@ -51,7 +51,7 @@ const
         num_players: 2,
         num_cards_hand: 7,
         num_cards_field: 6,
-        hachi_matching = true,
+        hachi_matching: true,
         yaku_set: yaku_table_hachi,
         point_values: "10, 1, 10, 10"
     )

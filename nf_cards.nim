@@ -465,7 +465,7 @@ const
         hachi_value: 10
     )
 
-    full_deck* = [
+    full_deck*: Zone = @[
         pine_bright, pine_ribbon, pine_chaff_1, pine_chaff_2,
         plum_animal, plum_ribbon, plum_chaff_1, plum_chaff_2,
         cherry_bright, cherry_ribbon, cherry_chaff_1, cherry_chaff_2,

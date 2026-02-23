@@ -2,7 +2,7 @@
 # a CLI hanafuda game written in Nim
 # (c) Ryan Sartor 2026
 
-import nf_types, nf_menus
+import nf_types, nf_menus, nf_play
 
 var 
     game_mode: RuleSet
@@ -22,3 +22,5 @@ while not satisfied:
         game_mode = game_mode.offer_to_customize_rules()
     elif answer in ["no","No","NO","n","N",""]:
         satisfied = true
+deal(game_mode)
+show_zones_debug()

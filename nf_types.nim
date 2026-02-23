@@ -20,9 +20,18 @@ type
         hachi_value*: CardPointValue
         ropyakken_value*: CardPointValue
 
-    Zone* = object
+    Zone* = seq[Card]
+
+    Player* = object
         name*: string
-        cards*: seq[Card]
+        hand*: Zone
+        captured*: Zone
+        current_teyaku_score*: int
+        current_dekiyaku_score*: int
+        current_card_score*: int
+        overall_score*: int
+        rounds_won*: uint8
+        play_style*: string # difficulty level
 
     Dekiyaku* = object
         name*: string
