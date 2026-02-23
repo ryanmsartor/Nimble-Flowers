@@ -39,10 +39,19 @@ const
         num_players: 2,
         num_cards_hand: 8,
         num_cards_field: 8,
+        target_score: 600,
         wild_card: willow_bright,
         wild_card_rules: "Six Hundred Style",
         yaku_set: yaku_table_ropyakken,
         point_values: "0, 10, 10, 50"
     )
 
-    hachi* = RuleSet()
+    hachi* = RuleSet(
+        name: "Hachi",
+        num_players: 2,
+        num_cards_hand: 7,
+        num_cards_field: 6,
+        hachi_matching = true,
+        yaku_set: yaku_table_hachi,
+        point_values: "10, 1, 10, 10"
+    )

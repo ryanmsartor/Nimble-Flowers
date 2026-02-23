@@ -60,7 +60,9 @@ type
         set_teyaku_list*: seq[SetTeyaku]
         chaff_teyaku_list*: seq[ChaffTeyaku]
         can_koikoi*: bool
+        hachi_matching*: bool
         zero_sum*: bool
+        target_score*: int
         cards_stripped*: seq[Card]
         cards_added*: seq[Card]
         point_values*: string

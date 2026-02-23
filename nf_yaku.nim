@@ -392,6 +392,193 @@ const
     )
 
 
+##### HACHI DEKIYAKU #####
+const
+    hi_12_4_11* = Dekiyaku(
+        name: "Mist Island",
+        cards_group_1: @[
+            paulownia_bright,
+            wisteria_animal,
+            willow_bright
+        ],
+        num_group_1: 3
+    )
+    lo_12_4_11* = Dekiyaku(
+        name: "Mist Island Ribbons",
+        cards_group_1: @[
+            paulownia_chaff_1,
+            wisteria_ribbon,
+            willow_ribbon
+        ],
+        num_group_1: 3
+    )
+
+    hi_5_6_10* = Dekiyaku(
+        name: "Elder",
+        cards_group_1: @[
+            iris_animal,
+            peony_animal,
+            maple_animal
+        ],
+        num_group_1: 3
+    )
+    lo_5_6_10* = Dekiyaku(
+        name: "Elder Ribbons",
+        cards_group_1: @[
+            iris_ribbon,
+            peony_ribbon,
+            maple_ribbon
+        ],
+        num_group_1: 3
+    )
+
+    hi_5_4_6* = Dekiyaku(
+        name: "Five Four Six",
+        cards_group_1: @[
+            iris_animal,
+            wisteria_animal,
+            peony_animal
+        ],
+        num_group_1: 3
+    )
+    lo_5_4_6* = Dekiyaku(
+        name: "Five Four Six Ribbons",
+        cards_group_1: @[
+            iris_ribbon,
+            wisteria_ribbon,
+            peony_ribbon
+        ],
+        num_group_1: 3
+    )
+
+    hi_7_5_3* = Dekiyaku(
+        name: "Seven Five Three",
+        cards_group_1: @[
+            clover_animal,
+            iris_animal,
+            cherry_bright
+        ],
+        num_group_1: 3
+    )
+    lo_7_5_3* = Dekiyaku(
+        name: "Seven Five Three Ribbons",
+        cards_group_1: @[
+            clover_ribbon,
+            iris_ribbon,
+            cherry_ribbon
+        ],
+        num_group_1: 3
+    )
+
+    hi_9_11_3* = Dekiyaku(
+        name: "Kumano Shrines",
+        cards_group_1: @[
+            mum_animal,
+            willow_bright,
+            cherry_bright
+        ],
+        num_group_1: 3
+    )
+    lo_9_11_3* = Dekiyaku(
+        name: "Kumano Shrine Ribbons",
+        cards_group_1: @[
+            mum_ribbon,
+            willow_ribbon,
+            cherry_ribbon
+        ],
+        num_group_1: 3
+    )
+
+    hi_8_4_11* = Dekiyaku(
+        name: "Eight Islands",
+        cards_group_1: @[
+            grass_bright,
+            wisteria_animal,
+            willow_bright
+        ],
+        num_group_1: 3
+    )
+    lo_8_4_11* = Dekiyaku(
+        name: "Eight Island Ribbons",
+        cards_group_1: @[
+            grass_animal,
+            wisteria_ribbon,
+            willow_ribbon
+        ],
+        num_group_1: 3
+    )
+
+    hi_7_8_9* = Dekiyaku(
+        name: "Nakazou",
+        cards_group_1: @[
+            clover_animal,
+            grass_bright,
+            mum_animal
+        ],
+        num_group_1: 3
+    )
+    lo_7_8_9* = Dekiyaku(
+        name: "Nakazou Ribbons",
+        cards_group_1: @[
+            clover_ribbon,
+            grass_animal,
+            mum_ribbon
+        ],
+        num_group_1: 3
+    )
+
+    hi_1_2_3* = oozan
+    lo_1_2_3* = akatan
+
+    hi_2_11_12* = Dekiyaku(
+        name: "Den",
+        cards_group_1: @[
+            plum_animal,
+            willow_bright,
+            paulownia_bright
+        ],
+        num_group_1: 3
+    )
+    lo_2_11_12* = Dekiyaku(
+        name: "Den Ribbons",
+        cards_group_1: @[
+            plum_ribbon,
+            willow_ribbon,
+            paulownia_chaff_1
+        ],
+        num_group_1: 3
+    )
+
+    hi_3_5_6* = Dekiyaku(
+        name: "Three Five Six",
+        cards_group_1: @[
+            cherry_bright,
+            iris_animal,
+            peony_animal
+        ],
+        num_group_1: 3
+    )
+    lo_3_5_6* = Dekiyaku(
+        name: "Three Five Six Ribbons",
+        cards_group_1: @[
+            cherry_ribbon,
+            iris_ribbon,
+            peony_ribbon
+        ],
+        num_group_1: 3
+    )
+
+    lo_10_7_8* = Dekiyaku(
+        name: "Ten Seven Eight Ribbons",
+        cards_group_1: @[
+            maple_ribbon,
+            clover_ribbon,
+            grass_animal
+        ],
+        num_group_1: 3
+    )
+
+
 ##### DEKIYAKU SCORING TABLES #####
 
 const
@@ -448,4 +635,28 @@ const
         inoshikachou: 300,
         nomi: 300,
         yanagishima: 200
+    }.toTable()
+
+    yaku_table_hachi* = {
+        hi_12_4_11: 10,
+        lo_12_4_11: 20,
+        hi_5_6_10: 10,
+        lo_5_6_10: 20,
+        hi_5_4_6: 10,
+        lo_5_4_6: 20,
+        hi_7_5_3: 10,
+        lo_7_5_3: 20,
+        hi_9_11_3: 10,
+        lo_9_11_3: 20,
+        hi_8_4_11: 10,
+        lo_8_4_11: 20,
+        hi_7_8_9: 10,
+        lo_7_8_9: 20,
+        hi_1_2_3: 10,
+        lo_1_2_3: 20,
+        hi_2_11_12: 10,
+        lo_2_11_12: 20,
+        hi_3_5_6: 10,
+        lo_3_5_6: 20,
+        lo_10_7_8: 20
     }.toTable()
