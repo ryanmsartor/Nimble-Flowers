@@ -13,7 +13,9 @@ import nf_rulesets
 const
     quit_commands* = @["q","Q","quit","Quit","QUIT",
                          "exit","Exit","EXIT"]
-    max_line_width = 60
+    affirmative_answers* = @["yes","Yes","YES","y","Y:"]
+    negative_answers* = @["no","No","NO","n","N"]
+    max_line_width* = 60
 
 #   #################   #
 ##### UTILITY PROCS #####
@@ -99,6 +101,45 @@ proc draw_horizontal_div*(line="-",center="+",side_length:uint8=25) =
         i.dec(1)
     [one_bar,one_bar].echo_centered_on(center)
     
+
+# overload this proc so we don't have to pass num columns to it
+proc create_table_row(divider="|", border="|", table_width=52'u8, mystrings: varargs[string]) =
+    let
+        num_columns = uint8(mystrings.len)
+        div_width = uint8(divider.len)
+        border_width = uint8(border.len)
+        usable_width = table_width - (2 * border_width) - ((num_columns - 1) * div_width)
+        width_per_col = usable_width div num_columns
+        extra_width = usable_width mod num_columns
+        left_edge_pad = (max_line_width - table_width) div 2
+    var
+        final_string = ""
+        inner_pad_total, inner_pad_left, inner_pad_right: uint8
+
+    while uint8(final_string.len) < left_edge_pad:
+        final_string.add(" ")
+    final_string.add(border)
+    for str in mystrings:
+        inner_pad_total = width_per_col - uint8(str.len)
+        inner_pad_left = inner_pad_total div 2
+        inner_pad_right = inner_pad_left + (inner_pad_total mod 2)
+        if inner_pad_left > 0:
+            for i in 1'u8 .. inner_pad_left:
+                final_string.add(" ")
+        final_string.add(str)
+        if inner_pad_right > 0:
+            for i in 1'u8 .. inner_pad_right:
+                final_string.add(" ")
+        if str != mystrings[^1]:
+            final_string.add(divider)
+    final_string.add(border)
+    while final_string.len() < max_line_width:
+        final_string.add(" ")
+    echo final_string
+
+create_table_row(r"/|\",r"\|/",42,"poopoo","peepee")
+
+
 
 
 proc generate_string_range*(min:int, max:int): seq[string] =

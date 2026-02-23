@@ -18,9 +18,9 @@ game_mode = select_game_mode()
 echo_centered(game_mode.name)
 while not satisfied:
     answer = prompt("Do you want to check or modify the ruleset? [y/N] > ")
-    if answer in ["yes","Yes","YES","y","Y:"]:
+    if answer in affirmative_answers:
         game_mode = game_mode.offer_to_customize_rules()
-    elif answer in ["no","No","NO","n","N",""]:
+    elif answer in negative_answers or answer == "":
         satisfied = true
 deal(game_mode)
 show_zones_debug()
