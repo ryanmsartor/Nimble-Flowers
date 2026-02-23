@@ -90,7 +90,7 @@ proc echo_centered_on*(sides: array[2,string], centerpiece: string) =
     full_string = new_left & centerpiece & new_right
     echo full_string
 
-proc draw_horizontal_div*(line="-",center="+",side_length:uint8=20) = 
+proc draw_horizontal_div*(line="-",center="+",side_length:uint8=25) = 
     var
         one_bar = ""
         i = side_length
@@ -149,25 +149,27 @@ proc select_game_mode*(): RuleSet =
         of "1":
             return bakappana
         of "2":
-            discard
+            return ropyakken
         of "3":
             return mushi
         of "4":
-            discard
+            return hachi
 
 proc list_yaku_names*(game: RuleSet) =
-    const blank = initTable[Dekiyaku,uint8]()
+    const blank = initTable[Dekiyaku,int]()
     if game.yaku_set == blank:
         return
     else:
-        echo_indented "Yaku:"
+        #echo_indented(r"\_Yaku:_/", 8)
+        echo_centered(r"\_Yaku:_/")
         for yaku, score in game.yaku_set:
-            echo_indented yaku.name
+            #echo_indented(yaku.name & " : " & $score, 5)
+            [yaku.name, $score & " pts"].echo_centered_on(" : ")
 
     
 
 proc list_current_rules*(game: RuleSet) =
-    echo ""
+    draw_horizontal_div()
     ["Current ruleset:",game.name].echo_centered_on(" | ")
     draw_horizontal_div()
 
@@ -215,7 +217,7 @@ proc offer_to_customize_rules*(game: RuleSet): RuleSet =
             result = game
         of "2":
             result = game
-            result.num_players = let_user_specify_num("players",2,16).parseInt()
+            result.num_players = let_user_specify_num("players",2,8).parseInt()
 
             let max_cards_hand = 24 div result.num_players
             result.num_cards_hand = let_user_specify_num("cards in the hand",1,max_cards_hand).parseInt()

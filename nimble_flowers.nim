@@ -6,6 +6,8 @@ import nf_types, nf_menus
 
 var 
     game_mode: RuleSet
+    satisfied = false
+    answer = ""
 
 #   ########   #
 ##### MAIN #####
@@ -13,4 +15,10 @@ var
 
 print_title_card()
 game_mode = select_game_mode()
-game_mode = game_mode.offer_to_customize_rules()
+echo_centered(game_mode.name)
+while not satisfied:
+    answer = prompt("Do you want to check or modify the ruleset? [y/N] > ")
+    if answer in ["yes","Yes","YES","y","Y:"]:
+        game_mode = game_mode.offer_to_customize_rules()
+    elif answer in ["no","No","NO","n","N",""]:
+        satisfied = true

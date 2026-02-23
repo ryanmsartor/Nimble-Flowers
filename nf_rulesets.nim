@@ -33,3 +33,16 @@ const
         ],
         point_values: "1, 5, 10, 20"
     )
+
+    ropyakken* = RuleSet(
+        name: "Ropyakken",
+        num_players: 2,
+        num_cards_hand: 8,
+        num_cards_field: 8,
+        wild_card: willow_bright,
+        wild_card_rules: "Six Hundred Style",
+        yaku_set: yaku_table_ropyakken,
+        point_values: "0, 10, 10, 50"
+    )
+
+    hachi* = RuleSet()

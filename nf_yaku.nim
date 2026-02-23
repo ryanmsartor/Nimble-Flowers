@@ -292,7 +292,6 @@ const
 
     oozan* = Dekiyaku(
         name: "Big Three",
-        exclusivity_group: "none",
         cards_group_1: @[
             pine_bright,
             plum_animal,
@@ -300,12 +299,153 @@ const
         ],
         num_group_1: 3
     )
+    matsukiribouzu* = Dekiyaku(
+        name: "Pine, Paulownia, Baldy",
+        cards_group_1: @[
+            pine_bright,
+            paulownia_bright,
+            grass_bright
+        ],
+        num_group_1: 3
+    )
+    inoshikachou* = Dekiyaku(
+        name: "Boar, Deer, Butterflies",
+        cards_group_1: @[
+            clover_animal,
+            maple_animal,
+            peony_animal
+        ],
+        num_group_1: 3
+    )
+
+    nanatan* = Dekiyaku(
+        name: "Seven Ribbons",
+        cards_group_1: @[
+            pine_ribbon,
+            plum_ribbon,
+            cherry_ribbon,
+            wisteria_ribbon,
+            iris_ribbon,
+            peony_ribbon,
+            clover_ribbon,
+            mum_ribbon,
+            maple_ribbon,
+            willow_ribbon
+        ],
+        num_group_1: 7
+    )
+    akatan* = Dekiyaku(
+        name: "Poetry Ribbons",
+        cards_group_1: @[
+            pine_ribbon,
+            plum_ribbon,
+            cherry_ribbon
+        ],
+        num_group_1: 3
+    )
+    aotan* = Dekiyaku(
+        name: "Blue Ribbons",
+        cards_group_1: @[
+            peony_ribbon,
+            mum_ribbon,
+            maple_ribbon
+        ],
+        num_group_1: 3
+    )
+    kusatan* = Dekiyaku(
+        name: "Grass Ribbons",
+        cards_group_1: @[
+            wisteria_ribbon,
+            iris_ribbon,
+            clover_ribbon
+        ],
+        num_group_1: 3
+    )
+
+    nomi* = Dekiyaku(
+        name: "Drinking",
+        exclusivity_group: "Sake",
+        cards_group_1: @[
+            mum_animal,
+            grass_bright,
+            cherry_bright
+        ],
+        num_group_1: 3
+    )
+    hanami* = Dekiyaku(
+        name: "Flower Viewing",
+        exclusivity_group: "Sake",
+        cards_group_1: @[
+            mum_animal,
+            cherry_bright
+        ],
+        num_group_1: 2
+    )
+    tsukimi* = Dekiyaku(
+        name: "Moon Viewing",
+        exclusivity_group: "Sake",
+        cards_group_1: @[
+            mum_animal,
+            grass_bright
+        ],
+        num_group_1: 2
+    )
 
 
+##### DEKIYAKU SCORING TABLES #####
 
+const
     yaku_table_mushi* = {
-        gokou: 30'u8,
-        oozan: 25'u8,
-        fujishima: 10'u8,
-        kirishima: 10'u8
+        gokou: 30,
+        oozan: 25,
+        fujishima: 10,
+        kirishima: 10
+    }.toTable()
+
+    yaku_table_shima* = {
+        matsushima: 20,
+        umeshima: 20,
+        sakurashima: 20,
+        fujishima: 20,
+        ayameshima: 20,
+        botanshima: 20,
+        hagishima: 20,
+        susukishima: 20,
+        kikushima: 20,
+        momijishima: 20,
+        yanagishima: 20,
+        kirishima: 20
+    }.toTable()
+
+    yaku_table_ropyakken* = {
+        shikou: 600,
+        matsukiribouzu: 150,
+        oozan: 150,
+        nanatan: 600,
+        akatan: 100,
+        aotan: 100,
+        kusatan: 100,
+        inoshikachou: 300,
+        nomi: 300,
+        hanami: 100,
+        tsukimi: 100,
+        ayameshima: 200,
+        matsushima: 50,
+        umeshima: 50,
+        sakurashima: 50,
+        fujishima: 50,
+        susukishima: 50,
+        momijishima: 50,
+        kirishima: 50
+    }.toTable()
+
+    yaku_table_yamayaku* = {
+        matsukiribouzu: 150,
+        oozan: 100,
+        akatan: 100,
+        aotan: 100,
+        kusatan: 100,
+        inoshikachou: 300,
+        nomi: 300,
+        yanagishima: 200
     }.toTable()
