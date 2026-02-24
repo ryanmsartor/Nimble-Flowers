@@ -82,49 +82,49 @@ proc deal*(game: RuleSet) =
             p8.hand.add(current_deck.pop())
 
 proc show_zones_debug*() =
-    insert_div(side_length=10)
+    insert_div()
     echo "field:"
     for card in field:
         echo card.full_name
 
-    insert_div(side_length=10)
+    insert_div()
     echo "p1 hand:"
     for card in p1.hand:
         echo card.full_name
 
-    insert_div(side_length=10)
+    insert_div()
     echo "p2 hand:"
     for card in p2.hand:
         echo card.full_name
 
-    insert_div(side_length=10)
+    insert_div()
     echo "p3 hand:"
     for card in p3.hand:
         echo card.full_name
 
-    insert_div(side_length=10)
+    insert_div()
     echo "p4 hand:"
     for card in p4.hand:
         echo card.full_name
 
-    insert_div(side_length=10)
+    insert_div()
     echo "p5 hand:"
     for card in p5.hand:
         echo card.full_name
 
-    insert_div(side_length=10)
+    insert_div()
     echo "p6 hand:"
     for card in p6.hand:
         echo card.full_name
 
-    insert_div(side_length=10)
+    insert_div()
     echo "p7 hand:"
     for card in p7.hand:
         echo card.full_name
 
-    insert_div(side_length=10)
+    insert_div()
     echo "p8 hand:"
     for card in p8.hand:
         echo card.full_name
 
-    insert_div(side_length=10)
+    insert_div()

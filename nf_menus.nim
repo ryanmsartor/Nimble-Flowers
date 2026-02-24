@@ -20,12 +20,20 @@ const
         divider: "|",
         border: "|",
         padding: ' ',
+        line_char: "-",
+        left_corner: ".",
+        right_corner: ".",
+        intersection: "+",
         width: 54
     ) 
     narrowStyle = TableStyle(
         divider: "",
         border: "|",
         padding: ' ',
+        line_char: "-",
+        left_corner: "-",
+        right_corner: "-",
+        intersection: "-",
         width: 44
     )
 
@@ -41,7 +49,7 @@ proc visibleLen*(s: string): int =
 
 proc echo_centered*(str: string)    # pre-declared proc to enable recursion
 
-proc echo_indented*(str: string,num:uint8=15) =
+proc echo_indented*(str: string,num=15) =
     var
         new_string = ""
         i = num
@@ -87,38 +95,66 @@ proc echo_centered*(str: string) =
     else:
         echo_centered_multi_lines(stripped)
 
-# let's just use this one responsibly and not deal with multilines...
-proc echo_centered_on*(sides: array[2,string], centerpiece: string) =
-    let
-        left_side = sides[0].strip()
-        right_side = sides[1].strip()
-        space_per_side = (max_line_width - centerpiece.visibleLen()) div 2
-        content_width = left_side.visibleLen() + centerpiece.visibleLen() + right_side.visibleLen()
-    var
-        whitespace_left = space_per_side - left_side.visibleLen()
-        whitespace_right = max_line_width - (content_width + whitespace_left)
-        new_left = ""
-        new_right = right_side
-        full_string = ""
-    while whitespace_left > 0:
-        new_left.add(" ")
-        whitespace_left.dec(1)
-    new_left.add(left_side)
-    while whitespace_right > 0:
-        new_right.add(" ")
-        whitespace_right.dec(1)
-    full_string = new_left & centerpiece & new_right
-    echo full_string
 
-proc insert_div*(line="-",center="",side_length:uint8=(current_table_style.width div 2)) = 
-    var
-        one_bar = ""
-        i = side_length
-    while i > 0:
-        one_bar.add(line)
-        i.dec(1)
-    [one_bar,one_bar].echo_centered_on(center)
-    
+proc insert_div*(num_columns=1) =
+    let
+        divider = current_table_style.divider
+        border = current_table_style.border
+        table_width = current_table_style.width
+        pad_char = current_table_style.padding
+        line_char = current_table_style.line_char
+        left_corner = current_table_style.left_corner
+        right_corner = current_table_style.right_corner
+        intersection = current_table_style.intersection
+
+        div_width = divider.visibleLen()
+        border_width = border.visibleLen()
+        usable_width = table_width - (2 * border_width) -
+                       ((num_columns - 1) * div_width)
+
+        width_per_col = usable_width div num_columns
+        excess_width = usable_width mod num_columns
+        left_edge_pad = (max_line_width - table_width) div 2
+
+    # --- compute column widths (same as insert_row) ---
+    var colWidths = newSeq[int](num_columns)
+    for i in 0 ..< num_columns:
+        colWidths[i] = int(width_per_col)
+
+    var remaining = int(excess_width)
+    let mid = int(num_columns div 2)
+    var offset = 0
+    while remaining > 0:
+        let idx = mid + offset
+        if idx >= 0 and idx < int(num_columns):
+            colWidths[idx].inc
+            remaining.dec
+        if offset <= 0:
+            offset = -offset + 1
+        else:
+            offset = -offset
+
+    # --- build divider line ---
+    var final_string = ""
+
+    while final_string.visibleLen() < left_edge_pad:
+        final_string.add(pad_char)
+
+    final_string.add(left_corner)
+
+    for i in 0 ..< num_columns:
+        for _ in 0 ..< colWidths[i]:
+            final_string.add(line_char)
+
+        if i < num_columns - 1:
+            final_string.add(intersection)
+        else:
+            final_string.add(right_corner)
+
+    while final_string.visibleLen() < max_line_width:
+        final_string.add(pad_char)
+
+    echo final_string
 
 proc insert_row(mystrings: varargs[string]) =
     let
@@ -126,9 +162,9 @@ proc insert_row(mystrings: varargs[string]) =
         border = current_table_style.border
         table_width = current_table_style.width
         pad_char = current_table_style.padding
-        num_columns = uint8(mystrings.len)
-        div_width = uint8(divider.visibleLen())
-        border_width = uint8(border.visibleLen())
+        num_columns = mystrings.len
+        div_width = divider.visibleLen()
+        border_width = border.visibleLen()
         usable_width = table_width - (2 * border_width) - ((num_columns - 1) * div_width)
         width_per_col = usable_width div num_columns
         excess_width = usable_width mod num_columns
@@ -139,7 +175,7 @@ proc insert_row(mystrings: varargs[string]) =
 
     # per-column widths ---
     var colWidths = newSeq[int](num_columns)
-    for i in 0'u8 ..< num_columns:
+    for i in 0 ..< num_columns:
         colWidths[i] = int(width_per_col)
 
     # distribute remainder to middle columns
@@ -157,7 +193,7 @@ proc insert_row(mystrings: varargs[string]) =
             offset = -offset
 
     # pad left side
-    while uint8(final_string.visibleLen()) < left_edge_pad:
+    while final_string.visibleLen() < left_edge_pad:
         final_string.add(pad_char)
     final_string.add(border)
 
@@ -255,20 +291,20 @@ proc list_yaku_names*(game: RuleSet) =
 proc list_current_rules*(game: RuleSet) =
     let decksize = 48 - game.cards_stripped.len
     current_table_style = defaultStyle
-    insert_div()
+    insert_div(2)
     insert_row("Current ruleset:",game.name)
-    insert_div()
+    insert_div(4)
     insert_row("Players:", $game.num_players, "Deck size:", $decksize & " cards")
-    insert_div()
+    insert_div(4)
     insert_row("Hand size:",$game.num_cards_hand & " cards","Field size:", $game.num_cards_field & " cards")
-    insert_div()
+    insert_div(4)
     insert_row("Point values:", $game.point_values)
-    insert_div()
+    insert_div(2)
     if game.wild_card_rules != "":
         insert_row("Wild card rules:",game.wild_card_rules)
     if game.wild_card.full_name != "":
         insert_row("Wild card:",          game.wild_card.full_name)
-    insert_div()
+    insert_div(2)
 
     game.list_yaku_names
     echo ""

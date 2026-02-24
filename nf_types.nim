@@ -80,4 +80,8 @@ type
         divider*: string
         border*: string
         padding*: char
-        width*: uint8
+        line_char*: string
+        left_corner*: string
+        right_corner*: string
+        intersection*: string
+        width*: int
