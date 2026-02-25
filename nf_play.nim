@@ -82,6 +82,7 @@ proc deal*(game: RuleSet) =
             p8.hand.add(current_deck.pop())
 
 proc show_zones_debug*() =
+    current_table_style = narrowStyle
     insert_div()
     echo "field:"
     for card in field:

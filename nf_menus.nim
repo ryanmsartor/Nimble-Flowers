@@ -13,20 +13,20 @@ const
     negative_answers* = @["no","No","NO","n","N"]
     max_line_width* = 60
     
-let ansiRegex = re"\x1b\[[0-9;]*m"
+let ansiRegex* = re"\x1b\[[0-9;]*m"
 
 const
-    defaultStyle = TableStyle(
+    defaultStyle* = TableStyle(
         divider: "|",
         border: "|",
         padding: ' ',
         line_char: "-",
-        left_corner: ".",
-        right_corner: ".",
+        left_corner: "|",
+        right_corner: "|",
         intersection: "+",
         width: 54
     ) 
-    narrowStyle = TableStyle(
+    narrowStyle* = TableStyle(
         divider: "",
         border: "|",
         padding: ' ',
@@ -38,7 +38,7 @@ const
     )
 
 # this global should be explicitly set every time you make a new table
-var current_table_style = defaultStyle
+var current_table_style* = defaultStyle
 
 #   #################   #
 ##### UTILITY PROCS #####
@@ -96,17 +96,18 @@ proc echo_centered*(str: string) =
         echo_centered_multi_lines(stripped)
 
 
-proc insert_div*(num_columns=1) =
+proc insert_div*(
+    num_columns=1,
+    left_corner = current_table_style.left_corner,
+    intersection = current_table_style.intersection,
+    right_corner = current_table_style.right_corner
+) =
     let
         divider = current_table_style.divider
         border = current_table_style.border
         table_width = current_table_style.width
         pad_char = current_table_style.padding
         line_char = current_table_style.line_char
-        left_corner = current_table_style.left_corner
-        right_corner = current_table_style.right_corner
-        intersection = current_table_style.intersection
-
         div_width = divider.visibleLen()
         border_width = border.visibleLen()
         usable_width = table_width - (2 * border_width) -
@@ -280,18 +281,16 @@ proc list_yaku_names*(game: RuleSet) =
     if game.yaku_set == blank:
         return
     else:
-        #echo_indented(r"\_Yaku:_/", 8)
         insert_row(r"\_Yaku:_/")
         for yaku, score in game.yaku_set:
-            #echo_indented(yaku.name & " : " & $score, 5)
             insert_row(yaku.name, $score & " pts")
-    insert_div()
+    insert_div(1,"'","-","'")
     
 
 proc list_current_rules*(game: RuleSet) =
     let decksize = 48 - game.cards_stripped.len
     current_table_style = defaultStyle
-    insert_div(2)
+    insert_div(2,".","-",".")
     insert_row("Current ruleset:",game.name)
     insert_div(4)
     insert_row("Players:", $game.num_players, "Deck size:", $decksize & " cards")
