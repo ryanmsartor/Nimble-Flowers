@@ -157,7 +157,7 @@ proc insert_div*(
 
     echo final_string
 
-proc insert_row(mystrings: varargs[string]) =
+proc insert_row*(mystrings: varargs[string]) =
     let
         divider = current_table_style.divider
         border = current_table_style.border

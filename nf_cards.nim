@@ -6,6 +6,7 @@ import nf_types
 const
     pine_bright* = Card(
         full_name: "Pine with Crane",
+        short_name: "Pine w/ Crane",
         alt_names: @[""],
         standard_suit: 1,
         mushi_suit: 1, 
@@ -16,6 +17,7 @@ const
     )
     pine_ribbon* = Card(
         full_name: "Pine with Poetry Ribbon",
+        short_name: "Pine w/ P.Ribbon",
         alt_names: @[""],
         standard_suit: 1,
         mushi_suit: 1,
@@ -26,6 +28,7 @@ const
     )
     pine_chaff_1* = Card(
         full_name: "Pine chaff",
+        short_name: "Pine chaff",
         alt_names: @[""],
         standard_suit: 1,
         mushi_suit: 1,
@@ -35,6 +38,7 @@ const
     )
     pine_chaff_2* = Card(
         full_name: "Pine chaff",
+        short_name: "Pine chaff",
         alt_names: @[""],
         standard_suit: 1,
         mushi_suit: 1,
@@ -45,6 +49,7 @@ const
 
     plum_animal* = Card(
         full_name: "Plum Blossoms with Bush Warbler",
+        short_name: "Plum w/ Warbler",
         alt_names: @[""],
         standard_suit: 2,
         mushi_suit: 2,
@@ -55,6 +60,7 @@ const
     )
     plum_ribbon* = Card(
         full_name: "Plum Blossoms with Poetry Ribbon",
+        short_name: "Plum w/ P.Ribbon",
         alt_names: @[""],
         standard_suit: 2,
         mushi_suit: 2,
@@ -65,6 +71,7 @@ const
     )
     plum_chaff_1* = Card(
         full_name: "Plum Blossom chaff",
+        short_name: "Plum chaff",
         alt_names: @[""],
         standard_suit: 2,
         mushi_suit: 2,
@@ -74,6 +81,7 @@ const
     )
     plum_chaff_2* = Card(
         full_name: "Plum Blossom chaff",
+        short_name: "Plum chaff",
         alt_names: @[""],
         standard_suit: 2,
         mushi_suit: 2,
@@ -84,6 +92,7 @@ const
 
     cherry_bright* = Card(
         full_name: "Cherry Blossoms with Curtain",
+        short_name: "Cherry w/ Curtain",
         alt_names: @[""],
         standard_suit: 3,
         mushi_suit: 3, 
@@ -94,6 +103,7 @@ const
     )
     cherry_ribbon* = Card(
         full_name: "Cherry Blossoms with Poetry Ribbon",
+        short_name: "Cherry w/ P.Ribbon",
         alt_names: @[""],
         standard_suit: 3,
         mushi_suit: 3,
@@ -104,6 +114,7 @@ const
     )
     cherry_chaff_1* = Card(
         full_name: "Cherry Blossom chaff",
+        short_name: "Cherry chaff",
         alt_names: @[""],
         standard_suit: 3,
         mushi_suit: 3,
@@ -113,6 +124,7 @@ const
     )
     cherry_chaff_2* = Card(
         full_name: "Cherry Blossom chaff",
+        short_name: "Cherry chaff",
         alt_names: @[""],
         standard_suit: 3,
         mushi_suit: 3,
@@ -123,6 +135,7 @@ const
 
     wisteria_animal* = Card(
         full_name: "Wisteria with Cuckoo",
+        short_name: "Wisteria w/ Cuckoo",
         alt_names: @[""],
         standard_suit: 4,
         mushi_suit: 4,
@@ -133,6 +146,7 @@ const
     )
     wisteria_ribbon* = Card(
         full_name: "Wisteria with Ribbon",
+        short_name: "Wisteria w/ Ribbon",
         alt_names: @[""],
         standard_suit: 4,
         mushi_suit: 4,
@@ -143,6 +157,7 @@ const
     )
     wisteria_chaff_1* = Card(
         full_name: "Wisteria chaff",
+        short_name: "Wisteria chaff",
         alt_names: @[""],
         standard_suit: 4,
         mushi_suit: 4,
@@ -152,6 +167,7 @@ const
     )
     wisteria_chaff_2* = Card(
         full_name: "Wisteria chaff",
+        short_name: "Wisteria chaff",
         alt_names: @[""],
         standard_suit: 4,
         mushi_suit: 4,
@@ -162,6 +178,7 @@ const
 
     iris_animal* = Card(
         full_name: "Iris with 8-Plank Bridge",
+        short_name: "Iris w/ Bridge",
         alt_names: @[""],
         standard_suit: 5,
         mushi_suit: 5,
@@ -172,6 +189,7 @@ const
     )
     iris_ribbon* = Card(
         full_name: "Iris with Ribbon",
+        short_name: "Iris w/ Ribbon",
         alt_names: @[""],
         standard_suit: 5,
         mushi_suit: 5,
@@ -182,6 +200,7 @@ const
     )
     iris_chaff_1* = Card(
         full_name: "Iris chaff",
+        short_name: "Iris chaff",
         alt_names: @[""],
         standard_suit: 5,
         mushi_suit: 5,
@@ -191,6 +210,7 @@ const
     )
     iris_chaff_2* = Card(
         full_name: "Iris chaff",
+        short_name: "Iris chaff",
         alt_names: @[""],
         standard_suit: 5,
         mushi_suit: 5,
@@ -201,6 +221,7 @@ const
 
     peony_animal* = Card(
         full_name: "Peony with Butterflies",
+        short_name: "Peony w/ Butterflies",
         alt_names: @[""],
         standard_suit: 6,
         nagoya_suit: 11,
@@ -210,6 +231,7 @@ const
     )
     peony_ribbon* = Card(
         full_name: "Peony with Blue Ribbon",
+        short_name: "Peony w/ B.Ribbon",
         alt_names: @[""],
         standard_suit: 6,
         nagoya_suit: 11,
@@ -219,6 +241,7 @@ const
     )
     peony_chaff_1* = Card(
         full_name: "Peony chaff",
+        short_name: "Peony chaff",
         alt_names: @[""],
         standard_suit: 6,
         nagoya_suit: 11,
@@ -227,6 +250,7 @@ const
     )
     peony_chaff_2* = Card(
         full_name: "Peony chaff",
+        short_name: "Peony chaff",
         alt_names: @[""],
         standard_suit: 6,
         nagoya_suit: 11,
@@ -236,6 +260,7 @@ const
 
     clover_animal* = Card(
         full_name: "Bush Clover with Boar",
+        short_name: "Clover w/ Boar",
         alt_names: @[""],
         standard_suit: 7,
         nagoya_suit: 7,
@@ -245,6 +270,7 @@ const
     )
     clover_ribbon* = Card(
         full_name: "Bush Clover with Ribbon",
+        short_name: "Clover w/ Ribbon",
         alt_names: @[""],
         standard_suit: 7,
         nagoya_suit: 7,
@@ -254,6 +280,7 @@ const
     )
     clover_chaff_1* = Card(
         full_name: "Bush Clover chaff",
+        short_name: "Clover chaff",
         alt_names: @[""],
         standard_suit: 7,
         nagoya_suit: 7,
@@ -262,6 +289,7 @@ const
     )
     clover_chaff_2* = Card(
         full_name: "Bush Clover chaff",
+        short_name: "Clover chaff",
         alt_names: @[""],
         standard_suit: 7,
         nagoya_suit: 7,
@@ -271,6 +299,7 @@ const
 
     grass_bright* = Card(
         full_name: "Silvergrass with Full Moon",
+        short_name: "Hills w/ Moon",
         alt_names: @[""],
         standard_suit: 8,
         mushi_suit: 8, 
@@ -281,6 +310,7 @@ const
     )
     grass_animal* = Card(
         full_name: "Silvergrass with Geese",
+        short_name: "Hills w/ Geese",
         alt_names: @[""],
         standard_suit: 8,
         mushi_suit: 8,
@@ -291,6 +321,7 @@ const
     )
     grass_chaff_1* = Card(
         full_name: "Silvergrass chaff",
+        short_name: "Hills chaff",
         alt_names: @[""],
         standard_suit: 8,
         mushi_suit: 8,
@@ -300,6 +331,7 @@ const
     )
     grass_chaff_2* = Card(
         full_name: "Silvergrass chaff",
+        short_name: "Hills chaff",
         alt_names: @[""],
         standard_suit: 8,
         mushi_suit: 8,
@@ -310,6 +342,7 @@ const
 
     mum_animal* = Card(
         full_name: "Chrysanthemums with Sake Cup",
+        short_name: "Mums w/ Sake Cup",
         alt_names: @[""],
         standard_suit: 9,
         mushi_suit: 9,
@@ -320,6 +353,7 @@ const
     )
     mum_ribbon* = Card(
         full_name: "Chrysanthemums with Blue Ribbon",
+        short_name: "Mums w/ B.Ribbon",
         alt_names: @[""],
         standard_suit: 9,
         mushi_suit: 9,
@@ -330,6 +364,7 @@ const
     )
     mum_chaff_1* = Card(
         full_name: "Chrysanthemum chaff",
+        short_name: "Mums chaff",
         alt_names: @[""],
         standard_suit: 9,
         mushi_suit: 9,
@@ -339,6 +374,7 @@ const
     )
     mum_chaff_2* = Card(
         full_name: "Chrysanthemum chaff",
+        short_name: "Mums chaff",
         alt_names: @[""],
         standard_suit: 9,
         mushi_suit: 9,
@@ -349,6 +385,7 @@ const
 
     maple_animal* = Card(
         full_name: "Maple Tree with Deer",
+        short_name: "Maple w/ Deer",
         alt_names: @[""],
         standard_suit: 10,
         mushi_suit: 10,
@@ -359,6 +396,7 @@ const
     )
     maple_ribbon* = Card(
         full_name: "Maple Leaves with Blue Ribbon",
+        short_name: "Maple w/ B. Ribbon",
         alt_names: @[""],
         standard_suit: 10,
         mushi_suit: 10,
@@ -369,6 +407,7 @@ const
     )
     maple_chaff_1* = Card(
         full_name: "Maple chaff",
+        short_name: "Maple chaff",
         alt_names: @[""],
         standard_suit: 10,
         mushi_suit: 10,
@@ -378,6 +417,7 @@ const
     )
     maple_chaff_2* = Card(
         full_name: "Maple chaff",
+        short_name: "Maple chaff",
         alt_names: @[""],
         standard_suit: 10,
         mushi_suit: 10,
@@ -388,6 +428,7 @@ const
 
     willow_bright* = Card(
         full_name: "Willow with Calligrapher",
+        short_name: "Willow w/ Rain Man",
         alt_names: @[""],
         standard_suit: 11,
         mushi_suit: 6,
@@ -398,6 +439,7 @@ const
     )
     willow_animal* = Card(
         full_name: "Willow with Swallow",
+        short_name: "Willow w/ Swallow",
         alt_names: @[""],
         standard_suit: 11,
         mushi_suit: 6,
@@ -408,6 +450,7 @@ const
     )
     willow_ribbon* = Card(
         full_name: "Willow with Ribbon",
+        short_name: "Willow w/ Ribbon",
         alt_names: @[""],
         standard_suit: 11,
         mushi_suit: 6,
@@ -418,6 +461,7 @@ const
     )
     willow_chaff* = Card(
         full_name: "Willow with Lightning",
+        short_name: "Willow w/ Lightning",
         alt_names: @[""],
         standard_suit: 11,
         mushi_suit: 6,
@@ -428,6 +472,7 @@ const
 
     paulownia_bright* = Card(
         full_name: "Paulownia with Phoenix",
+        short_name: "Paulownia w/ Phoenix",
         alt_names: @[""],
         standard_suit: 12,
         mushi_suit: 7,
@@ -438,6 +483,7 @@ const
     )
     paulownia_chaff_1* = Card(
         full_name: "Paulownia with yellow chaff",
+        short_name: "Yellow Paulownia",
         alt_names: @[""],
         standard_suit: 12,
         mushi_suit: 7,
@@ -448,6 +494,7 @@ const
     )
     paulownia_chaff_2* = Card(
         full_name: "Paulownia chaff",
+        short_name: "Paulownia chaff",
         alt_names: @[""],
         standard_suit: 12,
         mushi_suit: 7,
@@ -457,6 +504,7 @@ const
     )
     paulownia_chaff_3* = Card(
         full_name: "Paulownia chaff",
+        short_name: "Paulownia chaff",
         alt_names: @[""],
         standard_suit: 12,
         mushi_suit: 7,

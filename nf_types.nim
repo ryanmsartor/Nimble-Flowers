@@ -12,6 +12,7 @@ type
     
     Card* = object
         full_name*: string
+        short_name*: string # 25 char at absolute max
         alt_names*: seq[string]
         standard_suit*: Suit
         mushi_suit*: Suit

@@ -3,7 +3,6 @@ import random
 import std/sequtils
 import nf_types
 import nf_cards
-import nf_rulesets
 import nf_menus
 
 randomize()
@@ -81,51 +80,56 @@ proc deal*(game: RuleSet) =
         for i in 1 .. game.num_cards_hand:
             p8.hand.add(current_deck.pop())
 
+
+proc display_zone_table*(zone = field) = 
+    let
+        handsize = zone.len()
+        num_doubles = handsize div 2
+        oddNumCards = (handsize mod 2 == 1)
+
+    current_table_style = defaultStyle # global
+    insert_div()
+
+    for i in 0 .. (num_doubles - 1):
+        insert_row(zone[(2*i)].short_name, zone[(2*i) + 1].short_name)
+    if oddNumCards:
+        insert_row(zone[^1].short_name,"")
+        
+    insert_div()
+
 proc show_zones_debug*() =
-    current_table_style = narrowStyle
-    insert_div()
-    echo "field:"
-    for card in field:
-        echo card.full_name
-
-    insert_div()
-    echo "p1 hand:"
-    for card in p1.hand:
-        echo card.full_name
-
-    insert_div()
-    echo "p2 hand:"
-    for card in p2.hand:
-        echo card.full_name
-
-    insert_div()
-    echo "p3 hand:"
-    for card in p3.hand:
-        echo card.full_name
-
-    insert_div()
-    echo "p4 hand:"
-    for card in p4.hand:
-        echo card.full_name
-
-    insert_div()
-    echo "p5 hand:"
-    for card in p5.hand:
-        echo card.full_name
-
-    insert_div()
-    echo "p6 hand:"
-    for card in p6.hand:
-        echo card.full_name
-
-    insert_div()
-    echo "p7 hand:"
-    for card in p7.hand:
-        echo card.full_name
-
-    insert_div()
-    echo "p8 hand:"
-    for card in p8.hand:
-        echo card.full_name
-
-    insert_div()
+    echo_centered r"  ______  "
+    echo_centered r"/`field:`\"
+    display_zone_table(field)
+    echo ""
+    echo_centered r"  ________ "
+    echo_centered r"/`p1 hand:`\"
+    display_zone_table(p1.hand)
+    echo ""
+    echo_centered r"  ________ "
+    echo_centered r"/`p2 hand:`\"
+    display_zone_table(p2.hand)
+    echo ""
+    echo_centered r"  ________ "
+    echo_centered r"/`p3 hand:`\"
+    display_zone_table(p3.hand)
+    echo ""
+    echo_centered r"  ________ "
+    echo_centered r"/`p4 hand:`\"
+    display_zone_table(p4.hand)
+    echo ""
+    echo_centered r"  ________ "
+    echo_centered r"/`p5 hand:`\"
+    display_zone_table(p5.hand)
+    echo ""
+    echo_centered r"  ________ "
+    echo_centered r"/`p6 hand:`\"
+    display_zone_table(p6.hand)
+    echo ""
+    echo_centered r"  ________ "
+    echo_centered r"/`p7 hand:`\"
+    display_zone_table(p7.hand)
+    echo ""
+    echo_centered r"  ________ "
+    echo_centered r"/`p8 hand:`\"
+    display_zone_table(p8.hand)
