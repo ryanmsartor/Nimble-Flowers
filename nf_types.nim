@@ -20,6 +20,16 @@ type
         hachihachi_value*: CardPointValue
         hachi_value*: CardPointValue
         ropyakken_value*: CardPointValue
+        art0*: string
+        art1*: string
+        art2*: string
+        art3*: string
+        art4*: string
+        art5*: string
+        art6*: string
+        art7*: string
+        art8*: string
+        art9*: string
 
     Zone* = seq[Card]
 
