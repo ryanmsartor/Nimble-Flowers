@@ -1,5 +1,5 @@
 
-import nf_types
+import nf_common
 import nf_cards
 import nf_yaku
 

@@ -1,6 +1,6 @@
 # contains yaku and teyaku constants
 
-import nf_types
+import nf_common
 import nf_cards
 import std/tables
 

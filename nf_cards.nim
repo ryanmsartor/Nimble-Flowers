@@ -1,11 +1,11 @@
 # imported by nimble_flowers.nim
 # contains all hanafuda cards as constants
 
-import nf_types
+import nf_common
 
 const
     edge* = " |=========| "
-    blank* = " |\033[1m.........\033[0m| "
+    blank* = " |\e[1m.........\e[0m| "
 
 const
     pine_bright* = Card(
