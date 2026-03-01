@@ -10,16 +10,16 @@ randomize()
 # randomize(my_seed)
 
 var
-    current_deck: Zone
-    field: Zone
-    p1 = Player(name:"you", play_style:"human")
-    p2 = Player(name:"Al")
-    p3 = Player(name:"Bri")
-    p4 = Player(name:"Curt")
-    p5 = Player(name:"David")
-    p6 = Player(name:"Evelyn")
-    p7 = Player(name:"Francis")
-    p8 = Player(name:"Giovanni")
+    current_deck*: Zone
+    field*: Zone
+    p1* = Player(name:"you", play_style:"human")
+    p2* = Player(name:"Al")
+    p3* = Player(name:"Bri")
+    p4* = Player(name:"Curt")
+    p5* = Player(name:"David")
+    p6* = Player(name:"Evelyn")
+    p7* = Player(name:"Francis")
+    p8* = Player(name:"Giovanni")
 
 proc reset_zones*() =
     current_deck = full_deck
@@ -80,22 +80,56 @@ proc deal*(game: RuleSet) =
         for i in 1 .. game.num_cards_hand:
             p8.hand.add(current_deck.pop())
 
+proc get_matches*(mycard: Card, zone_to_check: Zone, suit_system="standard", hachi_matching=false): seq[Card] =
+    var mysuit, suit: Suit
+    for card in zone_to_check:
+        if hachi_matching:
+            case suit_system:
+            of "standard":
+                mysuit = mycard.standard_suit
+                suit = card.standard_suit
+            of "mushi": 
+                mysuit = mycard.mushi_suit
+                suit = card.mushi_suit
+            else:
+                mysuit = mycard.nagoya_suit
+                suit = card.nagoya_suit
+            if (mysuit + suit) mod 5 == 3:
+                result.add(card)
+        else:
+            if mycard.standard_suit == card.standard_suit:
+                result.add(card)
 
-proc display_zone_table*(zone = field) = 
-    let
-        handsize = zone.len()
-        num_doubles = handsize div 2
-        oddNumCards = (handsize mod 2 == 1)
+proc take_turn*(player: Player, game: RuleSet) =
+    var 
+        selected_index = ""
+        selected_card: Card
 
-    current_table_style = defaultStyle # global
-    insert_div()
 
-    for i in 0 .. (num_doubles - 1):
-        insert_row(zone[(2*i)].short_name, zone[(2*i) + 1].short_name)
-    if oddNumCards:
-        insert_row(zone[^1].short_name,"")
+    case player.play_style:
+    of "human":
+        let options = generate_string_range(1,player.hand.len)
+
+        while selected_index notin options:
+            echo ""
+            echo_centered: "The field:"
+            display_zone_table(field)
+            echo ""
+            echo_centered: "Your hand:"
+            display_zone_table(player.hand)
+            echo ""
+
+            selected_index = prompt("Enter the number of the card you'd like to play from your hand. > ")
+            if selected_index in quit_commands: quit_game()
         
-    insert_div()
+
+    else:
+        discard
+
+
+
+
+
 
 proc show_zones_debug*() =
     echo_centered r"  ______  "

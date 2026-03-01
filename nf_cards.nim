@@ -1,7 +1,7 @@
 # imported by nimble_flowers.nim
 # contains all hanafuda cards as constants
 
-import nf_types, nf_ansi
+import nf_types
 
 const
     edge* = " |=========| "

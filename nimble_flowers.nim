@@ -13,6 +13,8 @@ var
 ##### MAIN #####
 #   ########   #
 
+init_screen()
+
 print_title_card()
 game_mode = select_game_mode()
 echo_centered(game_mode.name)
@@ -23,4 +25,7 @@ while not satisfied:
     elif answer in negative_answers or answer == "":
         satisfied = true
 deal(game_mode)
+take_turn(p1, game_mode)
 show_zones_debug()
+
+deinit_screen()

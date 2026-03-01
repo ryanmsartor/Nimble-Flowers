@@ -12,8 +12,9 @@ const
     affirmative_answers* = @["yes","Yes","YES","y","Y:"]
     negative_answers* = @["no","No","NO","n","N"]
     max_line_width* = 60
+    max_screen_height* = 40
     
-let ansiRegex* = re"\x1b\[[0-9;]*m"
+let ansiRegex* = re"\e\[[0-9;]*m"
 
 const
     defaultStyle* = TableStyle(
@@ -43,6 +44,16 @@ var current_table_style* = defaultStyle
 #   #################   #
 ##### UTILITY PROCS #####
 #   #################   #
+
+proc init_screen*() =
+    stdout.write(enter_alt_screen)
+    stdout.write(hide_cursor)
+    stdout.write(reset_screen)
+
+proc deinit_screen*() =
+    stdout.write(reset_screen)
+    stdout.write(show_cursor)
+    stdout.write(exit_alt_screen)
 
 proc visibleLen*(s: string): int =
     result = s.replace(ansiRegex, "").len
@@ -233,6 +244,7 @@ proc quit_game*() =
     echo ""
     echo_centered "~Goodbye!~"
     echo ""
+    deinit_screen()
     quit(0)
 
 #   ################   #
@@ -349,3 +361,27 @@ proc offer_to_customize_rules*(game: RuleSet): RuleSet =
     result.list_current_rules
     echo_centered "Let's begin!"
     return result
+
+proc display_zone_table*(zone: Zone) = 
+    let
+        handsize = zone.len()
+        num_doubles = handsize div 2
+        oddNumCards = (handsize mod 2 == 1)
+
+    current_table_style = defaultStyle # global
+    insert_div()
+
+    for i in 0 .. (num_doubles - 1):
+        let
+            c1 = zone[(2*i)].short_name
+            c2 = zone[(2*i) + 1].short_name
+            i1 = $((2*i)+1) & ") "
+            i2 = $((2*i)+2) & ") "
+        insert_row(i1 & c1, i2 & c2)
+    if oddNumCards:
+        let
+            c1 = zone[^1].short_name
+            i1 = $zone.len & ") "
+        insert_row(i1 & c1,"")
+        
+    insert_div()

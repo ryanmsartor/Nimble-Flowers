@@ -96,3 +96,52 @@ type
         right_corner*: string
         intersection*: string
         width*: int
+
+
+##### ANSI ESCAPE SEQUENCES #####
+
+# these are used in conjunction with stdout.write() and echo()
+# to control how the terminal displays stuff.
+
+const
+    text_bold* = "\e[1m"
+    text_reset* = "\e[0m"
+
+    fg_reset* = "\e[39m"
+    bg_reset* = "\e[49m"
+    fg_faded* = "\e[38;2;5;5;5m"
+    bg_faded* = "\e[48;2;5;5;5m"
+
+    fg_pine       * = "\e[38;2;0;153;77m"
+    fg_plum       * = "\e[38;2;255;30;103m"
+    fg_cherry     * = "\e[38;2;255;180;182m"
+    fg_wisteria   * = "\e[38;2;138;57;145m"
+    fg_iris       * = "\e[38;2;60;4;223m"
+    fg_peony      * = "\e[38;2;238;130;220m"
+    fg_clover     * = "\e[38;2;183;15;86m"
+    fg_grass      * = "\e[38;2;196;227;199m"
+    fg_mum        * = "\e[38;2;245;184;22m"
+    fg_maple      * = "\e[38;2;211;26;5m"
+    fg_willow     * = "\e[38;2;101;196;6m"
+    fg_paulownia  * = "\e[38;2;186;163;222m"
+
+    bg_pine       * = "\e[48;2;0;153;77m"
+    bg_plum       * = "\e[48;2;255;30;103m"
+    bg_cherry     * = "\e[48;2;255;180;182m"
+    bg_wisteria   * = "\e[48;2;138;57;145m"
+    bg_iris       * = "\e[48;2;60;4;223m"
+    bg_peony      * = "\e[48;2;238;130;220m"
+    bg_clover     * = "\e[48;2;183;15;86m"
+    bg_grass      * = "\e[48;2;196;227;199m"
+    bg_mum        * = "\e[48;2;245;184;22m"
+    bg_maple      * = "\e[48;2;211;26;5m"
+    bg_willow     * = "\e[48;2;101;196;6m"
+    bg_paulownia  * = "\e[38;2;186;163;222m"
+
+    reset_screen* = "\e[2J\e[H"
+
+    enter_alt_screen* = "\e[?1049h"
+    exit_alt_screen* = "\e[?1049l"
+
+    hide_cursor* = "\e[?25l"
+    show_cursor* = "\e[?25h"
