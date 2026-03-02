@@ -27,6 +27,7 @@ type
         hachi_value*: CardPointValue
         ropyakken_value*: CardPointValue
         sudaoshi_value*: CardPointValue
+        sakura_value*: CardPointValue
         art0*: string
         art1*: string
         art2*: string

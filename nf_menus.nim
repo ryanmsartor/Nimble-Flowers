@@ -138,7 +138,7 @@ proc ask_which_point_set(game: RuleSet): string =
 
         echo_centered "1) Standard-88 ( 1,  5, 10, 20)"
         echo_centered "2) Standard-80 ( 0,  5, 10, 20)"
-        echo_centered "3) Hawaiian    ( 1, 10,  5, 20)"
+        echo_centered "3) Hawaiian    ( 0, 10,  5, 20)"
         echo_centered "4) Ropyakken   ( 0, 10, 10, 50)"
         echo_centered "5) Hachi       (10,  1, 10, 10)"
         echo_centered "6) Sudaoshi    (10,  1,  5,  5)"
@@ -149,7 +149,7 @@ proc ask_which_point_set(game: RuleSet): string =
     of quit_commands: quit_game()
     of "1": return "1, 5, 10, 20"
     of "2": return "0, 5, 10, 20"
-    of "3": return "1, 10, 5, 20"
+    of "3": return "0, 10, 5, 20"
     of "4": return "0, 10, 10, 50"
     of "5": return "10, 1, 10, 10"
     of "6": return "10, 1, 5, 5s"
