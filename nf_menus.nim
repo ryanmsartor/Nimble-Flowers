@@ -30,22 +30,17 @@ proc present_game_modes() =
 
 proc select_game_mode*(): RuleSet =
     var user_selection = ""
-    while user_selection notin @["1","2","3","4"] & quit_commands:
+    while user_selection notin generate_string_range(1,4) & quit_commands:
         clear_screen()
         print_title_card()
         present_game_modes()
         user_selection = prompt(" > ")
     case user_selection:
-        of quit_commands:
-            quit_game()
-        of "1":
-            return bakappana
-        of "2":
-            return ropyakken
-        of "3":
-            return mushi
-        of "4":
-            return hachi
+        of quit_commands: quit_game()
+        of "1": return bakappana
+        of "2": return ropyakken
+        of "3": return mushi
+        of "4": return hachi
 
 
 

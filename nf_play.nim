@@ -19,6 +19,10 @@ var
     p6* = Player(name:"Evelyn")
     p7* = Player(name:"Francis")
     p8* = Player(name:"Giovanni")
+    current_players: seq[Player]
+
+
+##### START OF ROUND: THE DEAL #####
 
 proc reset_zones*() =
     current_deck = full_deck
@@ -43,8 +47,20 @@ proc reset_zones*() =
     p8.captured.setLen(0)
 
 
+# used for side effects only, no return
+proc gather_players(game: RuleSet): seq[Player] =
+    result = @[p1, p2]
+    if game.num_players >= 3: result.add(p3)
+    if game.num_players >= 4: result.add(p4)
+    if game.num_players >= 5: result.add(p5)
+    if game.num_players >= 6: result.add(p6)
+    if game.num_players >= 7: result.add(p7)
+    if game.num_players >= 8: result.add(p8)
+
 proc deal*(game: RuleSet) =
     reset_zones() # ensure fresh start
+    current_players = gather_players(game)
+
     # strip deck to e.g. 40 cards for mushi if appropriate
     current_deck = full_deck.filterIt(it notin game.cards_stripped)
     shuffle(current_deck)
@@ -52,32 +68,16 @@ proc deal*(game: RuleSet) =
     if game.num_cards_field > 0:
         for i in 1 .. game.num_cards_field:
             field.add(current_deck.pop())
-
-    # p1 and p2 will always get cards
-    for i in 1 .. game.num_cards_hand:
-        p1.hand.add(current_deck.pop())
-    for i in 1 .. game.num_cards_hand:
-        p2.hand.add(current_deck.pop())
     
-    # p3 thru p8 only get cards if dealt in
-    if game.num_players >= 3:
+    for player in current_players:
         for i in 1 .. game.num_cards_hand:
-            p3.hand.add(current_deck.pop())
-    if game.num_players >= 4:
-        for i in 1 .. game.num_cards_hand:
-            p4.hand.add(current_deck.pop())
-    if game.num_players >= 5:
-        for i in 1 .. game.num_cards_hand:
-            p5.hand.add(current_deck.pop())
-    if game.num_players >= 6:
-        for i in 1 .. game.num_cards_hand:
-            p6.hand.add(current_deck.pop())
-    if game.num_players >= 7:
-        for i in 1 .. game.num_cards_hand:
-            p7.hand.add(current_deck.pop())
-    if game.num_players >= 8:
-        for i in 1 .. game.num_cards_hand:
-            p8.hand.add(current_deck.pop())
+            player.hand.add(current_deck.pop())
+
+
+
+
+
+
 
 proc get_matches*(mycard: Card, zone_to_check: Zone, suit_system="standard", hachi_matching=false): seq[Card] =
     var mysuit, suit: Suit

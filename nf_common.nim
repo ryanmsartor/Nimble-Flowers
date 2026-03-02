@@ -41,7 +41,7 @@ type
 
     Zone* = seq[Card]
 
-    Player* = object
+    Player* = ref object
         name*: string
         hand*: Zone
         captured*: Zone
