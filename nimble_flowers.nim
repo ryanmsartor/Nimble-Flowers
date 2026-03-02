@@ -4,8 +4,7 @@
 
 import nf_common, nf_menus, nf_play
 
-var 
-    game_mode: RuleSet
+var game_mode: RuleSet
 
 #   ########   #
 ##### MAIN #####
@@ -13,16 +12,33 @@ var
 
 init_screen()
 
-game_mode = select_game_mode() # main menu
+while true:
+    case program_state:
 
-clear_screen()
-echo ""
-echo_centered(game_mode.name)
-echo ""
-game_mode = game_mode.offer_to_customize_rules()
+    of "main menu":
+        game_mode = select_game_mode()
+        program_state = "pre-game menu"
 
-deal(game_mode)
-take_turn(p1, game_mode)
-show_zones_debug()
+    of "pre-game menu":
+        game_mode.pre_game_config()
+
+    of "customize rules":
+        game_mode = game_mode.customize_rules()
+
+    # of "customize yaku": 
+
+    of "play":
+        deal(game_mode)
+        take_turn(p1, game_mode)
+        show_zones_debug()
+
+    # of "view rules":
+
+    # of "view yaku":
+
+    # of "view captured":
+
+    else:
+        quit_game()
 
 deinit_screen()

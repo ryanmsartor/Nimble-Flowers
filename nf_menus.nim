@@ -6,13 +6,15 @@ import nf_common
 import nf_rulesets
 
 
-proc print_title_card*() =
+##### MAIN MENU #####
+
+proc print_title_card() =
     echo "\n"
     echo_centered "~~ Nimble Flowers ~~"
     echo_centered "(c) RMS 2026"
     echo ""
 
-proc present_game_modes*() =
+proc present_game_modes() =
     current_table_style = narrowStyle
     insert_div()
     insert_row("Choose a game mode by typing its number.")
@@ -32,7 +34,7 @@ proc select_game_mode*(): RuleSet =
         clear_screen()
         print_title_card()
         present_game_modes()
-        user_selection = prompt("> ")
+        user_selection = prompt(" > ")
     case user_selection:
         of quit_commands:
             quit_game()
@@ -45,7 +47,53 @@ proc select_game_mode*(): RuleSet =
         of "4":
             return hachi
 
-proc list_yaku_names*(game: RuleSet) =
+
+
+##### PRE-GAME CONFIG MENU #####
+
+proc pre_game_config*(game: RuleSet) =
+    var user_selection = ""
+    let options = generate_string_range(1,4)
+    current_table_style = narrowStyle
+    current_table_style.width = 36
+
+    while user_selection notin options & quit_commands:
+        clear_screen()
+        echo ""
+        echo ""
+        echo_centered("~~ " & game.name & " ~~")
+        echo ""
+
+        insert_div()
+        insert_row("1) Begin game!")
+        insert_row("2) View/Edit rules")
+        insert_row("3) View/Edit yaku")
+        insert_row("4) Return to main menu")
+        insert_div()
+        echo ""
+        user_selection = prompt(" > ")
+    case user_selection:
+    of quit_commands:
+        quit_game()
+    of "1":
+        program_state = "play"
+    of "2":
+        program_state = "customize rules"
+    of "3":
+        program_State = "customize yaku"
+    of "4":
+        program_state = "main_menu"
+
+
+##### CUSTOMIZE RULES MENU #####
+
+
+
+
+
+
+
+proc list_yaku*(game: RuleSet) =
     const blank = initOrderedTable[Dekiyaku,int]()
     if game.yaku_set == blank:
         return
@@ -54,9 +102,8 @@ proc list_yaku_names*(game: RuleSet) =
         for yaku, score in game.yaku_set:
             insert_row(yaku.name, $score & " pts")
     insert_div(1,"'","-","'")
-    
 
-proc list_current_rules*(game: RuleSet) =
+proc list_rules*(game: RuleSet) =
     let decksize = 48 - game.cards_stripped.len
     current_table_style = defaultStyle
     insert_div(2,".","-",".")
@@ -68,13 +115,10 @@ proc list_current_rules*(game: RuleSet) =
     insert_div(4)
     insert_row("Point values:", $game.point_values)
     insert_div(2)
-    if game.wild_card_rules != "":
+    if game.wild_card_rules != "" and game.wild_card.full_name != "":
         insert_row("Wild card rules:",game.wild_card_rules)
-    if game.wild_card.full_name != "":
-        insert_row("Wild card:",          game.wild_card.full_name)
-    insert_div(2)
-
-    game.list_yaku_names
+        insert_row("Wild card:",game.wild_card.full_name)
+        insert_div(2)
     echo ""
 
 proc let_user_specify_num(rule_name: string, min: int, max: int): string =
@@ -91,14 +135,16 @@ proc let_user_specify_num(rule_name: string, min: int, max: int): string =
     return user_selection
 
 
-proc offer_to_customize_rules*(game: RuleSet): RuleSet =
-    var user_selection = "";
+proc customize_rules*(game: RuleSet): RuleSet =
+    var user_selection = ""
     while user_selection notin @["1","2"] & quit_commands:
-        game.list_current_rules
+        clear_screen()
+        echo ""
+        game.list_rules
         echo_indented "1) Keep current settings"
         echo_indented "2) Customize settings"
         echo ""
-        user_selection = prompt("> ")
+        user_selection = prompt(" > ")
     case user_selection:
         of quit_commands:
             quit_game()
@@ -115,30 +161,7 @@ proc offer_to_customize_rules*(game: RuleSet): RuleSet =
             let max_cards_field = decksize - (2 * result.num_players * result.num_cards_hand)
             result.num_cards_field = let_user_specify_num("cards on the field",0,max_cards_field).parseInt()
 
-    result.list_current_rules
-    echo_centered "Let's begin!"
+    result.list_rules
     return result
 
-proc display_zone_table*(zone: Zone) = 
-    let
-        handsize = zone.len()
-        num_doubles = handsize div 2
-        oddNumCards = (handsize mod 2 == 1)
 
-    current_table_style = defaultStyle # global
-    insert_div()
-
-    for i in 0 .. (num_doubles - 1):
-        let
-            c1 = zone[(2*i)].short_name
-            c2 = zone[(2*i) + 1].short_name
-            i1 = $((2*i)+1) & ") "
-            i2 = $((2*i)+2) & ") "
-        insert_row(i1 & c1, i2 & c2)
-    if oddNumCards:
-        let
-            c1 = zone[^1].short_name
-            i1 = $zone.len & ") "
-        insert_row(i1 & c1,"")
-        
-    insert_div()

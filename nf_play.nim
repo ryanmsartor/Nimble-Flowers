@@ -100,6 +100,33 @@ proc get_matches*(mycard: Card, zone_to_check: Zone, suit_system="standard", hac
             if mycard.standard_suit == card.standard_suit:
                 result.add(card)
 
+
+
+
+proc display_zone_table*(zone: Zone) = 
+    let
+        handsize = zone.len()
+        num_doubles = handsize div 2
+        oddNumCards = (handsize mod 2 == 1)
+
+    current_table_style = defaultStyle # global
+    insert_div()
+
+    for i in 0 .. (num_doubles - 1):
+        let
+            c1 = zone[(2*i)].short_name
+            c2 = zone[(2*i) + 1].short_name
+            i1 = $((2*i)+1) & ") "
+            i2 = $((2*i)+2) & ") "
+        insert_row(i1 & c1, i2 & c2)
+    if oddNumCards:
+        let
+            c1 = zone[^1].short_name
+            i1 = $zone.len & ") "
+        insert_row(i1 & c1,"")
+        
+    insert_div()
+
 proc take_turn*(player: Player, game: RuleSet) =
     var 
         selected_index = ""

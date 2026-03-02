@@ -188,6 +188,9 @@ proc clear_screen*() =
 
 ##### GAME FLOW CONTROL #####
 
+# this global drives which menu or game screen to go to.
+var program_state* = "main menu"
+
 proc prompt*(text: string): string =
     stdout.write(text)
     stdout.flushFile()
@@ -230,7 +233,7 @@ const
 # this global should be explicitly set every time you make a new table
 var current_table_style* = defaultStyle
 
-
+# use this instead of string.len() to ignore control characters
 proc visibleLen*(s: string): int =
     result = s.replace(ansiRegex, "").len
 
