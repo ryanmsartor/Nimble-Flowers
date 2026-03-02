@@ -4,7 +4,7 @@ import std/strutils
 import std/tables
 import nf_common
 import nf_rulesets
-
+import nf_yaku
 
 ##### MAIN MENU #####
 
@@ -143,8 +143,8 @@ proc ask_which_point_set(game: RuleSet): string =
         echo_centered "5) Hachi       (10,  1, 10, 10)"
         echo_centered "6) Sudaoshi    (10,  1,  5,  5)"
         echo ""
-
         user_selection = prompt("Which point value system? > ")
+
     case user_selection:
     of quit_commands: quit_game()
     of "1": return "1, 5, 10, 20"
@@ -178,7 +178,7 @@ proc customize_rules*(game: RuleSet): RuleSet =
 
         result.num_players = ask_how_many("players",2,8,result).parseInt()
 
-        let decksize = 48 - game.cards_stripped.len
+        let decksize = 48 + game.cards_added.len - game.cards_stripped.len 
         let max_cards_hand = (decksize div 2) div result.num_players
         result.num_cards_hand = ask_how_many("cards in the hand",1,max_cards_hand,result).parseInt()
 
@@ -194,12 +194,68 @@ proc customize_rules*(game: RuleSet): RuleSet =
 
 ##### CUSTOMIZE YAKU MENU #####
 
-proc list_yaku*(game: RuleSet) =
-    const blank = initOrderedTable[Dekiyaku,int]()
-    if game.yaku_set == blank:
-        return
+proc list_yaku(game: RuleSet) =
+    if game.yaku_set == yaku_table_blank:
+        current_table_style = narrowStyle
+        insert_div()
+        insert_row("No yaku")
+        insert_div()
     else:
+        current_table_style = defaultStyle
+        insert_div()
         insert_row(r"\_Yaku:_/")
         for yaku, score in game.yaku_set:
             insert_row(yaku.name, $score & " pts")
-    
+        insert_div()
+
+
+proc ask_which_yaku_set(game: RuleSet): OrderedTable[Dekiyaku, int] =
+    var user_selection = ""
+    let options = generate_string_range(1,6)
+
+    while user_selection notin options & quit_commands:
+        clear_screen()
+        echo ""
+        game.list_yaku
+
+        echo_centered "1)                 No yaku"
+        echo_centered "2)          Mushi yaku set"
+        echo_centered "3)   Ropyakken yaku (full)"
+        echo_centered "4) Ropyakken yaku (simple)"
+        echo_centered "5)          Hachi yaku set"
+        echo_centered "6)         Shima yaku only"
+        echo ""
+        user_selection = prompt("Which yaku set? > ")
+
+    case user_selection:
+    of quit_commands: quit_game()
+    of "1": return yaku_table_blank
+    of "2": return yaku_table_mushi
+    of "3": return yaku_table_ropyakken
+    of "4": return yaku_table_yamayaku
+    of "5": return yaku_table_hachi
+    of "6": return yaku_table_shima
+
+proc customize_yaku*(game: RuleSet): RuleSet =
+    var user_selection = ""
+
+    while user_selection notin @["1","2"] & quit_commands:
+        clear_screen()
+        echo ""
+        list_yaku(game)
+        echo_indented "1) Keep current yaku set"
+        echo_indented "2) Customize yaku set"
+        echo ""
+        user_selection = prompt(" > ")
+
+    case user_selection:
+    of quit_commands:
+        quit_game()
+    of "1":
+        result = game
+        program_state = "pre-game menu"
+    of "2":
+        result = game
+        result.yaku_set = ask_which_yaku_set(result)
+
+    return result

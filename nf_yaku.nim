@@ -582,6 +582,8 @@ const
 ##### DEKIYAKU SCORING TABLES #####
 
 const
+    yaku_table_blank* = initOrderedTable[Dekiyaku,int]()
+
     yaku_table_mushi* = {
         gokou: 30,
         oozan: 25,

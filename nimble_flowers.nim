@@ -25,7 +25,8 @@ while true:
     of "customize rules":
         game_mode = game_mode.customize_rules()
 
-    # of "customize yaku": 
+    of "customize yaku":
+        game_mode = game_mode.customize_yaku()
 
     of "play":
         deal(game_mode)
