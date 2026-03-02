@@ -3,7 +3,6 @@ import random
 import std/sequtils
 import nf_common
 import nf_cards
-import nf_menus
 
 randomize()
 # var my_seed: int64 = 1234

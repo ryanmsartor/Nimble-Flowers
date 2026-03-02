@@ -80,30 +80,14 @@ proc pre_game_config*(game: RuleSet) =
     of "2":
         program_state = "customize rules"
     of "3":
-        program_State = "customize yaku"
+        program_state = "customize yaku"
     of "4":
         program_state = "main_menu"
 
 
 ##### CUSTOMIZE RULES MENU #####
 
-
-
-
-
-
-
-proc list_yaku*(game: RuleSet) =
-    const blank = initOrderedTable[Dekiyaku,int]()
-    if game.yaku_set == blank:
-        return
-    else:
-        insert_row(r"\_Yaku:_/")
-        for yaku, score in game.yaku_set:
-            insert_row(yaku.name, $score & " pts")
-    insert_div(1,"'","-","'")
-
-proc list_rules*(game: RuleSet) =
+proc list_rules(game: RuleSet) =
     let decksize = 48 - game.cards_stripped.len
     current_table_style = defaultStyle
     insert_div(2,".","-",".")
@@ -114,54 +98,108 @@ proc list_rules*(game: RuleSet) =
     insert_row("Hand size:",$game.num_cards_hand & " cards","Field size:", $game.num_cards_field & " cards")
     insert_div(4)
     insert_row("Point values:", $game.point_values)
-    insert_div(2)
     if game.wild_card_rules != "" and game.wild_card.full_name != "":
+        insert_div(2)
         insert_row("Wild card rules:",game.wild_card_rules)
         insert_row("Wild card:",game.wild_card.full_name)
+    if game.hachi_matching or game.can_koikoi:
         insert_div(2)
+        insert_row("Special rules:")
+        if game.hachi_matching:
+            insert_row("Match by forming sum of 3, 8, 13, 18, or 23")
+        if game.can_koikoi:
+            insert_row("May call shoubu or koi-koi")
+    insert_div(1,"'","-","'")
     echo ""
 
-proc let_user_specify_num(rule_name: string, min: int, max: int): string =
-    var user_selection = "";
+proc ask_how_many(rule_name: string, min: int, max: int, game: RuleSet): string =
+    var user_selection = ""
     let options = generate_string_range(min, max)
+
     while user_selection notin options & quit_commands:
+        clear_screen()
+        echo ""
+        game.list_rules
+        echo ""
         user_selection = prompt("How many " & rule_name & "? [" & $min & "-" & $max & "] > ")
         if user_selection in quit_commands:
             quit_game()
-        elif user_selection notin options:
-            echo ""
-            echo user_selection, " is not a valid selection. Please select a value between ", min, " and ", max, "."
-            echo ""
+
     return user_selection
+
+proc ask_which_point_set(game: RuleSet): string =
+    var user_selection = ""
+    let options = generate_string_range(1,6)
+
+    while user_selection notin options & quit_commands:
+        clear_screen()
+        echo ""
+        game.list_rules
+
+        echo_centered "1) Standard-88 ( 1,  5, 10, 20)"
+        echo_centered "2) Standard-80 ( 0,  5, 10, 20)"
+        echo_centered "3) Hawaiian    ( 1, 10,  5, 20)"
+        echo_centered "4) Ropyakken   ( 0, 10, 10, 50)"
+        echo_centered "5) Hachi       (10,  1, 10, 10)"
+        echo_centered "6) Sudaoshi    (10,  1,  5,  5)"
+        echo ""
+
+        user_selection = prompt("Which point value system? > ")
+    case user_selection:
+    of quit_commands: quit_game()
+    of "1": return "1, 5, 10, 20"
+    of "2": return "0, 5, 10, 20"
+    of "3": return "1, 10, 5, 20"
+    of "4": return "0, 10, 10, 50"
+    of "5": return "10, 1, 10, 10"
+    of "6": return "10, 1, 5, 5s"
 
 
 proc customize_rules*(game: RuleSet): RuleSet =
     var user_selection = ""
+
     while user_selection notin @["1","2"] & quit_commands:
         clear_screen()
         echo ""
         game.list_rules
-        echo_indented "1) Keep current settings"
-        echo_indented "2) Customize settings"
+        echo_indented "1) Keep current rules"
+        echo_indented "2) Customize rules"
         echo ""
         user_selection = prompt(" > ")
+
     case user_selection:
-        of quit_commands:
-            quit_game()
-        of "1":
-            result = game
-        of "2":
-            result = game
-            result.num_players = let_user_specify_num("players",2,8).parseInt()
+    of quit_commands:
+        quit_game()
+    of "1":
+        result = game
+        program_state = "pre-game menu"
+    of "2":
+        result = game
 
-            let decksize = 48 - game.cards_stripped.len
-            let max_cards_hand = (decksize div 2) div result.num_players
-            result.num_cards_hand = let_user_specify_num("cards in the hand",1,max_cards_hand).parseInt()
+        result.num_players = ask_how_many("players",2,8,result).parseInt()
 
-            let max_cards_field = decksize - (2 * result.num_players * result.num_cards_hand)
-            result.num_cards_field = let_user_specify_num("cards on the field",0,max_cards_field).parseInt()
+        let decksize = 48 - game.cards_stripped.len
+        let max_cards_hand = (decksize div 2) div result.num_players
+        result.num_cards_hand = ask_how_many("cards in the hand",1,max_cards_hand,result).parseInt()
 
-    result.list_rules
+        var max_cards_field = decksize - (2 * result.num_players * result.num_cards_hand)
+        if max_cards_field > 12: max_cards_field = 12
+        result.num_cards_field = ask_how_many("cards on the field",0,max_cards_field,result).parseInt()
+
+        result.point_values = ask_which_point_set(result)
+
     return result
 
 
+
+##### CUSTOMIZE YAKU MENU #####
+
+proc list_yaku*(game: RuleSet) =
+    const blank = initOrderedTable[Dekiyaku,int]()
+    if game.yaku_set == blank:
+        return
+    else:
+        insert_row(r"\_Yaku:_/")
+        for yaku, score in game.yaku_set:
+            insert_row(yaku.name, $score & " pts")
+    

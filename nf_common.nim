@@ -26,6 +26,7 @@ type
         hachihachi_value*: CardPointValue
         hachi_value*: CardPointValue
         ropyakken_value*: CardPointValue
+        sudaoshi_value*: CardPointValue
         art0*: string
         art1*: string
         art2*: string
@@ -246,7 +247,7 @@ proc echo_indented*(str: string,num=15) =
     while i > 0:
         new_string.add(" ")
         i.dec(1)
-    new_string.add(str.strip())
+    new_string.add(str)
     echo new_string
 
 proc echo_centered_one_line(str: string) =
