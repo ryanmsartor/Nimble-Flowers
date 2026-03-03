@@ -4,8 +4,8 @@
 import nf_common
 
 const
-    edge* = " |=========| "
-    blank* = " |\e[1m.........\e[0m| "
+    edge* = "|=========|"
+    blank* = "|\e[1m.........\e[0m|"
 
 const
     pine_bright* = Card(
@@ -19,7 +19,17 @@ const
         hachi_value: 10,
         ropyakken_value: 50,
         sudaoshi_value: 5,
-        sakura_value: 20
+        sakura_value: 20,
+        art0: edge,
+        art1: "|\e[1m....\e[38;2;211;26;5m|\e[48;2;211;26;5m    \e[49m\e[0m|",
+        art2: "|\e[1m.\e[38;2;211;26;5m()\e[39m>.\e[38;2;211;26;5m\\\e[48;2;211;26;5m   \e[49m\e[0m|",
+        art3: "|\e[1m.||...\e[38;2;211;26;5m\\\e[48;2;211;26;5m__\e[49m\e[0m|",
+        art4: "|\e[1m.||lll..\e[38;2;245;184;22mo\e[0m|",
+        art5: "|\e[1m..\\_qqq\e[38;2;0;153;77mA|\e[0m|",
+        art6: "|\e[1m\e[38;2;245;184;22mo\e[39m..||q.\e[38;2;0;153;77mA|\e[0m|",
+        art7: "|\e[1m\e[38;2;0;153;77m|A\e[39m>||.\e[38;2;0;153;77mA\\|\e[0m|",
+        art8: "|\e[1m\e[38;2;0;153;77m|A\e[39m.>..\e[38;2;0;153;77m\\A|\e[0m|",
+        art9: edge
     )
     pine_ribbon* = Card(
         full_name: "Pine with Poetry Ribbon",
@@ -32,7 +42,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: blank,
+        art2: "|\e[1m.\e[48;2;211;26;5m \e[38;2;5;5;5mR\e[39m \e[49m.\e[38;2;245;184;22mO\e[39m...\e[22m|",
+        art3: "|\e[1m.\e[48;2;211;26;5m \e[38;2;5;5;5me\e[39m \e[49m\e[38;2;0;153;77mA|A\e[39m..\e[22m|",
+        art4: "|\e[1m\e[38;2;245;184;22mo\e[39m.\e[48;2;211;26;5m \e[38;2;5;5;5md\e[39m \e[49m\e[38;2;0;153;77m|/A\e[39m.\e[22m|",
+        art5: "|\e[1m\e[38;2;0;153;77m|A\e[48;2;211;26;5m \e[38;2;5;5;5mG\e[38;2;0;153;77m \e[49m|AA\e[39m.\e[22m|",
+        art6: "|\e[1m\e[38;2;0;153;77m|/\e[39m.\e[48;2;211;26;5m \e[38;2;5;5;5mu\e[39m \e[49m\e[38;2;0;153;77m/A\e[38;2;245;184;22mo\e[0m|",
+        art7: "|\e[1m\e[38;2;0;153;77m|A/A\e[48;2;211;26;5m \e[38;2;5;5;5md\e[38;2;0;153;77m \e[49m/A\e[0m|",
+        art8: "|\e[1m\e[38;2;0;153;77m|/AAA|/AA\e[0m|",
+        art9: edge
     )
     pine_chaff_1* = Card(
         full_name: "Pine chaff",
@@ -45,7 +65,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: blank,
+        art2: "|\e[1m.......\e[38;2;245;184;22mO\e[39m.\e[0m|",
+        art3: "|\e[1m......\e[38;2;0;153;77mA|A\e[0m|",
+        art4: "|\e[1m\e[38;2;245;184;22mo\e[39m....\e[38;2;0;153;77mAA|/\e[0m|",
+        art5: "|\e[1m\e[38;2;0;153;77m|A\e[39m..\e[38;2;245;184;22mo\e[38;2;0;153;77mA\\|A\e[0m|",
+        art6: "|\e[1m\e[38;2;0;153;77m|AA\e[38;2;245;184;22mo\e[38;2;0;153;77mA\\A|/\e[0m|",
+        art7: "|\e[1m\e[38;2;0;153;77m|/AA\\A\\|A\e[0m|",
+        art8: "|\e[1m\e[38;2;0;153;77m|A/AA\\A|/\e[0m|",
+        art9: edge
     )
     pine_chaff_2* = Card(
         full_name: "Pine chaff",
@@ -58,7 +88,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: blank,
+        art2: "|\e[1m\e[38;2;245;184;22mO\e[39m........\e[22m|",
+        art3: "|\e[1m\e[38;2;0;153;77m|A\e[39m.......\e[22m|",
+        art4: "|\e[1m\e[38;2;0;153;77m|AA\e[39m.....\e[38;2;245;184;22mo\e[0m|",
+        art5: "|\e[1m\e[38;2;0;153;77m|/A\e[38;2;245;184;22mo\e[39m...\e[38;2;0;153;77mA|\e[0m|",
+        art6: "|\e[1m\e[38;2;0;153;77m|A/AA\e[38;2;245;184;22mo\e[38;2;0;153;77mA\\|\e[0m|",
+        art7: "|\e[1m\e[38;2;0;153;77m|/A/AA\\A|\e[0m|",
+        art8: "|\e[1m\e[38;2;0;153;77m|A/AA\\A\\|\e[0m|",
+        art9: edge
     )
 
     plum_animal* = Card(
@@ -72,7 +112,17 @@ const
         hachi_value: 10,
         ropyakken_value: 50,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "|\e[1m\e[48;2;211;26;5m_ __\e[49m\e[38;2;211;26;5m)\e[39m.\e[38;2;211;26;5m(\e[39m\e[48;2;211;26;5m_ \e[0m|",
+        art2: "|\e[1m\e[48;2;211;26;5m___\e[38;2;211;26;5m\e[49m)\e[39m...\e[38;2;211;26;5m(\e[39m\e[48;2;211;26;5m_\e[0m|",
+        art3: "|\e[1m.\e[38;2;245;184;22m<0\e[38;2;101;196;6m\\\e[39m...\e[38;2;211;26;5mo\e[39m.\e[0m|",
+        art4: "|\e[1m..\e[38;2;245;184;22mL_\e[38;2;101;196;6m\\_\e[38;2;211;26;5mO\e[38;2;245;184;22mw\e[38;2;211;26;5mO\e[0m|",
+        art5: "|\e[1m\e[38;2;211;26;5mo\e[39m..\e[38;2;183;15;86m/\e[38;2;245;184;22mu\e[38;2;183;15;86m==/\e[39m.\e[0m|",
+        art6: "|\e[1m\e[38;2;183;15;86m|/==/\e[39m.\e[38;2;211;26;5mo\e[39m..\e[0m|",
+        art7: "|\e[1m.\e[38;2;183;15;86m\\==\\\e[38;2;211;26;5mo\e[38;2;245;184;22mw\e[38;2;211;26;5mo\e[39m.\e[0m|",
+        art8: "|\e[1m.\e[38;2;211;26;5mo\e[38;2;183;15;86m\\======\e[0m|",
+        art9: edge
     )
     plum_ribbon* = Card(
         full_name: "Plum Blossoms with Poetry Ribbon",
@@ -85,7 +135,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "|\e[1m.\e[38;2;211;26;5m0\e[39m...\e[38;2;211;26;5m(^)\e[39m.\e[0m|",
+        art2: "|\e[1m.\e[38;2;183;15;86m\\\e[48;2;211;26;5m \e[38;2;5;5;5mR\e[39m \e[49m\e[38;2;211;26;5m)\e[38;2;245;184;22m@\e[38;2;211;26;5m()\e[0m|",
+        art3: "|\e[1m..\e[48;2;211;26;5m \e[38;2;5;5;5me\e[39m \e[49m\e[38;2;211;26;5mo~o\e[39m.\e[0m|",
+        art4: "|\e[1m.\e[38;2;211;26;5mO\e[39m.\e[48;2;211;26;5m \e[38;2;5;5;5md\e[39m \e[49m\e[38;2;183;15;86m/\\\e[39m.\e[0m|",
+        art5: "|\e[1m\e[38;2;211;26;5mO\e[38;2;245;184;22mw\e[38;2;211;26;5mO\e[48;2;211;26;5m \e[38;2;5;5;5mG\e[39m \e[49m\e[38;2;183;15;86m=/\e[39m.\e[0m|",
+        art6: "|\e[1m..\e[38;2;183;15;86m\\=\e[39m\e[48;2;211;26;5m \e[38;2;5;5;5mr\e[39m \e[49m..\e[0m|",
+        art7: "|\e[1m.\e[38;2;211;26;5mO\e[38;2;183;15;86m/==\e[39m\e[48;2;211;26;5m \e[38;2;5;5;5m8\e[39m \e[49m.\e[0m|",
+        art8: "|\e[1m.\e[38;2;183;15;86m/==/\e[39m....\e[0m|",
+        art9: edge
     )
     plum_chaff_1* = Card(
         full_name: "Plum Blossom chaff",
@@ -98,7 +158,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "|\e[1m.\e[38;2;183;15;86m_\e[39m...\e[38;2;183;15;86m,,\e[38;2;211;26;5mo\e[39m.\e[0m|",
+        art2: "|\e[1m\e[38;2;211;26;5mo\e[38;2;183;15;86m\\\e[38;2;183;15;86m\\\e[39m..\e[38;2;183;15;86m||\e[39m..\e[0m|",
+        art3: "|\e[1m.\e[38;2;183;15;86m||\e[38;2;211;26;5mo\e[39m.\e[38;2;183;15;86m||\e[38;2;211;26;5mo\e[39m.\e[0m|",
+        art4: "|\e[1m.\e[38;2;183;15;86m||\e[39m..\e[38;2;183;15;86m//\e[39m..\e[0m|",
+        art5: "|\e[1m.\e[38;2;211;26;5m(^)\e[39m.\e[38;2;183;15;86m||\e[38;2;211;26;5mO\e[39m.\e[0m|",
+        art6: "|\e[1m\e[38;2;211;26;5m()\e[38;2;245;184;22m@\e[38;2;211;26;5m()\e[38;2;183;15;86m=\e[38;2;211;26;5mO\e[38;2;245;184;22mw\e[38;2;211;26;5mO\e[0m|",
+        art7: "|\e[1m.\e[38;2;211;26;5mO~O\e[38;2;183;15;86m-f==\\\e[0m|",
+        art8: "|\e[1m......\e[38;2;183;15;86m\\==\e[0m|",
+        art9: edge
     )
     plum_chaff_2* = Card(
         full_name: "Plum Blossom chaff",
@@ -111,7 +181,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "|\e[1m.....\e[38;2;183;15;86m_\e[39m...\e[0m|",
+        art2: "|\e[1m\e[38;2;211;26;5mo\e[38;2;183;15;86m,.\e[39m.\e[38;2;211;26;5mo\e[38;2;183;15;86m\\\\\e[39m..\e[0m|",
+        art3: "|\e[1m.\e[38;2;183;15;86m||\e[39m..\e[38;2;183;15;86m||\e[38;2;211;26;5mO\e[39m.\e[0m|",
+        art4: "|\e[1m\e[38;2;211;26;5mO\e[38;2;183;15;86m||\e[39m..\e[38;2;183;15;86m||\e[39m..\e[0m|",
+        art5: "|\e[1m.\e[38;2;183;15;86m||\e[39m..\e[38;2;211;26;5m(^)\e[39m.\e[0m|",
+        art6: "|\e[1m.\e[38;2;183;15;86m\\\e[38;2;211;26;5mO\e[38;2;183;15;86m=\e[38;2;211;26;5m()\e[38;2;245;184;22m@\e[38;2;211;26;5m()\e[0m|",
+        art7: "|\e[1m.\e[38;2;211;26;5mO\e[38;2;245;184;22mw\e[38;2;211;26;5mO\e[38;2;183;15;86m=\e[38;2;211;26;5mo~o\e[39m.\e[0m|",
+        art8: "|\e[1m.\e[38;2;183;15;86m/==/\e[39m....\e[0m|",
+        art9: edge
     )
 
     cherry_bright* = Card(
@@ -125,7 +205,17 @@ const
         hachi_value: 10,
         ropyakken_value: 50,
         sudaoshi_value: 10,
-        sakura_value: 20
+        sakura_value: 20,
+        art0: edge,
+        art1: "|\e[1m..\e[38;2;255;30;103mX~\e[38;2;255;180;182mX~X~X\e[0m|",
+        art2: "|\e[1m..\e[38;2;255;30;103m~\e[38;2;255;180;182mX~X~\e[38;2;255;30;103mX~\e[0m|",
+        art3: "|\e[1m\e[38;2;245;184;22m\e[49mLL\e[39m,,..\e[38;2;255;30;103mX~X\e[0m|",
+        art4: "|\e[1m\e[48;2;138;57;145m  `\e[49m-\e[38;2;245;184;22mLL\e[39m,,.\e[0m|",
+        art5: "|\e[1m\e[48;2;138;57;145m__    `\e[49m-\e[38;2;245;184;22mL\e[0m|",
+        art6: "|\e[1m\e[48;2;211;26;5m  `\e[48;2;138;57;145m-__   \e[0m|",
+        art7: "|\e[1m\e[48;2;211;26;5m__    `\e[48;2;138;57;145m-_\e[0m|",
+        art8: "|\e[1m\e[48;2;138;57;145m  `\e[48;2;211;26;5m-_    \e[0m|",
+        art9: edge
     )
     cherry_ribbon* = Card(
         full_name: "Cherry Blossoms with Poetry Ribbon",
@@ -138,7 +228,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "|\e[1m\e[38;2;255;180;182mX~X\e[38;2;0;153;77m/\e[39m.\e[38;2;255;30;103mX~X.\e[0m|",
+        art2: "|\e[1m\e[38;2;255;30;103m~\e[38;2;255;180;182mX~\e[39m\e[48;2;211;26;5m \e[38;2;5;5;5mY\e[39m \e[49m\e[38;2;255;30;103mX~\e[38;2;0;153;77m\\\e[0m|",
+        art3: "|\e[1m\e[38;2;255;30;103mX~\e[38;2;255;180;182mX\e[39m\e[48;2;211;26;5m \e[38;2;5;5;5mo\e[39m \e[49m.\e[38;2;0;153;77m\\\e[39m.\e[0m|",
+        art4: "|\e[1m...\e[48;2;211;26;5m \e[38;2;5;5;5ms\e[39m \e[49m...\e[0m|",
+        art5: "|\e[1m\e[38;2;255;180;182mX\e[38;2;255;30;103m~\e[39m\e[48;2;211;26;5m \e[38;2;5;5;5mi\e[39m \e[49m.\e[38;2;255;180;182m~\e[38;2;255;30;103mX~\e[0m|",
+        art6: "|\e[1m\e[38;2;255;30;103m~X\e[39m\e[48;2;211;26;5m \e[38;2;5;5;5mn\e[39m \e[49m\e[38;2;255;180;182m~\e[38;2;255;30;103mX~X\e[0m|",
+        art7: "|\e[1m\e[38;2;255;30;103mX\e[39m\e[48;2;211;26;5m \e[38;2;5;5;5mo\e[39m \e[49m.\e[38;2;255;180;182mX~\e[38;2;255;30;103mX\e[39m.\e[0m|",
+        art8: "|\e[1m....\e[38;2;0;153;77m/\e[39m.\e[38;2;0;153;77m\\\e[39m..\e[0m|",
+        art9: edge
     )
     cherry_chaff_1* = Card(
         full_name: "Cherry Blossom chaff",
@@ -151,7 +251,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "|\e[1m.\e[38;2;255;180;182mX~\e[38;2;255;30;103mX~X\e[39m.\e[38;2;0;153;77m/\e[39m.\e[0m|",
+        art2: "|\e[1m\e[38;2;255;180;182mX~X~\e[38;2;255;30;103mX~X\e[38;2;183;15;86m,\e[39m.\e[0m|",
+        art3: "|\e[1m\e[38;2;0;153;77m/\e[38;2;255;30;103mX~\e[38;2;255;180;182mX~X\e[38;2;183;15;86m,=\\\e[0m|",
+        art4: "|\e[1m.......\e[38;2;183;15;86m\\=\e[0m|",
+        art5: "|\e[1m.\e[38;2;0;153;77m\\\e[38;2;255;30;103mX~\e[38;2;255;180;182mX\e[39m..\e[38;2;183;15;86m|=\e[0m|",
+        art6: "|\e[1m.\e[38;2;255;30;103mX~\e[38;2;255;180;182mX~X\e[38;2;183;15;86m~'=\e[0m|",
+        art7: "|\e[1m\e[38;2;0;153;77m/\e[39m.\e[38;2;255;30;103mX~\e[38;2;255;180;182mX\e[38;2;183;15;86m~.==\e[0m|",
+        art8: "|\e[1m.......\e[38;2;183;15;86m\\=\e[0m|",
+        art9: edge
     )
     cherry_chaff_2* = Card(
         full_name: "Cherry Blossom chaff",
@@ -164,7 +274,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "|\e[1m\e[38;2;255;180;182m~X~X\e[39m..\e[38;2;255;180;182mX~X\e[0m|",
+        art2: "|\e[1m\e[38;2;255;30;103mX~\e[38;2;255;180;182mX~\e[39m.\e[38;2;255;180;182mX~\e[38;2;255;30;103mX~\e[0m|",
+        art3: "|\e[1m\e[38;2;0;153;77m/\e[38;2;255;30;103mX\e[38;2;183;15;86m\\=v=/\e[38;2;255;30;103m~X\e[0m|",
+        art4: "|\e[1m...\e[38;2;183;15;86m|=|\e[39m...\e[0m|",
+        art5: "|\e[1m..\e[38;2;183;15;86m,'\e[38;2;255;180;182m~\e[38;2;255;30;103mX~X\e[38;2;0;153;77m/\e[0m|",
+        art6: "|\e[1m.\e[38;2;183;15;86m/=\e[38;2;255;180;182m~X~\e[38;2;255;30;103mX~X\e[0m|",
+        art7: "|\e[1m\e[38;2;183;15;86m/==\e[38;2;255;180;182mX~X~X\e[39m.\e[0m|",
+        art8: "|\e[1m\e[38;2;183;15;86m==/\e[39m...\e[38;2;0;153;77m\\\e[39m..\e[0m|",
+        art9: edge
     )
 
     wisteria_animal* = Card(
@@ -178,7 +298,17 @@ const
         hachi_value: 10,
         ropyakken_value: 10,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "|\e[1m.\e[48;2;211;26;5m \e[49m..\e[38;2;245;184;22mmm\e[38;2;0;153;77m/'\\\e[0m|",
+        art2: "|\e[1m\e[48;2;211;26;5m   \e[49m\e[38;2;245;184;22mmH\e[38;2;0;153;77md|\e[38;2;245;184;22m//\e[0m|",
+        art3: "|\e[1m\e[38;2;245;184;22m<\e[48;2;211;26;5mn===\e[49m=',~\e[0m|",
+        art4: "|\e[1m..\e[38;2;245;184;22m'\e[48;2;211;26;5m:=.\e[38;2;0;153;77m|\e[49mb\e[39m.\e[0m|",
+        art5: "|\e[1m....\e[38;2;245;184;22m'=\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[39m.\e[0m|",
+        art6: "|\e[1m...\e[38;2;138;57;145md\e[38;2;0;153;77m/\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[39m.\e[0m|",
+        art7: "|\e[1m\e[38;2;0;153;77m/\\\e[38;2;138;57;145md\e[38;2;0;153;77m/\e[38;2;138;57;145mbd\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[39m.\e[0m|",
+        art8: "|\e[1m\e[38;2;0;153;77m\\_/\e[38;2;138;57;145mb\e[39m..\e[38;2;138;57;145m0\e[39m..\e[0m|",
+        art9: edge
     )
     wisteria_ribbon* = Card(
         full_name: "Wisteria with Ribbon",
@@ -191,7 +321,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "|\e[1m.\e[38;2;0;153;77md//A\\\\b\e[39m.\e[0m|",
+        art2: "|\e[1m\e[38;2;0;153;77md/\e[48;2;211;26;5m   \e[49m|b\\b\e[0m|",
+        art3: "|\e[1m\e[38;2;0;153;77md|\e[48;2;211;26;5m   \e[49m\e[38;2;0;153;77m'\e[38;2;138;57;145mb\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[0m|",
+        art4: "|\e[1m\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[39m\e[48;2;211;26;5m   \e[49m.\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[0m|",
+        art5: "|\e[1m\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[48;2;211;26;5m\e[39m   \e[49m.\e[38;2;138;57;145m0\e[39m.\e[0m|",
+        art6: "|\e[1m\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[39m.\e[48;2;211;26;5m   \e[49m..\e[0m|",
+        art7: "|\e[1m\e[38;2;138;57;145md\e[38;2;0;153;77m\\\e[38;2;138;57;145mb\e[39m..\e[48;2;211;26;5m   \e[49m.\e[0m|",
+        art8: "|\e[1m.\e[38;2;138;57;145md\e[39m.......\e[0m|",
+        art9: edge
     )
     wisteria_chaff_1* = Card(
         full_name: "Wisteria chaff",
@@ -204,7 +344,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "|\e[1m..\e[38;2;0;153;77m/|A|\\\e[39m..\e[0m|",
+        art2: "|\e[1m.\e[38;2;0;153;77m/\e[39m.\e[38;2;0;153;77m|\e[39m.\e[38;2;0;153;77mb\e[39m.\e[38;2;0;153;77m\\\e[39m.\e[0m|",
+        art3: "|\e[1m\e[38;2;0;153;77md|b|b\e[39m.\e[38;2;0;153;77md|b\e[0m|",
+        art4: "|\e[1m\e[38;2;0;153;77md|b\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[39m.\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[0m|",
+        art5: "|\e[1m\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[38;2;0;153;77m`\e[38;2;138;57;145mb\e[39m.\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[0m|",
+        art6: "|\e[1m\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[39m....\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[0m|",
+        art7: "|\e[1m\e[38;2;138;57;145md\e[38;2;0;153;77m'\e[39m...\e[38;2;0;153;77m/\\|\e[39m.\e[0m|",
+        art8: "|\e[1m.....\e[38;2;0;153;77m\\_/\e[39m.\e[0m|",
+        art9: edge
     )
     wisteria_chaff_2* = Card(
         full_name: "Wisteria chaff",
@@ -217,7 +367,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "|\e[1m..\e[38;2;0;153;77md/|\\b\e[39m..\e[0m|",
+        art2: "|\e[1m.\e[38;2;0;153;77md/d|b\\b\e[39m.\e[0m|",
+        art3: "|\e[1m\e[38;2;0;153;77md|b\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[38;2;0;153;77md|b\e[0m|",
+        art4: "|\e[1m\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mbd\e[38;2;0;153;77m|\e[38;2;138;57;145mbd\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[0m|",
+        art5: "|\e[1m.\e[38;2;138;57;145md\e[39m.\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mbd\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[0m|",
+        art6: "|\e[1m..\e[38;2;0;153;77md/|\e[38;2;138;57;145mb\e[39m.\e[38;2;138;57;145md\e[39m.\e[0m|",
+        art7: "|\e[1m..\e[38;2;0;153;77md\e[38;2;138;57;145md\e[38;2;0;153;77m|\e[38;2;138;57;145mb\e[39m...\e[0m|",
+        art8: "|\e[1m....\e[38;2;138;57;145m0\e[39m....\e[0m|",
+        art9: edge
     )
 
     iris_animal* = Card(
@@ -231,7 +391,17 @@ const
         hachi_value: 10,
         ropyakken_value: 10,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     iris_ribbon* = Card(
         full_name: "Iris with Ribbon",
@@ -244,7 +414,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     iris_chaff_1* = Card(
         full_name: "Iris chaff",
@@ -257,7 +437,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     iris_chaff_2* = Card(
         full_name: "Iris chaff",
@@ -270,7 +460,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
 
     peony_animal* = Card(
@@ -283,7 +483,17 @@ const
         hachi_value: 10,
         ropyakken_value: 10,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     peony_ribbon* = Card(
         full_name: "Peony with Blue Ribbon",
@@ -295,7 +505,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     peony_chaff_1* = Card(
         full_name: "Peony chaff",
@@ -307,7 +527,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     peony_chaff_2* = Card(
         full_name: "Peony chaff",
@@ -319,7 +549,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
 
     clover_animal* = Card(
@@ -332,7 +572,17 @@ const
         hachi_value: 10,
         ropyakken_value: 10,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     clover_ribbon* = Card(
         full_name: "Bush Clover with Ribbon",
@@ -344,7 +594,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     clover_chaff_1* = Card(
         full_name: "Bush Clover chaff",
@@ -356,7 +616,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     clover_chaff_2* = Card(
         full_name: "Bush Clover chaff",
@@ -368,7 +638,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
 
     grass_bright* = Card(
@@ -382,7 +662,17 @@ const
         hachi_value: 10,
         ropyakken_value: 50,
         sudaoshi_value: 5,
-        sakura_value: 20
+        sakura_value: 20,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     grass_animal* = Card(
         full_name: "Silvergrass with Geese",
@@ -395,7 +685,17 @@ const
         hachi_value: 10,
         ropyakken_value: 10,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     grass_chaff_1* = Card(
         full_name: "Silvergrass chaff",
@@ -408,7 +708,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     grass_chaff_2* = Card(
         full_name: "Silvergrass chaff",
@@ -421,7 +731,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
 
     mum_animal* = Card(
@@ -435,7 +755,17 @@ const
         hachi_value: 10,
         ropyakken_value: 10,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     mum_ribbon* = Card(
         full_name: "Chrysanthemums with Blue Ribbon",
@@ -448,7 +778,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     mum_chaff_1* = Card(
         full_name: "Chrysanthemum chaff",
@@ -461,7 +801,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     mum_chaff_2* = Card(
         full_name: "Chrysanthemum chaff",
@@ -474,7 +824,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
 
     maple_animal* = Card(
@@ -488,7 +848,17 @@ const
         hachi_value: 10,
         ropyakken_value: 10,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     maple_ribbon* = Card(
         full_name: "Maple Leaves with Blue Ribbon",
@@ -501,7 +871,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     maple_chaff_1* = Card(
         full_name: "Maple chaff",
@@ -514,7 +894,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     maple_chaff_2* = Card(
         full_name: "Maple chaff",
@@ -527,7 +917,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
 
     willow_bright* = Card(
@@ -541,7 +941,17 @@ const
         hachi_value: 10,
         ropyakken_value: 50,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     willow_animal* = Card(
         full_name: "Willow with Swallow",
@@ -554,7 +964,17 @@ const
         hachi_value: 10,
         ropyakken_value: 10,
         sudaoshi_value: 5,
-        sakura_value: 5
+        sakura_value: 5,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     willow_ribbon* = Card(
         full_name: "Willow with Ribbon",
@@ -567,7 +987,17 @@ const
         hachi_value: 1,
         ropyakken_value: 10,
         sudaoshi_value: 1,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     willow_chaff* = Card(
         full_name: "Willow with Lightning",
@@ -580,7 +1010,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
 
     paulownia_bright* = Card(
@@ -594,7 +1034,17 @@ const
         hachi_value: 10,
         ropyakken_value: 50,
         sudaoshi_value: 10,
-        sakura_value: 20
+        sakura_value: 20,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     paulownia_chaff_1* = Card(
         full_name: "Paulownia with yellow chaff",
@@ -607,7 +1057,17 @@ const
         hachi_value: 10,
         ropyakken_value: 10,
         sudaoshi_value: 10,
-        sakura_value: 10
+        sakura_value: 10,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     paulownia_chaff_2* = Card(
         full_name: "Paulownia chaff",
@@ -620,7 +1080,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
     paulownia_chaff_3* = Card(
         full_name: "Paulownia chaff",
@@ -633,7 +1103,17 @@ const
         hachi_value: 10,
         ropyakken_value: 0,
         sudaoshi_value: 10,
-        sakura_value: 0
+        sakura_value: 0,
+        art0: edge,
+        art1: "",
+        art2: "",
+        art3: "",
+        art4: "",
+        art5: "",
+        art6: "",
+        art7: "",
+        art8: "",
+        art9: edge
     )
 
     full_deck*: Zone = @[
@@ -650,3 +1130,40 @@ const
         willow_bright, willow_animal, willow_ribbon, willow_chaff,
         paulownia_bright, paulownia_chaff_1, paulownia_chaff_2, paulownia_chaff_3
     ]
+
+proc print_single_card(card:Card) =
+    echo card.art0
+    echo card.art1
+    echo card.art2
+    echo card.art3
+    echo card.art4
+    echo card.art5
+    echo card.art6
+    echo card.art7
+    echo card.art8
+    echo card.art9
+
+proc print_suit(suit:Suit) =
+    var s0,s1,s2,s3,s4,s5,s6,s7,s8,s9 = " "
+    for card in full_deck:
+        if card.standard_suit == suit:
+            s0.add(card.art0 & " ")
+            s1.add(card.art1 & " ")
+            s2.add(card.art2 & " ")
+            s3.add(card.art3 & " ")
+            s4.add(card.art4 & " ")
+            s5.add(card.art5 & " ")
+            s6.add(card.art6 & " ")
+            s7.add(card.art7 & " ")
+            s8.add(card.art8 & " ")
+            s9.add(card.art9 & " ")
+    for s in [s0,s1,s2,s3,s4,s5,s6,s7,s8,s9]:
+        echo s
+
+proc print_all_suits() =
+    for i in 1 .. 12:
+        print_suit(i)
+        echo ""
+
+
+print_all_suits()
