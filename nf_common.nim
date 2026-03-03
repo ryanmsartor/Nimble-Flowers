@@ -114,7 +114,7 @@ const
                          "exit","Exit","EXIT"]
     affirmative_answers* = @["yes","Yes","YES","y","Y:"]
     negative_answers* = @["no","No","NO","n","N"]
-    max_line_width* = 60
+    max_line_width* = 80
     max_screen_height* = 40
 
 

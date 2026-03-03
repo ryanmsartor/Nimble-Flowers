@@ -19,7 +19,7 @@ var
     p6* = Player(name:"Evelyn")
     p7* = Player(name:"Francis")
     p8* = Player(name:"Giovanni")
-    current_players: seq[Player]
+    current_players*: seq[Player]
 
 
 ##### START OF ROUND: THE DEAL #####
@@ -125,6 +125,23 @@ proc display_zone_table*(zone: Zone) =
         insert_row(i1 & c1,"")
         
     insert_div()
+
+proc display_zone_ascii_one_row*(zone: Zone, xpos=1, ypos=1) =
+    var
+        cur_x = xpos
+        cur_y = ypos
+        offset = 7
+    if zone.len() <= 6: offset = 13
+    elif zone.len() == 7: offset = 11
+    elif zone.len() == 8: offset = 9
+    elif zone.len() == 9: offset = 8
+    elif zone.len() == 10: offset = 7
+    else: offset = 6
+
+    for card in zone:
+        card.print_at_pos(cur_X,cur_y)
+        cur_x.inc(offset)
+
 
 proc take_turn*(player: Player, game: RuleSet) =
     var 

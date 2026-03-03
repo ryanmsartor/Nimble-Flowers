@@ -1144,19 +1144,19 @@ proc print_single_card(card:Card) =
     echo card.art9
 
 proc print_suit(suit:Suit) =
-    var s0,s1,s2,s3,s4,s5,s6,s7,s8,s9 = " "
+    var s0,s1,s2,s3,s4,s5,s6,s7,s8,s9 = "  "
     for card in full_deck:
         if card.standard_suit == suit:
-            s0.add(card.art0 & " ")
-            s1.add(card.art1 & " ")
-            s2.add(card.art2 & " ")
-            s3.add(card.art3 & " ")
-            s4.add(card.art4 & " ")
-            s5.add(card.art5 & " ")
-            s6.add(card.art6 & " ")
-            s7.add(card.art7 & " ")
-            s8.add(card.art8 & " ")
-            s9.add(card.art9 & " ")
+            s0.add(card.art0 & "  ")
+            s1.add(card.art1 & "  ")
+            s2.add(card.art2 & "  ")
+            s3.add(card.art3 & "  ")
+            s4.add(card.art4 & "  ")
+            s5.add(card.art5 & "  ")
+            s6.add(card.art6 & "  ")
+            s7.add(card.art7 & "  ")
+            s8.add(card.art8 & "  ")
+            s9.add(card.art9 & "  ")
     for s in [s0,s1,s2,s3,s4,s5,s6,s7,s8,s9]:
         echo s
 
@@ -1165,5 +1165,14 @@ proc print_all_suits() =
         print_suit(i)
         echo ""
 
+proc print_at_pos*(card:Card, xpos=1, ypos=1) =
+    let arts = [ card.art0, card.art1, card.art2, card.art3, card.art4,
+                 card.art5, card.art6, card.art7, card.art8, card.art9 ]
+    var cur_x = xpos
+    var cur_y = ypos
 
-# print_all_suits()
+    for line in arts:
+        if cur_y > max_screen_height: break
+        stdout.write("\e[" & $cur_y & ";" & $cur_x & "H")
+        stdout.write(line)
+        cur_y.inc(1)
