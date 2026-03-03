@@ -1204,6 +1204,6 @@ proc print_at_pos*(card:Card, xpos=1, ypos=1) =
 
     for line in arts:
         if cur_y > max_screen_height: break
-        stdout.write("\e[" & $cur_y & ";" & $cur_x & "H")
+        move_cursor_to_pos(cur_x,cur_y)
         stdout.write(line)
         cur_y.inc(1)

@@ -412,4 +412,5 @@ proc insert_row*(mystrings: varargs[string]) =
 
     echo final_string
 
-
+proc move_cursor_to_pos*(xpos=1, ypos=1) =
+    stdout.write("\e[" & $ypos & ";" & $xpos & "H")

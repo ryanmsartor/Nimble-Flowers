@@ -182,15 +182,15 @@ proc take_turn*(player: Player, game: RuleSet) =
 
         while selected_index notin options:
             clear_screen()
-            stdout.write("\e[2;1H")
+            move_cursor_to_pos(1,2)
             echo_centered: "-= The field: =-"
             field.display_zone_ascii_two_rows(3,3)
-            stdout.write("\e[30;1H")
+            move_cursor_to_pos(1,30)
             echo_centered: "-= Your hand: =-"
             player.hand.display_zone_ascii_one_row(2,31)
             echo ""
             display_deck()
-            stdout.write("\e[26;1H")
+            move_cursor_to_pos(1,26)
             selected_index = prompt("Enter the number of the card you'd like to play from your hand. > ")
             if selected_index in quit_commands: quit_game()
         
