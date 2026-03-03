@@ -130,7 +130,7 @@ proc display_zone_ascii_one_row*(zone: Zone, xpos=1, ypos=1) =
     var
         cur_x = xpos
         cur_y = ypos
-        offset = 7
+        offset = 0
     if zone.len() <= 6: offset = 13
     elif zone.len() == 7: offset = 11
     elif zone.len() == 8: offset = 9
@@ -139,8 +139,36 @@ proc display_zone_ascii_one_row*(zone: Zone, xpos=1, ypos=1) =
     else: offset = 6
 
     for card in zone:
-        card.print_at_pos(cur_X,cur_y)
+        card.print_at_pos(cur_x,cur_y)
         cur_x.inc(offset)
+
+proc display_zone_ascii_two_rows*(zone: Zone, xpos=1, ypos=1) =
+    var
+        cur_x = xpos
+        cur_y = ypos
+        offset = 0
+    if zone.len() <= 6: offset = 14
+    elif zone.len() <= 8: offset = 12
+    elif zone.len() <= 10: offset = 11
+    elif zone.len() <= 12: offset = 9
+    elif zone.len() <= 14: offset = 8
+    elif zone.len() <= 16: offset = 7
+    elif zone.len() <= 18: offset = 6
+    else: offset = 5
+
+    for i, card in zone:
+        card.print_at_pos(cur_x,cur_y)
+        if (i+1) mod 2 == 1:    # odd -> move down
+            cur_y.inc(11)
+        else:               # even -> move right and back up
+            cur_y.dec(11)
+            cur_x.inc(offset)
+    stdout.flushFile()
+
+proc display_deck*(xpos=63,ypos=10) =
+    for i in 0 .. 3:
+        card_back.print_at_pos(xpos + i, ypos - i)
+    stdout.flushFile()
 
 
 proc take_turn*(player: Player, game: RuleSet) =
@@ -148,20 +176,21 @@ proc take_turn*(player: Player, game: RuleSet) =
         selected_index = ""
         selected_card: Card
 
-
     case player.play_style:
     of "human":
         let options = generate_string_range(1,player.hand.len)
 
         while selected_index notin options:
+            clear_screen()
+            stdout.write("\e[2;1H")
+            echo_centered: "-= The field: =-"
+            field.display_zone_ascii_two_rows(3,3)
+            stdout.write("\e[30;1H")
+            echo_centered: "-= Your hand: =-"
+            player.hand.display_zone_ascii_one_row(2,31)
             echo ""
-            echo_centered: "The field:"
-            display_zone_table(field)
-            echo ""
-            echo_centered: "Your hand:"
-            display_zone_table(player.hand)
-            echo ""
-
+            display_deck()
+            stdout.write("\e[26;1H")
             selected_index = prompt("Enter the number of the card you'd like to play from your hand. > ")
             if selected_index in quit_commands: quit_game()
         
