@@ -31,7 +31,8 @@ while true:
     of "play":
         deal(game_mode)
         take_turn(p1, game_mode)
-        show_zones_debug()
+
+    # of "help":
 
     # of "view rules":
 

@@ -88,6 +88,7 @@ type
         set_teyaku_list*: seq[SetTeyaku]
         chaff_teyaku_list*: seq[ChaffTeyaku]
         can_koikoi*: bool
+        suit_system*: string
         hachi_matching*: bool
         zero_sum*: bool
         target_score*: int
@@ -169,6 +170,37 @@ const
 
 let ansiRegex* = re"\e\[[0-9;]*m"
 
+
+
+
+##### ANSI PROCS #####
+
+proc move_cursor_to_pos*(xpos=1, ypos=1) =
+    stdout.write("\e[" & $ypos & ";" & $xpos & "H")
+
+proc rainbow_fg*(str: string): string = 
+    const colormap = [ fg_pine, fg_plum, fg_cherry,
+                       fg_wisteria, fg_iris, fg_peony,
+                       fg_clover, fg_grass, fg_mum,
+                       fg_maple, fg_willow, fg_paulownia ]
+    for c in 0 .. str.len()-1:
+        var i = c mod 12
+        result.add(colormap[i])
+        result.add(str[c])
+    result.add(fg_reset)
+    return result
+
+proc rainbow_bg*(str: string): string = 
+    const colormap = [ bg_pine, bg_plum, bg_cherry,
+                       bg_wisteria, bg_iris, bg_peony,
+                       bg_clover, bg_grass, bg_mum,
+                       bg_maple, bg_willow, bg_paulownia ]
+    for c in 0 .. str.len()-1:
+        var i = c mod 12
+        result.add(colormap[i])
+        result.add(str[c])
+    result.add(bg_reset)
+    return result
 
 
 ##### SCREEN WIPES #####
@@ -412,5 +444,3 @@ proc insert_row*(mystrings: varargs[string]) =
 
     echo final_string
 
-proc move_cursor_to_pos*(xpos=1, ypos=1) =
-    stdout.write("\e[" & $ypos & ";" & $xpos & "H")

@@ -9,20 +9,21 @@ import nf_yaku
 ##### MAIN MENU #####
 
 proc print_title_card() =
-    echo "\n"
-    echo_centered "~~ Nimble Flowers ~~"
-    echo_centered "(c) RMS 2026"
+    echo "\n\n\n"
+    echo_centered text_bold & "~~ Nimble Flowers ~~".rainbow_fg()
     echo ""
+    echo_centered "(c) RMS 2026" & text_reset
+    echo "\n"
 
 proc present_game_modes() =
     current_table_style = narrowStyle
     insert_div()
-    insert_row("Choose a game mode by typing its number.")
+    insert_row(text_bold & "Choose a game mode by typing its number." & text_reset)
     insert_row("")
-    insert_row("","1)", "Bakappana","")
-    insert_row("","2)", "Ropyakken","")
-    insert_row("","3)","Mushi", "")
-    insert_row("","4)", "Hachi","")
+    insert_row(fg_pine,"1)", "Bakappana", fg_reset)
+    insert_row(fg_plum,"2)", "Mushi", fg_reset)
+    insert_row(fg_cherry,"3)","Ropyakken", fg_reset)
+    insert_row(fg_wisteria,"4)", "Hachi", fg_reset)
     insert_div()
     insert_row("q) QUIT Nimble Flowers")
     insert_div()
@@ -38,8 +39,8 @@ proc select_game_mode*(): RuleSet =
     case user_selection:
         of quit_commands: quit_game()
         of "1": return bakappana
-        of "2": return ropyakken
-        of "3": return mushi
+        of "2": return mushi
+        of "3": return ropyakken
         of "4": return hachi
 
 
@@ -77,7 +78,7 @@ proc pre_game_config*(game: RuleSet) =
     of "3":
         program_state = "customize yaku"
     of "4":
-        program_state = "main_menu"
+        program_state = "main menu"
 
 
 ##### CUSTOMIZE RULES MENU #####

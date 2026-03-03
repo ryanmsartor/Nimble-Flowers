@@ -1,6 +1,7 @@
 
 import random
 import std/sequtils
+import std/strutils
 import nf_common
 import nf_cards
 
@@ -75,56 +76,7 @@ proc deal*(game: RuleSet) =
 
 
 
-
-
-
-
-proc get_matches*(mycard: Card, zone_to_check: Zone, suit_system="standard", hachi_matching=false): seq[Card] =
-    var mysuit, suit: Suit
-    for card in zone_to_check:
-        if hachi_matching:
-            case suit_system:
-            of "standard":
-                mysuit = mycard.standard_suit
-                suit = card.standard_suit
-            of "mushi": 
-                mysuit = mycard.mushi_suit
-                suit = card.mushi_suit
-            else:
-                mysuit = mycard.nagoya_suit
-                suit = card.nagoya_suit
-            if (mysuit + suit) mod 5 == 3:
-                result.add(card)
-        else:
-            if mycard.standard_suit == card.standard_suit:
-                result.add(card)
-
-
-
-
-proc display_zone_table*(zone: Zone) = 
-    let
-        handsize = zone.len()
-        num_doubles = handsize div 2
-        oddNumCards = (handsize mod 2 == 1)
-
-    current_table_style = defaultStyle # global
-    insert_div()
-
-    for i in 0 .. (num_doubles - 1):
-        let
-            c1 = zone[(2*i)].short_name
-            c2 = zone[(2*i) + 1].short_name
-            i1 = $((2*i)+1) & ") "
-            i2 = $((2*i)+2) & ") "
-        insert_row(i1 & c1, i2 & c2)
-    if oddNumCards:
-        let
-            c1 = zone[^1].short_name
-            i1 = $zone.len & ") "
-        insert_row(i1 & c1,"")
-        
-    insert_div()
+##### DISPLAY STUFF: THE UI #####
 
 proc display_zone_ascii_one_row*(zone: Zone, xpos=1, ypos=1) =
     var
@@ -173,7 +125,6 @@ proc display_deck*(xpos=63,ypos=10) =
     stdout.flushFile()
 
 
-
 proc display_gamestate*(player = p1) =
     clear_screen()
     move_cursor_to_pos(1,2)
@@ -187,12 +138,43 @@ proc display_gamestate*(player = p1) =
 
 
 
+##### GAMEPLAY STUFF: A TURN #####
 
+proc get_matches*(mycard: Card, zone_to_check: Zone, suit_system="standard", hachi_matching=false): seq[Card] =
+    var mysuit, suit: Suit
+    for card in zone_to_check:
+        if hachi_matching:
+            case suit_system:
+            of "standard":
+                mysuit = mycard.standard_suit
+                suit = card.standard_suit
+            of "mushi": 
+                mysuit = mycard.mushi_suit
+                suit = card.mushi_suit
+            else:
+                mysuit = mycard.nagoya_suit
+                suit = card.nagoya_suit
+            if (mysuit + suit) mod 5 == 3:
+                result.add(card)
+        else:
+            if mycard.standard_suit == card.standard_suit:
+                result.add(card)
+
+proc capture_cards(player: Player, cards: seq[Card]) =
+    for c in cards:
+        player.captured.add(c)
+        field.keepItIf(it != c)
+        player.hand.keepItIf(it != c)
+
+proc discard_to_field(player: Player, card: Card) =
+    player.hand.keepItIf(it != card)
+    field.add(card)
 
 proc take_turn*(player: Player, game: RuleSet) =
     var 
         selected_index = ""
         selected_card: Card
+        matches_on_field: seq[Card]
 
     case player.play_style:
     of "human":
@@ -202,49 +184,17 @@ proc take_turn*(player: Player, game: RuleSet) =
             move_cursor_to_pos(1,26)
             selected_index = prompt("Enter the number of the card you'd like to play from your hand. > ")
             if selected_index in quit_commands: quit_game()
-        
-
+        selected_card = player.hand[parseInt(selected_index) - 1]
+        matches_on_field = selected_card.get_matches(field,game.suit_system,game.hachi_matching)
+        case matches_on_field.len():
+            of 0:
+                player.discard_to_field(selected_card)
+            of 1, 3:
+                player.capture_cards(@[selected_card] & matches_on_field)
+            of 2:
+                discard
+            else:
+                discard
     else:
         discard
 
-
-
-
-
-
-proc show_zones_debug*() =
-    echo_centered r"  ______  "
-    echo_centered r"/`field:`\"
-    display_zone_table(field)
-    echo ""
-    echo_centered r"  ________ "
-    echo_centered r"/`p1 hand:`\"
-    display_zone_table(p1.hand)
-    echo ""
-    echo_centered r"  ________ "
-    echo_centered r"/`p2 hand:`\"
-    display_zone_table(p2.hand)
-    echo ""
-    echo_centered r"  ________ "
-    echo_centered r"/`p3 hand:`\"
-    display_zone_table(p3.hand)
-    echo ""
-    echo_centered r"  ________ "
-    echo_centered r"/`p4 hand:`\"
-    display_zone_table(p4.hand)
-    echo ""
-    echo_centered r"  ________ "
-    echo_centered r"/`p5 hand:`\"
-    display_zone_table(p5.hand)
-    echo ""
-    echo_centered r"  ________ "
-    echo_centered r"/`p6 hand:`\"
-    display_zone_table(p6.hand)
-    echo ""
-    echo_centered r"  ________ "
-    echo_centered r"/`p7 hand:`\"
-    display_zone_table(p7.hand)
-    echo ""
-    echo_centered r"  ________ "
-    echo_centered r"/`p8 hand:`\"
-    display_zone_table(p8.hand)
