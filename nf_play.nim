@@ -168,7 +168,25 @@ proc display_zone_ascii_two_rows*(zone: Zone, xpos=1, ypos=1) =
 proc display_deck*(xpos=63,ypos=10) =
     for i in 0 .. 3:
         card_back.print_at_pos(xpos + i, ypos - i)
+    move_cursor_to_pos(xpos + 8, ypos + 2)
+    stdout.write($current_deck.len())
     stdout.flushFile()
+
+
+
+proc display_gamestate*(player = p1) =
+    clear_screen()
+    move_cursor_to_pos(1,2)
+    echo_centered: "-= The field: =-"
+    field.display_zone_ascii_two_rows(3,3)
+    move_cursor_to_pos(1,30)
+    echo_centered: "-= Your hand: =-"
+    player.hand.display_zone_ascii_one_row(2,31)
+    echo ""
+    display_deck()
+
+
+
 
 
 proc take_turn*(player: Player, game: RuleSet) =
@@ -179,17 +197,8 @@ proc take_turn*(player: Player, game: RuleSet) =
     case player.play_style:
     of "human":
         let options = generate_string_range(1,player.hand.len)
-
         while selected_index notin options:
-            clear_screen()
-            move_cursor_to_pos(1,2)
-            echo_centered: "-= The field: =-"
-            field.display_zone_ascii_two_rows(3,3)
-            move_cursor_to_pos(1,30)
-            echo_centered: "-= Your hand: =-"
-            player.hand.display_zone_ascii_one_row(2,31)
-            echo ""
-            display_deck()
+            display_gamestate(player)
             move_cursor_to_pos(1,26)
             selected_index = prompt("Enter the number of the card you'd like to play from your hand. > ")
             if selected_index in quit_commands: quit_game()
