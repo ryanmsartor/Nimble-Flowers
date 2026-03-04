@@ -22,6 +22,7 @@ PaPyr Flowers was created using Python 3.11.
 - how many and what computer playstyles?
 - how much narration?
 - how many, and which, game speeds?
+- support user-provided seeds?
 
 ### To do:
 

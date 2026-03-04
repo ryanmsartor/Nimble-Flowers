@@ -1,3 +1,6 @@
+# nf_play.nim
+#
+# This file contains all the stuff for actual gameplay, i.e. not menus and junk
 
 import std/os
 import std/random
@@ -23,58 +26,7 @@ var
     p7* = Player(name:"Francis", play_style: always_choose_first)
     p8* = Player(name:"Giovanni", play_style: always_choose_first)
     current_players*: seq[Player]
-
-
-##### START OF ROUND: THE DEAL #####
-
-proc reset_zones*() =
-    current_deck = full_deck
-    field.setLen(0)
-
-    p1.hand.setLen(0)
-    p2.hand.setLen(0)
-    p3.hand.setLen(0)
-    p4.hand.setLen(0)
-    p5.hand.setLen(0)
-    p6.hand.setLen(0)
-    p7.hand.setLen(0)
-    p8.hand.setLen(0)
-
-    p1.captured.setLen(0)
-    p2.captured.setLen(0)
-    p3.captured.setLen(0)
-    p4.captured.setLen(0)
-    p5.captured.setLen(0)
-    p6.captured.setLen(0)
-    p7.captured.setLen(0)
-    p8.captured.setLen(0)
-
-
-# used for side effects only, no return
-proc gather_players(game: RuleSet): seq[Player] =
-    result = @[p1, p2]
-    if game.num_players >= 3: result.add(p3)
-    if game.num_players >= 4: result.add(p4)
-    if game.num_players >= 5: result.add(p5)
-    if game.num_players >= 6: result.add(p6)
-    if game.num_players >= 7: result.add(p7)
-    if game.num_players >= 8: result.add(p8)
-
-proc deal*(game: RuleSet) =
-    reset_zones() # ensure fresh start
-    current_players = gather_players(game)
-
-    # strip deck to e.g. 40 cards for mushi if appropriate
-    current_deck = full_deck.filterIt(it notin game.cards_stripped)
-    shuffle(current_deck)
-
-    if game.num_cards_field > 0:
-        for i in 1 .. game.num_cards_field:
-            field.add(current_deck.pop())
-    
-    for player in current_players:
-        for i in 1 .. game.num_cards_hand:
-            player.hand.add(current_deck.pop())
+    dealer_index: int
 
 
 
@@ -138,6 +90,8 @@ proc display_gamestate*(player = p1) =
     echo ""
     display_deck()
 
+
+# you usually wanna use this immediately following display_gamestate()
 proc in_game_message*(str="") =
     move_cursor_to_pos(1,26)
     case global_settings["game speed"]:
@@ -149,6 +103,92 @@ proc in_game_message*(str="") =
     of "slower": echo str; sleep(4000)
     of "slowest": echo str; sleep(5000)
     else: discard prompt(str & " <enter>")
+
+
+
+##### START OF GAME: SET UP AND CHOOSE A DEALER #####
+
+proc reset_zones*() =
+    current_deck = full_deck
+    field.setLen(0)
+
+    p1.hand.setLen(0)
+    p2.hand.setLen(0)
+    p3.hand.setLen(0)
+    p4.hand.setLen(0)
+    p5.hand.setLen(0)
+    p6.hand.setLen(0)
+    p7.hand.setLen(0)
+    p8.hand.setLen(0)
+
+    p1.captured.setLen(0)
+    p2.captured.setLen(0)
+    p3.captured.setLen(0)
+    p4.captured.setLen(0)
+    p5.captured.setLen(0)
+    p6.captured.setLen(0)
+    p7.captured.setLen(0)
+    p8.captured.setLen(0)
+
+
+proc gather_players(game: RuleSet): seq[Player] =
+    result = @[p1, p2]
+    if game.num_players >= 3: result.add(p3)
+    if game.num_players >= 4: result.add(p4)
+    if game.num_players >= 5: result.add(p5)
+    if game.num_players >= 6: result.add(p6)
+    if game.num_players >= 7: result.add(p7)
+    if game.num_players >= 8: result.add(p8)
+
+
+proc choose_first_dealer(game: RuleSet): int =
+    let count = game.num_players
+    result = rand(count - 1)
+
+
+proc set_up_game*(game: RuleSet) =
+    reset_zones() # ensure fresh start
+    current_players = gather_players(game)
+    dealer_index = choose_first_dealer(game)
+    let dealer = current_players[dealer_index]
+    display_gamestate()
+    in_game_message(dealer.name & " has been randomly chosen to be the first dealer.")
+
+
+
+##### START OF ROUND: THE DEAL #####
+
+proc deal*(game: RuleSet) =
+
+    # get dealer, and move the cycle forward for the next deal.
+    let dealer = current_players[dealer_index]
+    dealer_index.inc(1)
+    if dealer_index >= current_players.len(): dealer_index = 0
+
+    reset_zones() # make sure we get a clean start
+
+    # strip deck to e.g. 40 cards for mushi if appropriate
+    current_deck = full_deck.filterIt(it notin game.cards_stripped)
+    shuffle(current_deck)
+
+    display_gamestate()
+    in_game_message(dealer.name & " has prepared and shuffled the deck.")
+
+    if game.num_cards_field > 0:
+        for i in 1 .. game.num_cards_field:
+            field.add(current_deck.pop())
+    
+    display_gamestate()
+    in_game_message(dealer.name & " has distributed " & $game.num_cards_field & " cards to the field.")
+
+    for player in current_players:
+        for i in 1 .. game.num_cards_hand:
+            player.hand.add(current_deck.pop())
+
+    display_gamestate()
+    in_game_message("Each player gets " & $game.num_cards_hand & " cards to make up their hand.")
+
+
 
 ##### GAMEPLAY STUFF: A TURN #####
 
@@ -273,4 +313,5 @@ proc take_turn*(player: Player, game: RuleSet) =
     stdout.flushFile()
     in_game_message(player.name & " revealed " & deck_card.short_name & ".")
 
+    # and take the appropriate action based on number of matches of that one!
     handle_matches(player, deck_card, game)
