@@ -19,9 +19,19 @@ PaPyr Flowers was created using Python 3.11.
 - do we really wanna go up to 8 players?
 - do we wanna include any non-fishing games?
 - how many game modes to include?
+- how many and what computer playstyles?
+- how much narration?
+- how many, and which, game speeds?
 
 ### To do:
 
+- flip from deck
+- proper gameplay loop
+- scoring
 - add Card.jp_name
 - fill out Card.alt_names (take straight from PPF?)
 - select card by alt_names
+- change some strings to enums
+    - RuleSet.point_values
+    - RuleSet.suit_system
+    - game speeds

@@ -1,7 +1,9 @@
 
-import random
+import std/os
+import std/random
 import std/sequtils
 import std/strutils
+import std/tables
 import nf_common
 import nf_cards
 
@@ -12,14 +14,14 @@ randomize()
 var
     current_deck*: Zone
     field*: Zone
-    p1* = Player(name:"you", play_style:"human")
-    p2* = Player(name:"Al")
-    p3* = Player(name:"Bri")
-    p4* = Player(name:"Curt")
-    p5* = Player(name:"David")
-    p6* = Player(name:"Evelyn")
-    p7* = Player(name:"Francis")
-    p8* = Player(name:"Giovanni")
+    p1* = Player(name:"You", play_style: human)
+    p2* = Player(name:"Al", play_style: always_choose_first)
+    p3* = Player(name:"Bri", play_style: always_choose_first)
+    p4* = Player(name:"Curt", play_style: always_choose_first)
+    p5* = Player(name:"David", play_style: always_choose_first)
+    p6* = Player(name:"Evelyn", play_style: always_choose_first)
+    p7* = Player(name:"Francis", play_style: always_choose_first)
+    p8* = Player(name:"Giovanni", play_style: always_choose_first)
     current_players*: seq[Player]
 
 
@@ -136,7 +138,18 @@ proc display_gamestate*(player = p1) =
     echo ""
     display_deck()
 
-
+proc in_game_message*(str="") =
+    display_gamestate()
+    move_cursor_to_pos(1,26)
+    case global_settings["game speed"]:
+    of "fastest": echo str; sleep(500)
+    of "faster": echo str; sleep(1000)
+    of "fast": echo str; sleep(1500)
+    of "medium": echo str; sleep(2000)
+    of "slow": echo str; sleep(3000)
+    of "slower": echo str; sleep(4000)
+    of "slowest": echo str; sleep(5000)
+    else: discard prompt(str & " <enter>")
 
 ##### GAMEPLAY STUFF: A TURN #####
 
@@ -160,41 +173,89 @@ proc get_matches*(mycard: Card, zone_to_check: Zone, suit_system="standard", hac
             if mycard.standard_suit == card.standard_suit:
                 result.add(card)
 
+
 proc capture_cards(player: Player, cards: seq[Card]) =
     for c in cards:
         player.captured.add(c)
         field.keepItIf(it != c)
         player.hand.keepItIf(it != c)
 
+
 proc discard_to_field(player: Player, card: Card) =
     player.hand.keepItIf(it != card)
     field.add(card)
+
+
+proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
+    var selection: string
+
+    # Player.play_style determines HOW field card is chosen
+    case player.play_style:
+    of human:
+        let options = @["1","2"]
+        while selection notin options:
+            display_gamestate(player)
+            move_cursor_to_pos(1,26)
+            selection = prompt("Select which card to capture [1 or 2] > ")
+            if selection in quit_commands: quit_game()
+
+    of always_choose_first:
+        selection = "1"
+
+    # translate the returned "1" or "2" to an actual card to return
+    if selection == "1": result = c1
+    else: result = c2
+
+    # tell the player what the pick was.
+    in_game_message(player.name & " picked " & result.full_name & ".")
+
+    return result
+
 
 proc take_turn*(player: Player, game: RuleSet) =
     var 
         selected_index = ""
         selected_card: Card
         matches_on_field: seq[Card]
+        deck_card: Card
 
+    # first, select a card from one's hand to play.
     case player.play_style:
-    of "human":
+    of human:
         let options = generate_string_range(1,player.hand.len)
         while selected_index notin options:
             display_gamestate(player)
             move_cursor_to_pos(1,26)
             selected_index = prompt("Enter the number of the card you'd like to play from your hand. > ")
             if selected_index in quit_commands: quit_game()
-        selected_card = player.hand[parseInt(selected_index) - 1]
-        matches_on_field = selected_card.get_matches(field,game.suit_system,game.hachi_matching)
-        case matches_on_field.len():
-            of 0:
-                player.discard_to_field(selected_card)
-            of 1, 3:
-                player.capture_cards(@[selected_card] & matches_on_field)
-            of 2:
-                discard
-            else:
-                discard
-    else:
-        discard
 
+    of always_choose_first:
+        selected_index = "1"
+
+    # second, narrate what card that was
+    selected_card = player.hand[parseInt(selected_index) - 1]
+    in_game_message(player.name & " played " & selected_card.full_name & ".")
+    
+    # third, count the number of matches, for next steps.
+    matches_on_field = selected_card.get_matches(field,game.suit_system,game.hachi_matching)
+    case matches_on_field.len():
+    of 0:
+        player.discard_to_field(selected_card)
+        in_game_message("No matches, so it sticks to the field.")
+
+    of 2:
+        let picked_card = player.pick_to_capture_between(matches_on_field[0], matches_on_field[1])
+        player.capture_cards(@[selected_card, picked_card])
+        in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
+
+    else:       # 1, 3, or maaaybe even 4
+        player.capture_cards(@[selected_card] & matches_on_field)
+        if matches_on_field.len == 1:
+            in_game_message(player.name & " captured " & selected_card.short_name & " & " & matches_on_field[0].short_name & ".")
+        elif matches_on_field.len == 3:
+            in_game_message(player.name & " captured the whole suit!")
+            ## TODO: carve out len == 3 for wild card
+            ## TODO: len > 3 (follow similar logic to 3 for wild card)
+
+    # Next, flip a card from the deck!    
+    

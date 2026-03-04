@@ -15,6 +15,8 @@ type
     NumHands* = range[0..24]
     NumField* = range[0..48]
     CardPointValue* = range[0..50]
+    PlayStyle* = enum
+        human, always_choose_first
     
     Card* = object
         full_name*: string
@@ -50,7 +52,7 @@ type
         current_card_score*: int
         overall_score*: int
         rounds_won*: uint8
-        play_style*: string # difficulty level
+        play_style*: PlayStyle
 
     Dekiyaku* = object
         name*: string
@@ -173,7 +175,7 @@ let ansiRegex* = re"\e\[[0-9;]*m"
 
 
 
-##### ANSI PROCS #####
+##### ANSI CONTROL PROCS #####
 
 proc move_cursor_to_pos*(xpos=1, ypos=1) =
     stdout.write("\e[" & $ypos & ";" & $xpos & "H")
@@ -203,7 +205,6 @@ proc rainbow_bg*(str: string): string =
     return result
 
 
-##### SCREEN WIPES #####
 
 proc init_screen*() =
     stdout.write(enter_alt_screen)
@@ -224,6 +225,7 @@ proc clear_screen*() =
 
 # this global drives which menu or game screen to go to.
 var program_state* = "main menu"
+var global_settings* = { "game speed": "medium" }.toTable
 
 proc prompt*(text: string): string =
     stdout.write(text)
@@ -237,8 +239,6 @@ proc quit_game*() =
 proc generate_string_range*(min:int, max:int): seq[string] =
     for i in min..max:
         result.add($i)
-
-
 
 ##### TABLE AND LAYOUT CONSTRUCTION #####
 
