@@ -25,7 +25,8 @@ PaPyr Flowers was created using Python 3.11.
 
 ### To do:
 
-- flip from deck
+
+- choose who goes first
 - proper gameplay loop
 - scoring
 - add Card.jp_name

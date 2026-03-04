@@ -182,6 +182,7 @@ proc capture_cards(player: Player, cards: seq[Card]) =
 
 proc discard_to_field(player: Player, card: Card) =
     player.hand.keepItIf(it != card)
+    current_deck.keepItIf(it != card)
     field.add(card)
 
 
@@ -212,11 +213,36 @@ proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
     return result
 
 
+proc handle_matches(player: Player, card:Card, game:RuleSet) =
+    var matches_on_field = card.get_matches(field,game.suit_system,game.hachi_matching)
+    case matches_on_field.len():
+    of 0:
+        player.discard_to_field(card)
+        display_gamestate()
+        in_game_message("No matches, so it sticks to the field.")
+
+    of 2:
+        let picked_card = player.pick_to_capture_between(matches_on_field[0], matches_on_field[1])
+        player.capture_cards(@[card, picked_card])
+        display_gamestate()
+        in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
+
+    else:       # 1, 3, or maaaybe even 4
+        player.capture_cards(@[card] & matches_on_field)
+        if matches_on_field.len == 1:
+            display_gamestate()
+            in_game_message(player.name & " captured " & card.short_name & " & " & matches_on_field[0].short_name & ".")
+        elif matches_on_field.len == 3:
+            display_gamestate()
+            in_game_message(player.name & " captured the whole suit!")
+            ## TODO: carve out len == 3 for wild card
+            ## TODO: len > 3 (follow similar logic to 3 for wild card)
+
+
 proc take_turn*(player: Player, game: RuleSet) =
     var 
         selected_index = ""
         selected_card: Card
-        matches_on_field: seq[Card]
         deck_card: Card
 
     # first, select a card from one's hand to play.
@@ -226,7 +252,7 @@ proc take_turn*(player: Player, game: RuleSet) =
         while selected_index notin options:
             display_gamestate(player)
             move_cursor_to_pos(1,26)
-            selected_index = prompt("Enter the number of the card you'd like to play from your hand. > ")
+            selected_index = prompt("Play a card from your hand. > ")
             if selected_index in quit_commands: quit_game()
 
     of always_choose_first:
@@ -237,30 +263,8 @@ proc take_turn*(player: Player, game: RuleSet) =
     display_gamestate()
     in_game_message(player.name & " played " & selected_card.full_name & ".")
     
-    # third, count the number of matches, for next steps.
-    matches_on_field = selected_card.get_matches(field,game.suit_system,game.hachi_matching)
-    case matches_on_field.len():
-    of 0:
-        player.discard_to_field(selected_card)
-        display_gamestate()
-        in_game_message("No matches, so it sticks to the field.")
-
-    of 2:
-        let picked_card = player.pick_to_capture_between(matches_on_field[0], matches_on_field[1])
-        player.capture_cards(@[selected_card, picked_card])
-        display_gamestate()
-        in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
-
-    else:       # 1, 3, or maaaybe even 4
-        player.capture_cards(@[selected_card] & matches_on_field)
-        if matches_on_field.len == 1:
-            display_gamestate()
-            in_game_message(player.name & " captured " & selected_card.short_name & " & " & matches_on_field[0].short_name & ".")
-        elif matches_on_field.len == 3:
-            display_gamestate()
-            in_game_message(player.name & " captured the whole suit!")
-            ## TODO: carve out len == 3 for wild card
-            ## TODO: len > 3 (follow similar logic to 3 for wild card)
+    # third, count the number of matches and take the appropriate action.
+    handle_matches(player, selected_card, game)
 
     # Next, flip a card from the deck!    
     deck_card = current_deck.pop()
@@ -268,3 +272,5 @@ proc take_turn*(player: Player, game: RuleSet) =
     deck_card.print_at_pos(66,7)
     stdout.flushFile()
     in_game_message(player.name & " revealed " & deck_card.short_name & ".")
+
+    handle_matches(player, deck_card, game)
