@@ -139,7 +139,6 @@ proc display_gamestate*(player = p1) =
     display_deck()
 
 proc in_game_message*(str="") =
-    display_gamestate()
     move_cursor_to_pos(1,26)
     case global_settings["game speed"]:
     of "fastest": echo str; sleep(500)
@@ -207,6 +206,7 @@ proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
     else: result = c2
 
     # tell the player what the pick was.
+    display_gamestate()
     in_game_message(player.name & " picked " & result.full_name & ".")
 
     return result
@@ -234,6 +234,7 @@ proc take_turn*(player: Player, game: RuleSet) =
 
     # second, narrate what card that was
     selected_card = player.hand[parseInt(selected_index) - 1]
+    display_gamestate()
     in_game_message(player.name & " played " & selected_card.full_name & ".")
     
     # third, count the number of matches, for next steps.
@@ -241,21 +242,29 @@ proc take_turn*(player: Player, game: RuleSet) =
     case matches_on_field.len():
     of 0:
         player.discard_to_field(selected_card)
+        display_gamestate()
         in_game_message("No matches, so it sticks to the field.")
 
     of 2:
         let picked_card = player.pick_to_capture_between(matches_on_field[0], matches_on_field[1])
         player.capture_cards(@[selected_card, picked_card])
+        display_gamestate()
         in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
 
     else:       # 1, 3, or maaaybe even 4
         player.capture_cards(@[selected_card] & matches_on_field)
         if matches_on_field.len == 1:
+            display_gamestate()
             in_game_message(player.name & " captured " & selected_card.short_name & " & " & matches_on_field[0].short_name & ".")
         elif matches_on_field.len == 3:
+            display_gamestate()
             in_game_message(player.name & " captured the whole suit!")
             ## TODO: carve out len == 3 for wild card
             ## TODO: len > 3 (follow similar logic to 3 for wild card)
 
     # Next, flip a card from the deck!    
-    
+    deck_card = current_deck.pop()
+    display_gamestate()
+    deck_card.print_at_pos(66,7)
+    stdout.flushFile()
+    in_game_message(player.name & " revealed " & deck_card.short_name & ".")
