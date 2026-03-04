@@ -29,9 +29,7 @@ while true:
         game_mode = game_mode.customize_yaku()
 
     of "play":
-        game_mode.set_up_game()
-        deal(game_mode)
-        take_turn(p1, game_mode)
+        game_mode.play_full_match()
 
     # of "help":
 

@@ -27,6 +27,7 @@ var
     p8* = Player(name:"Giovanni", play_style: always_choose_first)
     current_players*: seq[Player]
     dealer_index: int
+    player_index: int
 
 
 
@@ -162,8 +163,6 @@ proc deal*(game: RuleSet) =
 
     # get dealer, and move the cycle forward for the next deal.
     let dealer = current_players[dealer_index]
-    dealer_index.inc(1)
-    if dealer_index >= current_players.len(): dealer_index = 0
 
     reset_zones() # make sure we get a clean start
 
@@ -315,3 +314,45 @@ proc take_turn*(player: Player, game: RuleSet) =
 
     # and take the appropriate action based on number of matches of that one!
     handle_matches(player, deck_card, game)
+
+
+
+##### PLAY A FULL ROUND #####
+
+proc rotate_player() =
+    player_index.inc(1)
+    if player_index >= current_players.len(): player_index = 0
+
+proc rotate_dealer() =
+    dealer_index.inc(1)
+    if dealer_index >= current_players.len(): dealer_index = 0
+
+
+proc play_round(game: RuleSet, first_to_play: int) =
+    player_index = first_to_play   # initialize turn tracker
+
+    game.deal()
+
+    var num_playable_cards_remaining = 1 # ensure there's always at least one turn
+    while num_playable_cards_remaining > 0:
+
+        let current_player = current_players[player_index]
+        current_player.take_turn(game)
+
+        num_playable_cards_remaining = 0
+        for p in current_players:
+            num_playable_cards_remaining.inc(p.hand.len)
+
+        rotate_player()
+
+    rotate_dealer()
+
+
+
+proc play_full_match*(game: RuleSet) =
+
+    game.set_up_game()
+
+    # TODO: outer loop for multiple rounds
+
+    game.play_round(dealer_index)
