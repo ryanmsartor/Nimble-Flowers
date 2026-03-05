@@ -23,12 +23,14 @@ PaPyr Flowers was created using Python 3.11.
 - how much narration?
 - how many, and which, game speeds?
 - support user-provided seeds?
+- always rotate dealer, or allow winner to deal?
 
 ### To do:
 
-
+- build script yuck
 - choose who goes first
-- proper gameplay loop
+- more/better animation in-game
+- round wrapup
 - scoring
 - add Card.jp_name
 - fill out Card.alt_names (take straight from PPF?)

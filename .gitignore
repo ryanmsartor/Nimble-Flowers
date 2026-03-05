@@ -1,5 +1,5 @@
 workspace
-out
+build
 nimble_flowers
 nf_cards
 nf_menus

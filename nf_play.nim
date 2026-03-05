@@ -72,10 +72,20 @@ proc display_zone_ascii_two_rows*(zone: Zone, xpos=1, ypos=1) =
             cur_x.inc(offset)
     stdout.flushFile()
 
+proc get_deck_height(): int =
+    case current_deck.len():
+    of 0:     return -1
+    of 1..4:  return  0
+    of 5..8:  return  1
+    of 9..12: return  2
+    else:     return  3
+
 proc display_deck*(xpos=63,ypos=10) =
-    for i in 0 .. 3:
+    let i_max = get_deck_height()
+    if i_max == (-1): return
+    for i in 0 .. i_max:
         card_back.print_at_pos(xpos + i, ypos - i)
-    move_cursor_to_pos(xpos + 8, ypos + 2)
+    move_cursor_to_pos(xpos + i_max + 5, ypos - i_max + 5)
     stdout.write($current_deck.len())
     stdout.flushFile()
 
@@ -160,10 +170,7 @@ proc set_up_game*(game: RuleSet) =
 ##### START OF ROUND: THE DEAL #####
 
 proc deal*(game: RuleSet) =
-
-    # get dealer, and move the cycle forward for the next deal.
     let dealer = current_players[dealer_index]
-
     reset_zones() # make sure we get a clean start
 
     # strip deck to e.g. 40 cards for mushi if appropriate
@@ -239,6 +246,7 @@ proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
             if selection in quit_commands: quit_game()
 
     of always_choose_first:
+        display_gamestate()
         selection = "1"
 
     # translate the returned "1" or "2" to an actual card to return
@@ -291,7 +299,7 @@ proc take_turn*(player: Player, game: RuleSet) =
         while selected_index notin options:
             display_gamestate(player)
             move_cursor_to_pos(1,26)
-            selected_index = prompt("Play a card from your hand. > ")
+            selected_index = prompt(text_bold & "Play a card from your hand. > " & text_reset)
             if selected_index in quit_commands: quit_game()
 
     of always_choose_first:
@@ -305,10 +313,11 @@ proc take_turn*(player: Player, game: RuleSet) =
     # third, count the number of matches and take the appropriate action.
     handle_matches(player, selected_card, game)
 
-    # Next, flip a card from the deck!    
+    # Next, flip a card from the deck!
+    let h = get_deck_height()    # do this before the pop to ensure flipped card is at right coords
     deck_card = current_deck.pop()
     display_gamestate()
-    deck_card.print_at_pos(66,7)
+    deck_card.print_at_pos(63 + h, 10 - h)
     stdout.flushFile()
     in_game_message(player.name & " revealed " & deck_card.short_name & ".")
 
@@ -345,8 +354,6 @@ proc play_round(game: RuleSet, first_to_play: int) =
 
         rotate_player()
 
-    rotate_dealer()
-
 
 
 proc play_full_match*(game: RuleSet) =
@@ -356,3 +363,5 @@ proc play_full_match*(game: RuleSet) =
     # TODO: outer loop for multiple rounds
 
     game.play_round(dealer_index)
+    rotate_dealer()
+    display_gamestate()
