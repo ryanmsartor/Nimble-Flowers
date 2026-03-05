@@ -221,11 +221,14 @@ proc clear_screen*() =
 
 
 
+
 ##### GAME FLOW CONTROL #####
 
 # this global drives which menu or game screen to go to.
 var program_state* = "main menu"
-var global_settings* = { "game speed": "medium" }.toTable
+var global_settings* = { "game speed": "medium",
+                         "sfx volume": "off"
+                        }.toTable
 
 proc prompt*(text: string): string =
     stdout.write(text)
@@ -239,6 +242,9 @@ proc quit_game*() =
 proc generate_string_range*(min:int, max:int): seq[string] =
     for i in min..max:
         result.add($i)
+
+
+
 
 ##### TABLE AND LAYOUT CONSTRUCTION #####
 

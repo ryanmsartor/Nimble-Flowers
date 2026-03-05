@@ -33,44 +33,53 @@ var
 
 ##### DISPLAY STUFF: THE UI #####
 
-proc display_zone_ascii_one_row*(zone: Zone, xpos=1, ypos=1) =
-    var
-        cur_x = xpos
-        cur_y = ypos
-        offset = 0
-    if zone.len() <= 6: offset = 13
-    elif zone.len() == 7: offset = 11
-    elif zone.len() == 8: offset = 9
-    elif zone.len() == 9: offset = 8
-    elif zone.len() == 10: offset = 7
+proc get_one_row_coords*(zoneLen: int, index: int,
+                         xpos = 2, ypos = 31): (int, int) =
+    var offset: int
+
+    if zoneLen <= 6: offset = 13
+    elif zoneLen == 7: offset = 11
+    elif zoneLen == 8: offset = 9
+    elif zoneLen == 9: offset = 8
+    elif zoneLen == 10: offset = 7
     else: offset = 6
 
-    for card in zone:
-        card.print_at_pos(cur_x,cur_y)
-        cur_x.inc(offset)
+    let x = xpos + index * offset
+    let y = ypos
+    (x, y)
 
-proc display_zone_ascii_two_rows*(zone: Zone, xpos=1, ypos=1) =
-    var
-        cur_x = xpos
-        cur_y = ypos
-        offset = 0
-    if zone.len() <= 6: offset = 14
-    elif zone.len() <= 8: offset = 12
-    elif zone.len() <= 10: offset = 11
-    elif zone.len() <= 12: offset = 9
-    elif zone.len() <= 14: offset = 8
-    elif zone.len() <= 16: offset = 7
-    elif zone.len() <= 18: offset = 6
+proc display_zone_ascii_one_row*(zone: Zone, xpos=2, ypos=31) =
+    for i, card in zone:
+        let (x,y) = get_one_row_coords(zone.len,i,xpos,ypos)
+        card.print_at_pos(x,y)
+
+
+proc get_two_row_coords*(zoneLen: int, index: int,
+                         xpos = 3, ypos = 3): (int, int) =
+    var offset: int
+
+    if zoneLen <= 6: offset = 14
+    elif zoneLen <= 8: offset = 12
+    elif zoneLen <= 10: offset = 11
+    elif zoneLen <= 12: offset = 9
+    elif zoneLen <= 14: offset = 8
+    elif zoneLen <= 16: offset = 7
+    elif zoneLen <= 18: offset = 6
     else: offset = 5
 
+    let column = index div 2
+    let isTop = (index mod 2 == 0)
+
+    let x = xpos + column * offset
+    let y = if isTop: ypos else: ypos + 11
+
+    (x, y)
+
+proc display_zone_ascii_two_rows*(zone: Zone, xpos=3, ypos=3) =
     for i, card in zone:
-        card.print_at_pos(cur_x,cur_y)
-        if (i+1) mod 2 == 1:    # odd -> move down
-            cur_y.inc(11)
-        else:               # even -> move right and back up
-            cur_y.dec(11)
-            cur_x.inc(offset)
-    stdout.flushFile()
+        let (x,y) = get_two_row_coords(zone.len,i,xpos,ypos)
+        card.print_at_pos(x,y)
+
 
 proc get_deck_height(): int =
     case current_deck.len():
@@ -106,10 +115,10 @@ proc display_gamestate*(player = p1) =
 proc in_game_message*(str="") =
     move_cursor_to_pos(1,26)
     case global_settings["game speed"]:
-    of "fastest": echo str; sleep(500)
-    of "faster": echo str; sleep(1000)
-    of "fast": echo str; sleep(1500)
-    of "medium": echo str; sleep(2000)
+    of "fastest": echo str; sleep(250)
+    of "faster": echo str; sleep(500)
+    of "fast": echo str; sleep(1000)
+    of "medium": echo str; sleep(1500)
     of "slow": echo str; sleep(3000)
     of "slower": echo str; sleep(4000)
     of "slowest": echo str; sleep(5000)
@@ -242,7 +251,7 @@ proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
         while selection notin options:
             display_gamestate(player)
             move_cursor_to_pos(1,26)
-            selection = prompt("Select which card to capture [1 or 2] > ")
+            selection = prompt(text_bold & "Select which card to capture [1 or 2] > ")
             if selection in quit_commands: quit_game()
 
     of always_choose_first:
@@ -260,11 +269,17 @@ proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
     return result
 
 
-proc handle_matches(player: Player, card:Card, game:RuleSet) =
+proc handle_matches(player: Player, card:Card, game:RuleSet, hand_or_deck="hand") =
+
     var matches_on_field = card.get_matches(field,game.suit_system,game.hachi_matching)
     case matches_on_field.len():
     of 0:
         player.discard_to_field(card)
+        
+        if hand_or_deck == "hand":
+            display_gamestate()
+            in_game_message(player.name & " played " & card.full_name & ".")
+
         display_gamestate()
         in_game_message("No matches, so it sticks to the field.")
 
@@ -275,15 +290,28 @@ proc handle_matches(player: Player, card:Card, game:RuleSet) =
         in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
 
     else:       # 1, 3, or maaaybe even 4
-        player.capture_cards(@[card] & matches_on_field)
+        let index_on_field = field.find(matches_on_field[0])
+        let (x,y) = get_two_row_coords(field.len, index_on_field)
+
+        if hand_or_deck == "hand": 
+            display_gamestate()
+            card.print_at_pos(x+2,y+1)
+            in_game_message(player.name & " played " & card.full_name & ".")
+            player.capture_cards(@[card] & matches_on_field)
+
         if matches_on_field.len == 1:
             display_gamestate()
+            if hand_or_deck == "deck": card.print_at_pos(x+2,y+1)
             in_game_message(player.name & " captured " & card.short_name & " & " & matches_on_field[0].short_name & ".")
+
         elif matches_on_field.len == 3:
             display_gamestate()
             in_game_message(player.name & " captured the whole suit!")
-            ## TODO: carve out len == 3 for wild card
-            ## TODO: len > 3 (follow similar logic to 3 for wild card)
+
+        if hand_or_deck == "deck": player.capture_cards(@[card] & matches_on_field) # do this later to smooth the animations
+
+        ## TODO: carve out len == 3 for wild card
+        ## TODO: len > 3 (follow similar logic to 3 for wild card)
 
 
 proc take_turn*(player: Player, game: RuleSet) =
@@ -305,24 +333,21 @@ proc take_turn*(player: Player, game: RuleSet) =
     of always_choose_first:
         selected_index = "1"
 
-    # second, narrate what card that was
+    # second, translate the index to a card
     selected_card = player.hand[parseInt(selected_index) - 1]
-    display_gamestate()
-    in_game_message(player.name & " played " & selected_card.full_name & ".")
-    
+
     # third, count the number of matches and take the appropriate action.
-    handle_matches(player, selected_card, game)
+    handle_matches(player, selected_card, game, "hand")
 
     # Next, flip a card from the deck!
     let h = get_deck_height()    # do this before the pop to ensure flipped card is at right coords
     deck_card = current_deck.pop()
     display_gamestate()
     deck_card.print_at_pos(63 + h, 10 - h)
-    stdout.flushFile()
     in_game_message(player.name & " revealed " & deck_card.short_name & ".")
 
     # and take the appropriate action based on number of matches of that one!
-    handle_matches(player, deck_card, game)
+    handle_matches(player, deck_card, game, "deck")
 
 
 
