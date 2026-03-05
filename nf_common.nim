@@ -113,8 +113,8 @@ type
 ##### GENERAL GLOBAL CONSTANTS #####
 
 const
-    quit_commands* = @["q","Q","quit","Quit","QUIT",
-                         "exit","Exit","EXIT"]
+    quit_commands* = @["q","Q","quit","Quit","QUIT","exit","Exit","EXIT"]
+    settings_commands* = @["s","S","setting","Setting","SETTING","settings","Settings","SETTINGS"]
     affirmative_answers* = @["yes","Yes","YES","y","Y:"]
     negative_answers* = @["no","No","NO","n","N"]
     max_line_width* = 80

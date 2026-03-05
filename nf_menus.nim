@@ -25,23 +25,54 @@ proc present_game_modes() =
     insert_row(fg_cherry,"3)","Ropyakken", fg_reset)
     insert_row(fg_wisteria,"4)", "Hachi", fg_reset)
     insert_div()
+    insert_row("s) Settings")
     insert_row("q) QUIT Nimble Flowers")
     insert_div()
     echo ""
 
 proc select_game_mode*(): RuleSet =
     var user_selection = ""
-    while user_selection notin generate_string_range(1,4) & quit_commands:
+    while user_selection notin generate_string_range(1,4) & quit_commands & settings_commands:
         clear_screen()
         print_title_card()
         present_game_modes()
         user_selection = prompt(" > ")
     case user_selection:
         of quit_commands: quit_game()
+        of settings_commands: program_state = "settings"; return bakappana # basically a throwaway value
         of "1": return bakappana
         of "2": return mushi
         of "3": return ropyakken
         of "4": return hachi
+
+
+
+#####
+
+proc configure_global_settings*() =
+    var user_selection = ""
+    while user_selection notin generate_string_range(1,2) & quit_commands:
+        clear_screen()
+        current_table_style = narrowStyle
+        echo "\n\n"
+        echo_centered "~ Global Settings ~"
+        echo "\n"
+        insert_div()
+        insert_row()
+        insert_row("1)", "Game Speed", text_bold & global_settings["game speed"] & text_reset)
+        insert_row()
+        insert_row("2)", "SFX Volume", text_bold & global_settings["sfx volume"] & text_reset)
+        insert_row()
+        insert_div()
+        echo ""
+        user_selection = prompt(" > ")
+    case user_selection:
+    of quit_commands:
+        quit_game()
+    of "1":
+        discard
+    of "2":
+        discard
 
 
 

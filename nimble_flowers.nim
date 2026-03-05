@@ -17,7 +17,12 @@ while true:
 
     of "main menu":
         game_mode = select_game_mode()
-        program_state = "pre-game menu"
+        if program_state != "settings":
+            program_state = "pre-game menu"
+
+    of "settings":
+        configure_global_settings()
+        program_state = "main menu"
 
     of "pre-game menu":
         game_mode.pre_game_config()
