@@ -116,15 +116,22 @@ proc in_game_message*(str="") =
     move_cursor_to_pos(1,26)
     case global_settings["game speed"]:
     of "fastest": echo str; sleep(250)
-    of "faster": echo str; sleep(500)
-    of "fast": echo str; sleep(1000)
-    of "medium": echo str; sleep(1500)
-    of "slow": echo str; sleep(3000)
-    of "slower": echo str; sleep(4000)
-    of "slowest": echo str; sleep(5000)
-    else: discard prompt(str & " <enter>")
+    of "faster":  echo str; sleep(500)
+    of "fast":    echo str; sleep(1000)
+    of "medium":  echo str; sleep(1500)
+    of "slow":    echo str; sleep(2500)
+    of "slower":  echo str; sleep(4000)
+    else:         discard prompt(str & " <enter>")  # on slowest setting, wait for user to press enter
 
-
+proc get_deal_speed(): int =
+    case global_settings["game speed"]:
+    of "slowest": return 500
+    of "slower":  return 400
+    of "slow":    return 300
+    of "medium":  return 200
+    of "fast":    return 150
+    of "faster":  return 75
+    else:         return 0          # on fastest setting, no sleep at all
 
 ##### START OF GAME: SET UP AND CHOOSE A DEALER #####
 
@@ -180,6 +187,7 @@ proc set_up_game*(game: RuleSet) =
 
 proc deal*(game: RuleSet) =
     let dealer = current_players[dealer_index]
+    let delay = get_deal_speed()
     reset_zones() # make sure we get a clean start
 
     # strip deck to e.g. 40 cards for mushi if appropriate
@@ -192,16 +200,21 @@ proc deal*(game: RuleSet) =
     if game.num_cards_field > 0:
         for i in 1 .. game.num_cards_field:
             field.add(current_deck.pop())
+            display_gamestate()
+            sleep(delay)
     
     display_gamestate()
     in_game_message(dealer.name & " has distributed " & $game.num_cards_field & " cards to the field.")
 
-    for player in current_players:
-        for i in 1 .. game.num_cards_hand:
+
+    for i in 1 .. game.num_cards_hand:
+        for player in current_players:
             player.hand.add(current_deck.pop())
+            display_gamestate()
+            sleep(delay)
 
     display_gamestate()
-    in_game_message("Each player gets " & $game.num_cards_hand & " cards to make up their hand.")
+    in_game_message("Each player received a " & $game.num_cards_hand & "-card hand.")
 
 
 
