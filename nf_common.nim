@@ -14,7 +14,6 @@ type
     NumPlayers* = range[0..8]
     NumHands* = range[0..24]
     NumField* = range[0..48]
-    CardPointValue* = range[0..50]
     PlayStyle* = enum
         human, always_choose_first
     
@@ -25,11 +24,11 @@ type
         standard_suit*: Suit
         mushi_suit*: Suit
         nagoya_suit*: Suit
-        hachihachi_value*: CardPointValue
-        hachi_value*: CardPointValue
-        ropyakken_value*: CardPointValue
-        sudaoshi_value*: CardPointValue
-        sakura_value*: CardPointValue
+        hachihachi_value*: int
+        hachi_value*: int
+        ropyakken_value*: int
+        sudaoshi_value*: int
+        sakura_value*: int
         art0*: string
         art1*: string
         art2*: string

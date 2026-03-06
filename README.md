@@ -24,14 +24,18 @@ PaPyr Flowers was created using Python 3.11.
 - how many, and which, game speeds?
 - support user-provided seeds?
 - always rotate dealer, or allow winner to deal?
+- what do we wanna call susuki in english?
 
 ### To do:
 
 - build script yuck
 - choose who goes first
+- hand card shouldn't be in two places at once
+- wild card rules
 - more/better animation in-game
 - round wrapup
-- scoring
+- dekiyaku scoring
+- teyaku... at all
 - add Card.jp_name
 - fill out Card.alt_names (take straight from PPF?)
 - select card by alt_names

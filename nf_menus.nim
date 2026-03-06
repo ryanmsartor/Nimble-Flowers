@@ -47,32 +47,70 @@ proc select_game_mode*(): RuleSet =
 
 
 
-#####
+##### GLOBAL SETTINGS MENUS #####
+
+proc configure_global_game_speed(): string =
+    var user_selection = ""
+    while user_selection notin generate_string_range(1,7) & quit_commands:
+        clear_screen()
+        current_table_style = narrowStyle
+        echo "\n\n"
+        echo_centered "~ Game Speed ~"
+        echo "\n"
+        insert_div()
+        insert_row("1) Slowest")
+        insert_row("2) Slower")
+        insert_row("3) Slow")
+        insert_row("4) Medium")
+        insert_row("5) Fast")
+        insert_row("6) Faster")
+        insert_row("7) Fastest")
+        insert_div()
+        echo ""
+        user_selection = prompt(" > ")
+    case user_selection:
+    of quit_commands: quit_game()
+    of "1": return "slowest"
+    of "2": return "slower"
+    of "3": return "slow"
+    of "4": return "medium"
+    of "5": return "fast"
+    of "6": return "faster"
+    of "7": return "fastest"
+
+proc configure_global_sfx_volume(): string =
+    var user_selection = ""
+    discard
+
+
 
 proc configure_global_settings*() =
     var user_selection = ""
-    while user_selection notin generate_string_range(1,2) & quit_commands:
+    while user_selection != "3":
         clear_screen()
         current_table_style = narrowStyle
         echo "\n\n"
         echo_centered "~ Global Settings ~"
         echo "\n"
         insert_div()
-        insert_row()
+        insert_row("")
         insert_row("1)", "Game Speed", text_bold & global_settings["game speed"] & text_reset)
-        insert_row()
+        insert_row("")
         insert_row("2)", "SFX Volume", text_bold & global_settings["sfx volume"] & text_reset)
-        insert_row()
+        insert_row("")
+        insert_row("3)", "Return to menu", "")
+        insert_row("")
         insert_div()
         echo ""
         user_selection = prompt(" > ")
-    case user_selection:
-    of quit_commands:
-        quit_game()
-    of "1":
-        discard
-    of "2":
-        discard
+        case user_selection:
+        of quit_commands:
+            quit_game()
+        of "1":
+            global_settings["game speed"] = configure_global_game_speed()
+        of "2":
+            global_settings["sfx volume"] = configure_global_sfx_volume()
+
 
 
 
@@ -179,7 +217,7 @@ proc ask_which_point_set(game: RuleSet): string =
     of "3": return "0, 10, 5, 20"
     of "4": return "0, 10, 10, 50"
     of "5": return "10, 1, 10, 10"
-    of "6": return "10, 1, 5, 5s"
+    of "6": return "10, 1, 5, 5"
 
 
 proc customize_rules*(game: RuleSet): RuleSet =

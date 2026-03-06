@@ -31,6 +31,42 @@ var
 
 
 
+##### SCOREKEEPING STUFF #####
+
+proc get_card_value(card:Card, game: RuleSet): int =
+    case game.point_values:
+
+    of "1, 5, 10, 20":
+        return card.hachihachi_value
+    of "0, 5, 10, 20":
+        if card.hachihachi_value == 1: return 0
+        else: return card.hachihachi_value
+    of "0, 10, 5, 20":
+        return card.sakura_value
+    of "0, 10, 10, 50":
+        return card.ropyakken_value
+    of "10, 1, 10, 10":
+        return card.hachi_value
+    of "10, 1, 5, 5":
+        return card.sudaoshi_value
+    else:
+        return card.hachihachi_value # future-proof/fallback
+
+
+proc add_up_card_points(zone: Zone, game: RuleSet): int =
+    for card in zone:
+        result.inc(card.get_card_value(game))
+    return result
+
+proc print_all_players_scores(game: RuleSet) =
+    let x = 63; let y = 21
+
+    for i, player in current_players:
+        player.current_card_score = add_up_card_points(player.capture_d,game)
+        move_cursor_to_pos(x, y+i)
+        stdout.write(player.name & ": " & $player.current_card_score)
+    stdout.flushFile()
+
 ##### DISPLAY STUFF: THE UI #####
 
 proc get_one_row_coords*(zoneLen: int, index: int,
@@ -99,17 +135,17 @@ proc display_deck*(xpos=63,ypos=10) =
     stdout.flushFile()
 
 
-proc display_gamestate*(player = p1) =
+proc display_gamestate*(game: RuleSet) =
     clear_screen()
     move_cursor_to_pos(1,2)
     echo_centered: "-= The field: =-"
     field.display_zone_ascii_two_rows(3,3)
     move_cursor_to_pos(1,30)
     echo_centered: "-= Your hand: =-"
-    player.hand.display_zone_ascii_one_row(2,31)
+    p1.hand.display_zone_ascii_one_row(2,31)
     echo ""
     display_deck()
-
+    print_all_players_scores(game)
 
 # you usually wanna use this immediately following display_gamestate()
 proc in_game_message*(str="") =
@@ -178,7 +214,7 @@ proc set_up_game*(game: RuleSet) =
     current_players = gather_players(game)
     dealer_index = choose_first_dealer(game)
     let dealer = current_players[dealer_index]
-    display_gamestate()
+    display_gamestate(game)
     in_game_message(dealer.name & " has been randomly chosen to be the first dealer.")
 
 
@@ -194,26 +230,26 @@ proc deal*(game: RuleSet) =
     current_deck = full_deck.filterIt(it notin game.cards_stripped)
     shuffle(current_deck)
 
-    display_gamestate()
+    display_gamestate(game)
     in_game_message(dealer.name & " has prepared and shuffled the deck.")
 
     if game.num_cards_field > 0:
         for i in 1 .. game.num_cards_field:
             field.add(current_deck.pop())
-            display_gamestate()
+            display_gamestate(game)
             sleep(delay)
     
-    display_gamestate()
+    display_gamestate(game)
     in_game_message(dealer.name & " has distributed " & $game.num_cards_field & " cards to the field.")
 
 
     for i in 1 .. game.num_cards_hand:
         for player in current_players:
             player.hand.add(current_deck.pop())
-            display_gamestate()
+            display_gamestate(game)
             sleep(delay)
 
-    display_gamestate()
+    display_gamestate(game)
     in_game_message("Each player received a " & $game.num_cards_hand & "-card hand.")
 
 
@@ -254,7 +290,7 @@ proc discard_to_field(player: Player, card: Card) =
     field.add(card)
 
 
-proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
+proc pick_to_capture_between(player: Player; c1, c2: Card, game: RuleSet): Card =
     var selection: string
 
     # Player.play_style determines HOW field card is chosen
@@ -262,13 +298,13 @@ proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
     of human:
         let options = @["1","2"]
         while selection notin options:
-            display_gamestate(player)
+            display_gamestate(game)
             move_cursor_to_pos(1,26)
             selection = prompt(text_bold & "Select which card to capture [1 or 2] > ")
             if selection in quit_commands: quit_game()
 
     of always_choose_first:
-        display_gamestate()
+        display_gamestate(game)
         selection = "1"
 
     # translate the returned "1" or "2" to an actual card to return
@@ -276,7 +312,7 @@ proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
     else: result = c2
 
     # tell the player what the pick was.
-    display_gamestate()
+    display_gamestate(game)
     in_game_message(player.name & " picked " & result.full_name & ".")
 
     return result
@@ -290,16 +326,16 @@ proc handle_matches(player: Player, card:Card, game:RuleSet, hand_or_deck="hand"
         player.discard_to_field(card)
         
         if hand_or_deck == "hand":
-            display_gamestate()
+            display_gamestate(game)
             in_game_message(player.name & " played " & card.full_name & ".")
 
-        display_gamestate()
+        display_gamestate(game)
         in_game_message("No matches, so it sticks to the field.")
 
     of 2:
-        let picked_card = player.pick_to_capture_between(matches_on_field[0], matches_on_field[1])
+        let picked_card = player.pick_to_capture_between(matches_on_field[0], matches_on_field[1], game)
         player.capture_cards(@[card, picked_card])
-        display_gamestate()
+        display_gamestate(game)
         in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
 
     else:       # 1, 3, or maaaybe even 4
@@ -307,18 +343,18 @@ proc handle_matches(player: Player, card:Card, game:RuleSet, hand_or_deck="hand"
         let (x,y) = get_two_row_coords(field.len, index_on_field)
 
         if hand_or_deck == "hand": 
-            display_gamestate()
+            display_gamestate(game)
             card.print_at_pos(x+2,y+1)
             in_game_message(player.name & " played " & card.full_name & ".")
             player.capture_cards(@[card] & matches_on_field)
 
         if matches_on_field.len == 1:
-            display_gamestate()
+            display_gamestate(game)
             if hand_or_deck == "deck": card.print_at_pos(x+2,y+1)
             in_game_message(player.name & " captured " & card.short_name & " & " & matches_on_field[0].short_name & ".")
 
         elif matches_on_field.len == 3:
-            display_gamestate()
+            display_gamestate(game)
             in_game_message(player.name & " captured the whole suit!")
 
         if hand_or_deck == "deck": player.capture_cards(@[card] & matches_on_field) # do this later to smooth the animations
@@ -338,7 +374,7 @@ proc take_turn*(player: Player, game: RuleSet) =
     of human:
         let options = generate_string_range(1,player.hand.len)
         while selected_index notin options:
-            display_gamestate(player)
+            display_gamestate(game)
             move_cursor_to_pos(1,26)
             selected_index = prompt(text_bold & "Play a card from your hand. > " & text_reset)
             if selected_index in quit_commands: quit_game()
@@ -355,7 +391,7 @@ proc take_turn*(player: Player, game: RuleSet) =
     # Next, flip a card from the deck!
     let h = get_deck_height()    # do this before the pop to ensure flipped card is at right coords
     deck_card = current_deck.pop()
-    display_gamestate()
+    display_gamestate(game)
     deck_card.print_at_pos(63 + h, 10 - h)
     in_game_message(player.name & " revealed " & deck_card.short_name & ".")
 
@@ -402,4 +438,4 @@ proc play_full_match*(game: RuleSet) =
 
     game.play_round(dealer_index)
     rotate_dealer()
-    display_gamestate()
+    display_gamestate(game)
