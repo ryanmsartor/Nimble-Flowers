@@ -16,6 +16,8 @@ type
     NumField* = range[0..48]
     PlayStyle* = enum
         human, always_choose_first
+    GameSpeed* = enum
+        slowest, slower, slow, medium, fast, faster, fastest
     
     Card* = object
         full_name*: string
@@ -226,9 +228,10 @@ proc clear_screen*() =
 # this global drives which menu or game screen to go to.
 var program_state* = "main menu"
 var game_mode*: RuleSet
-var global_settings* = { "game speed": "medium",
-                         "sfx volume": "off"
-                        }.toTable
+
+# global settings
+var game_speed*: GameSpeed = medium
+var sfx_volume*: uint8
 
 proc prompt*(text: string): string =
     stdout.write(text)

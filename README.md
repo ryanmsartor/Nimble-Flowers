@@ -39,7 +39,6 @@ PaPyr Flowers was created using Python 3.11.
 - add Card.jp_name
 - fill out Card.alt_names (take straight from PPF?)
 - select card by alt_names
-- change some strings to enums
+- change some strings to enums?
     - RuleSet.point_values
     - RuleSet.suit_system
-    - game speeds

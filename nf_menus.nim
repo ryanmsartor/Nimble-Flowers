@@ -49,7 +49,7 @@ proc select_game_mode*(): RuleSet =
 
 ##### GLOBAL SETTINGS MENUS #####
 
-proc configure_global_game_speed(): string =
+proc configure_global_game_speed(): GameSpeed =
     var user_selection = ""
     while user_selection notin generate_string_range(1,7) & quit_commands:
         clear_screen()
@@ -70,15 +70,15 @@ proc configure_global_game_speed(): string =
         user_selection = prompt(" > ")
     case user_selection:
     of quit_commands: quit_game()
-    of "1": return "slowest"
-    of "2": return "slower"
-    of "3": return "slow"
-    of "4": return "medium"
-    of "5": return "fast"
-    of "6": return "faster"
-    of "7": return "fastest"
+    of "1": return slowest
+    of "2": return slower
+    of "3": return slow
+    of "4": return medium
+    of "5": return fast
+    of "6": return faster
+    of "7": return fastest
 
-proc configure_global_sfx_volume(): string =
+proc configure_global_sfx_volume(): uint8 =
     var user_selection = ""
     discard
 
@@ -94,9 +94,9 @@ proc configure_global_settings*() =
         echo "\n"
         insert_div()
         insert_row("")
-        insert_row("1)", "Game Speed", text_bold & global_settings["game speed"] & text_reset)
+        insert_row("1)", "Game Speed", text_bold & $game_speed & text_reset)
         insert_row("")
-        insert_row("2)", "SFX Volume", text_bold & global_settings["sfx volume"] & text_reset)
+        insert_row("2)", "SFX Volume", text_bold & $sfx_volume & text_reset)
         insert_row("")
         insert_row("3)", "Return to menu", "")
         insert_row("")
@@ -107,9 +107,9 @@ proc configure_global_settings*() =
         of quit_commands:
             quit_game()
         of "1":
-            global_settings["game speed"] = configure_global_game_speed()
+            game_speed = configure_global_game_speed()
         of "2":
-            global_settings["sfx volume"] = configure_global_sfx_volume()
+            sfx_volume = configure_global_sfx_volume()
 
 
 

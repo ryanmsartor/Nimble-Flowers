@@ -150,24 +150,24 @@ proc display_gamestate*() =
 # you usually wanna use this immediately following display_gamestate()
 proc in_game_message*(str="") =
     move_cursor_to_pos(1,26)
-    case global_settings["game speed"]:
-    of "fastest": echo str; sleep(250)
-    of "faster":  echo str; sleep(500)
-    of "fast":    echo str; sleep(1000)
-    of "medium":  echo str; sleep(1500)
-    of "slow":    echo str; sleep(2500)
-    of "slower":  echo str; sleep(4000)
-    else:         discard prompt(str & " <enter>")  # on slowest setting, wait for user to press enter
+    case game_speed:
+    of fastest: echo str; sleep(250)
+    of faster:  echo str; sleep(500)
+    of fast:    echo str; sleep(1000)
+    of medium:  echo str; sleep(1500)
+    of slow:    echo str; sleep(2500)
+    of slower:  echo str; sleep(4000)
+    else:       discard prompt(str & " <enter>")  # on slowest setting, wait for user to press enter
 
 proc get_deal_speed(): int =
-    case global_settings["game speed"]:
-    of "slowest": return 500
-    of "slower":  return 400
-    of "slow":    return 300
-    of "medium":  return 200
-    of "fast":    return 150
-    of "faster":  return 75
-    else:         return 0          # on fastest setting, no sleep at all
+    case game_speed:
+    of slowest: return 500
+    of slower:  return 400
+    of slow:    return 300
+    of medium:  return 200
+    of fast:    return 150
+    of faster:  return 75
+    else:       return 0          # on fastest setting, no sleep at all
 
 ##### START OF GAME: SET UP AND CHOOSE A DEALER #####
 
