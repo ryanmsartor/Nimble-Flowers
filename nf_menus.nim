@@ -124,16 +124,20 @@ proc pre_game_config*(game: RuleSet) =
 
     while user_selection notin options & quit_commands:
         clear_screen()
-        echo ""
-        echo ""
+        echo "\n\n"
         echo_centered("~~ " & game.name & " ~~")
-        echo ""
+        echo "\n"
 
         insert_div()
+        insert_row("")
         insert_row("1) Begin game!")
+        insert_row("")
         insert_row("2) View/Edit rules")
+        insert_row("")
         insert_row("3) View/Edit yaku")
+        insert_row("")
         insert_row("4) Return to main menu")
+        insert_row("")
         insert_div()
         echo ""
         user_selection = prompt(" > ")
@@ -155,6 +159,7 @@ proc pre_game_config*(game: RuleSet) =
 proc list_rules(game: RuleSet) =
     let decksize = 48 - game.cards_stripped.len
     current_table_style = defaultStyle
+    echo "\n\n\n"
     insert_div(2,".","-",".")
     insert_row("Current ruleset:",game.name)
     insert_div(4)

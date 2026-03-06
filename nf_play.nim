@@ -380,6 +380,8 @@ proc take_turn*(player: Player, game: RuleSet) =
             if selected_index in quit_commands: quit_game()
 
     of always_choose_first:
+        display_gamestate(game)
+        in_game_message("It's " & player.name & "'s turn.")
         selected_index = "1"
 
     # second, translate the index to a card
