@@ -33,6 +33,7 @@ while true:
 
     of "play":
         play_full_match()
+        program_state = "main menu"
 
     # of "help":
 

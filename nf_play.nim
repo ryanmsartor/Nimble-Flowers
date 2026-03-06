@@ -67,6 +67,19 @@ proc print_all_players_scores() =
         stdout.write(player.name & ": " & $player.current_card_score)
     stdout.flushFile()
 
+proc add_round_scores_to_match_scores() =
+    for player in current_players:
+        player.current_card_score = add_up_card_points(player.captured)
+        player.overall_score.inc(player.current_card_score)
+
+proc get_current_high_scoring_player(): Player =
+    for player in current_players:
+        if player.overall_score >= result.overall_score:
+            result = player
+    return result
+
+
+
 ##### DISPLAY STUFF: THE UI #####
 
 proc get_one_row_coords*(zoneLen: int, index: int,
@@ -429,6 +442,8 @@ proc play_round(first_to_play: int) =
             num_playable_cards_remaining.inc(p.hand.len)
 
         rotate_player()
+    rotate_dealer()
+    add_round_scores_to_match_scores()
 
 
 
@@ -436,7 +451,11 @@ proc play_full_match*() =
 
     set_up_game()
 
-    # TODO: outer loop for multiple rounds
-
-    play_round(dealer_index)
-    rotate_dealer()
+    if game_mode.target_score > 0:
+        while get_current_high_scoring_player().overall_score < game_mode.target_score:
+            play_round(dealer_index)
+    elif game_mode.num_rounds > 0:
+        for i in 1..game_mode.num_rounds:
+            play_round(dealer_index)
+    else:
+        play_round(dealer_index)

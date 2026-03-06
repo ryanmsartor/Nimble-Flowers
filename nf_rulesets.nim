@@ -10,7 +10,8 @@ const
         num_cards_hand: 7,
         num_cards_field: 6,
         point_values: "1, 5, 10, 20",
-        suit_system: "standard"
+        suit_system: "standard",
+        num_rounds: 3
     )
 
     mushi* = RuleSet(
@@ -33,7 +34,8 @@ const
             clover_chaff_2
         ],
         point_values: "1, 5, 10, 20",
-        suit_system: "mushi"
+        suit_system: "mushi",
+        num_rounds: 3
     )
 
     ropyakken* = RuleSet(
@@ -57,5 +59,6 @@ const
         hachi_matching: true,
         yaku_set: yaku_table_hachi,
         point_values: "10, 1, 10, 10",
-        suit_system: "standard"
+        suit_system: "standard",
+        num_rounds: 3
     )

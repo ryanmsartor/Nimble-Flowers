@@ -95,6 +95,7 @@ type
         hachi_matching*: bool
         zero_sum*: bool
         target_score*: int
+        num_rounds*: int
         cards_stripped*: seq[Card]
         cards_added*: seq[Card]
         point_values*: string
