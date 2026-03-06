@@ -33,8 +33,8 @@ var
 
 ##### SCOREKEEPING STUFF #####
 
-proc get_card_value(card:Card, game: RuleSet): int =
-    case game.point_values:
+proc get_card_value(card:Card): int =
+    case game_mode.point_values:
 
     of "1, 5, 10, 20":
         return card.hachihachi_value
@@ -53,16 +53,16 @@ proc get_card_value(card:Card, game: RuleSet): int =
         return card.hachihachi_value # future-proof/fallback
 
 
-proc add_up_card_points(zone: Zone, game: RuleSet): int =
+proc add_up_card_points(zone: Zone): int =
     for card in zone:
-        result.inc(card.get_card_value(game))
+        result.inc(card.get_card_value())
     return result
 
-proc print_all_players_scores(game: RuleSet) =
+proc print_all_players_scores() =
     let x = 63; let y = 21
 
     for i, player in current_players:
-        player.current_card_score = add_up_card_points(player.capture_d,game)
+        player.current_card_score = add_up_card_points(player.captured)
         move_cursor_to_pos(x, y+i)
         stdout.write(player.name & ": " & $player.current_card_score)
     stdout.flushFile()
@@ -135,7 +135,7 @@ proc display_deck*(xpos=63,ypos=10) =
     stdout.flushFile()
 
 
-proc display_gamestate*(game: RuleSet) =
+proc display_gamestate*() =
     clear_screen()
     move_cursor_to_pos(1,2)
     echo_centered: "-= The field: =-"
@@ -145,7 +145,7 @@ proc display_gamestate*(game: RuleSet) =
     p1.hand.display_zone_ascii_one_row(2,31)
     echo ""
     display_deck()
-    print_all_players_scores(game)
+    print_all_players_scores()
 
 # you usually wanna use this immediately following display_gamestate()
 proc in_game_message*(str="") =
@@ -194,73 +194,73 @@ proc reset_zones*() =
     p8.captured.setLen(0)
 
 
-proc gather_players(game: RuleSet): seq[Player] =
+proc gather_players(): seq[Player] =
     result = @[p1, p2]
-    if game.num_players >= 3: result.add(p3)
-    if game.num_players >= 4: result.add(p4)
-    if game.num_players >= 5: result.add(p5)
-    if game.num_players >= 6: result.add(p6)
-    if game.num_players >= 7: result.add(p7)
-    if game.num_players >= 8: result.add(p8)
+    if game_mode.num_players >= 3: result.add(p3)
+    if game_mode.num_players >= 4: result.add(p4)
+    if game_mode.num_players >= 5: result.add(p5)
+    if game_mode.num_players >= 6: result.add(p6)
+    if game_mode.num_players >= 7: result.add(p7)
+    if game_mode.num_players >= 8: result.add(p8)
 
 
-proc choose_first_dealer(game: RuleSet): int =
-    let count = game.num_players
+proc choose_first_dealer(): int =
+    let count = game_mode.num_players
     result = rand(count - 1)
 
 
-proc set_up_game*(game: RuleSet) =
+proc set_up_game*() =
     reset_zones() # ensure fresh start
-    current_players = gather_players(game)
-    dealer_index = choose_first_dealer(game)
+    current_players = gather_players()
+    dealer_index = choose_first_dealer()
     let dealer = current_players[dealer_index]
-    display_gamestate(game)
+    display_gamestate()
     in_game_message(dealer.name & " has been randomly chosen to be the first dealer.")
 
 
 
 ##### START OF ROUND: THE DEAL #####
 
-proc deal*(game: RuleSet) =
+proc deal*() =
     let dealer = current_players[dealer_index]
     let delay = get_deal_speed()
     reset_zones() # make sure we get a clean start
 
     # strip deck to e.g. 40 cards for mushi if appropriate
-    current_deck = full_deck.filterIt(it notin game.cards_stripped)
+    current_deck = full_deck.filterIt(it notin game_mode.cards_stripped)
     shuffle(current_deck)
 
-    display_gamestate(game)
+    display_gamestate()
     in_game_message(dealer.name & " has prepared and shuffled the deck.")
 
-    if game.num_cards_field > 0:
-        for i in 1 .. game.num_cards_field:
+    if game_mode.num_cards_field > 0:
+        for i in 1 .. game_mode.num_cards_field:
             field.add(current_deck.pop())
-            display_gamestate(game)
+            display_gamestate()
             sleep(delay)
     
-    display_gamestate(game)
-    in_game_message(dealer.name & " has distributed " & $game.num_cards_field & " cards to the field.")
+    display_gamestate()
+    in_game_message(dealer.name & " has distributed " & $game_mode.num_cards_field & " cards to the field.")
 
 
-    for i in 1 .. game.num_cards_hand:
+    for i in 1 .. game_mode.num_cards_hand:
         for player in current_players:
             player.hand.add(current_deck.pop())
-            display_gamestate(game)
+            display_gamestate()
             sleep(delay)
 
-    display_gamestate(game)
-    in_game_message("Each player received a " & $game.num_cards_hand & "-card hand.")
+    display_gamestate()
+    in_game_message("Each player received a " & $game_mode.num_cards_hand & "-card hand.")
 
 
 
 ##### GAMEPLAY STUFF: A TURN #####
 
-proc get_matches*(mycard: Card, zone_to_check: Zone, suit_system="standard", hachi_matching=false): seq[Card] =
+proc get_matches*(mycard: Card, zone_to_check: Zone): seq[Card] =
     var mysuit, suit: Suit
     for card in zone_to_check:
-        if hachi_matching:
-            case suit_system:
+        if game_mode.hachi_matching:
+            case game_mode.suit_system:
             of "standard":
                 mysuit = mycard.standard_suit
                 suit = card.standard_suit
@@ -290,7 +290,7 @@ proc discard_to_field(player: Player, card: Card) =
     field.add(card)
 
 
-proc pick_to_capture_between(player: Player; c1, c2: Card, game: RuleSet): Card =
+proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
     var selection: string
 
     # Player.play_style determines HOW field card is chosen
@@ -298,13 +298,13 @@ proc pick_to_capture_between(player: Player; c1, c2: Card, game: RuleSet): Card 
     of human:
         let options = @["1","2"]
         while selection notin options:
-            display_gamestate(game)
+            display_gamestate()
             move_cursor_to_pos(1,26)
             selection = prompt(text_bold & "Select which card to capture [1 or 2] > ")
             if selection in quit_commands: quit_game()
 
     of always_choose_first:
-        display_gamestate(game)
+        display_gamestate()
         selection = "1"
 
     # translate the returned "1" or "2" to an actual card to return
@@ -312,30 +312,30 @@ proc pick_to_capture_between(player: Player; c1, c2: Card, game: RuleSet): Card 
     else: result = c2
 
     # tell the player what the pick was.
-    display_gamestate(game)
+    display_gamestate()
     in_game_message(player.name & " picked " & result.full_name & ".")
 
     return result
 
 
-proc handle_matches(player: Player, card:Card, game:RuleSet, hand_or_deck="hand") =
+proc handle_matches(player: Player, card:Card, hand_or_deck="hand") =
 
-    var matches_on_field = card.get_matches(field,game.suit_system,game.hachi_matching)
+    var matches_on_field = card.get_matches(field)
     case matches_on_field.len():
     of 0:
         player.discard_to_field(card)
         
         if hand_or_deck == "hand":
-            display_gamestate(game)
+            display_gamestate()
             in_game_message(player.name & " played " & card.full_name & ".")
 
-        display_gamestate(game)
+        display_gamestate()
         in_game_message("No matches, so it sticks to the field.")
 
     of 2:
-        let picked_card = player.pick_to_capture_between(matches_on_field[0], matches_on_field[1], game)
+        let picked_card = player.pick_to_capture_between(matches_on_field[0], matches_on_field[1])
         player.capture_cards(@[card, picked_card])
-        display_gamestate(game)
+        display_gamestate()
         in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
 
     else:       # 1, 3, or maaaybe even 4
@@ -343,18 +343,18 @@ proc handle_matches(player: Player, card:Card, game:RuleSet, hand_or_deck="hand"
         let (x,y) = get_two_row_coords(field.len, index_on_field)
 
         if hand_or_deck == "hand": 
-            display_gamestate(game)
+            display_gamestate()
             card.print_at_pos(x+2,y+1)
             in_game_message(player.name & " played " & card.full_name & ".")
             player.capture_cards(@[card] & matches_on_field)
 
         if matches_on_field.len == 1:
-            display_gamestate(game)
+            display_gamestate()
             if hand_or_deck == "deck": card.print_at_pos(x+2,y+1)
             in_game_message(player.name & " captured " & card.short_name & " & " & matches_on_field[0].short_name & ".")
 
         elif matches_on_field.len == 3:
-            display_gamestate(game)
+            display_gamestate()
             in_game_message(player.name & " captured the whole suit!")
 
         if hand_or_deck == "deck": player.capture_cards(@[card] & matches_on_field) # do this later to smooth the animations
@@ -363,7 +363,7 @@ proc handle_matches(player: Player, card:Card, game:RuleSet, hand_or_deck="hand"
         ## TODO: len > 3 (follow similar logic to 3 for wild card)
 
 
-proc take_turn*(player: Player, game: RuleSet) =
+proc take_turn*(player: Player) =
     var 
         selected_index = ""
         selected_card: Card
@@ -374,13 +374,13 @@ proc take_turn*(player: Player, game: RuleSet) =
     of human:
         let options = generate_string_range(1,player.hand.len)
         while selected_index notin options:
-            display_gamestate(game)
+            display_gamestate()
             move_cursor_to_pos(1,26)
             selected_index = prompt(text_bold & "Play a card from your hand. > " & text_reset)
             if selected_index in quit_commands: quit_game()
 
     of always_choose_first:
-        display_gamestate(game)
+        display_gamestate()
         in_game_message("It's " & player.name & "'s turn.")
         selected_index = "1"
 
@@ -388,17 +388,17 @@ proc take_turn*(player: Player, game: RuleSet) =
     selected_card = player.hand[parseInt(selected_index) - 1]
 
     # third, count the number of matches and take the appropriate action.
-    handle_matches(player, selected_card, game, "hand")
+    handle_matches(player, selected_card, "hand")
 
     # Next, flip a card from the deck!
     let h = get_deck_height()    # do this before the pop to ensure flipped card is at right coords
     deck_card = current_deck.pop()
-    display_gamestate(game)
+    display_gamestate()
     deck_card.print_at_pos(63 + h, 10 - h)
     in_game_message(player.name & " revealed " & deck_card.short_name & ".")
 
     # and take the appropriate action based on number of matches of that one!
-    handle_matches(player, deck_card, game, "deck")
+    handle_matches(player, deck_card, "deck")
 
 
 
@@ -413,16 +413,16 @@ proc rotate_dealer() =
     if dealer_index >= current_players.len(): dealer_index = 0
 
 
-proc play_round(game: RuleSet, first_to_play: int) =
+proc play_round(first_to_play: int) =
     player_index = first_to_play   # initialize turn tracker
 
-    game.deal()
+    deal()
 
     var num_playable_cards_remaining = 1 # ensure there's always at least one turn
     while num_playable_cards_remaining > 0:
 
         let current_player = current_players[player_index]
-        current_player.take_turn(game)
+        current_player.take_turn()
 
         num_playable_cards_remaining = 0
         for p in current_players:
@@ -432,12 +432,11 @@ proc play_round(game: RuleSet, first_to_play: int) =
 
 
 
-proc play_full_match*(game: RuleSet) =
+proc play_full_match*() =
 
-    game.set_up_game()
+    set_up_game()
 
     # TODO: outer loop for multiple rounds
 
-    game.play_round(dealer_index)
+    play_round(dealer_index)
     rotate_dealer()
-    display_gamestate(game)

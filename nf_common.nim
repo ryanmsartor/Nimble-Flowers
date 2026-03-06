@@ -225,6 +225,7 @@ proc clear_screen*() =
 
 # this global drives which menu or game screen to go to.
 var program_state* = "main menu"
+var game_mode*: RuleSet
 var global_settings* = { "game speed": "medium",
                          "sfx volume": "off"
                         }.toTable

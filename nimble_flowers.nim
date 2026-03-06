@@ -4,8 +4,6 @@
 
 import nf_common, nf_menus, nf_play
 
-var game_mode: RuleSet
-
 #   ########   #
 ##### MAIN #####
 #   ########   #
@@ -34,7 +32,7 @@ while true:
         game_mode = game_mode.customize_yaku()
 
     of "play":
-        game_mode.play_full_match()
+        play_full_match()
 
     # of "help":
 
