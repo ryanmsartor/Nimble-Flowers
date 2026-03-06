@@ -64,7 +64,11 @@ proc print_all_players_scores() =
     for i, player in current_players:
         player.current_card_score = add_up_card_points(player.captured)
         move_cursor_to_pos(x, y+i)
-        stdout.write(player.name & ": " & $player.current_card_score)
+        stdout.write(player.name)
+        move_cursor_to_pos(x+6, y+i)
+        stdout.write(": " & $player.current_card_score)
+        move_cursor_to_pos(x+12, y+i)
+        stdout.write("(" & $(player.overall_score + player.current_card_score) & ")")
     stdout.flushFile()
 
 proc add_round_scores_to_match_scores() =
@@ -156,7 +160,6 @@ proc display_gamestate*() =
     move_cursor_to_pos(1,30)
     echo_centered: "-= Your hand: =-"
     p1.hand.display_zone_ascii_one_row(2,31)
-    echo ""
     display_deck()
     print_all_players_scores()
 
@@ -355,7 +358,7 @@ proc handle_matches(player: Player, card:Card, hand_or_deck="hand") =
         let index_on_field = field.find(matches_on_field[0])
         let (x,y) = get_two_row_coords(field.len, index_on_field)
 
-        if hand_or_deck == "hand": 
+        if hand_or_deck == "hand":
             display_gamestate()
             card.print_at_pos(x+2,y+1)
             in_game_message(player.name & " played " & card.full_name & ".")
