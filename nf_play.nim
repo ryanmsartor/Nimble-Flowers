@@ -52,37 +52,64 @@ proc get_card_value(card:Card): int =
     else:
         return card.hachihachi_value # future-proof/fallback
 
-
 proc add_up_card_points(zone: Zone): int =
     for card in zone:
         result.inc(card.get_card_value())
     return result
 
+proc add_up_dekiyaku_points(zone: Zone): int =
+    for yaku, value in game_mode.yaku_set:
+        var count_1, count_2 = 0
+        for card in zone:
+            if card in yaku.cards_group_1:
+                count_1.inc(1)
+            if card in yaku.cards_group_2:
+                count_2.inc(1)
+        if count_1 >= yaku.num_group_1 and count_2 >= yaku.num_group_2:
+            result.inc(value)
+    return result
+
+
+
+
 proc print_all_players_scores() =
     let x = 63; let y = 21
 
     for i, player in current_players:
-        player.current_card_score = add_up_card_points(player.captured)
+        player.round_score = add_up_card_points(player.captured) + add_up_dekiyaku_points(player.captured)
         move_cursor_to_pos(x, y+i)
         stdout.write(player.name)
         move_cursor_to_pos(x+6, y+i)
-        stdout.write(": " & $player.current_card_score)
+        stdout.write(": " & $player.round_score)
         move_cursor_to_pos(x+12, y+i)
-        stdout.write("(" & $(player.overall_score + player.current_card_score) & ")")
+        stdout.write("(" & $(player.match_score + player.round_score) & ")")
     stdout.flushFile()
 
 proc add_round_scores_to_match_scores() =
     for player in current_players:
-        player.current_card_score = add_up_card_points(player.captured)
-        player.overall_score.inc(player.current_card_score)
+        player.round_score = add_up_card_points(player.captured) + add_up_dekiyaku_points(player.captured)
+        player.match_score.inc(player.round_score)
 
 proc get_current_high_scoring_player(): Player =
+    result = p1 # initialization here is a hack to avoid nil access attempt
     for player in current_players:
-        if player.overall_score >= result.overall_score:
+        if player.match_score > result.match_score:
             result = player
     return result
 
+proc announce_round_winner() =
+    discard
 
+proc announce_game_winner() =
+    let winner = get_current_high_scoring_player()
+    clear_screen()
+    echo "\n\n\n\n\n\n\n\n\n"
+    let rb = rainbow_fg(winner.name)
+    let str = text_bold & "The winner is " & rb & " with " & $winner.match_score & " points!" & text_reset
+    echo_centered(str)
+    echo "\n\n\n\n"
+    echo_centered("Press ENTER to return to main menu")
+    discard prompt("")
 
 ##### DISPLAY STUFF: THE UI #####
 
@@ -169,10 +196,10 @@ proc in_game_message*(str="") =
     case game_speed:
     of fastest: echo str; sleep(250)
     of faster:  echo str; sleep(500)
-    of fast:    echo str; sleep(1000)
-    of medium:  echo str; sleep(1500)
-    of slow:    echo str; sleep(2500)
-    of slower:  echo str; sleep(4000)
+    of fast:    echo str; sleep(750)
+    of medium:  echo str; sleep(1000)
+    of slow:    echo str; sleep(1500)
+    of slower:  echo str; sleep(3000)
     else:       discard prompt(str & " <enter>")  # on slowest setting, wait for user to press enter
 
 proc get_deal_speed(): int =
@@ -181,8 +208,8 @@ proc get_deal_speed(): int =
     of slower:  return 400
     of slow:    return 300
     of medium:  return 200
-    of fast:    return 150
-    of faster:  return 75
+    of fast:    return 100
+    of faster:  return 50
     else:       return 0          # on fastest setting, no sleep at all
 
 ##### START OF GAME: SET UP AND CHOOSE A DEALER #####
@@ -455,10 +482,12 @@ proc play_full_match*() =
     set_up_game()
 
     if game_mode.target_score > 0:
-        while get_current_high_scoring_player().overall_score < game_mode.target_score:
+        while get_current_high_scoring_player().match_score < game_mode.target_score:
             play_round(dealer_index)
     elif game_mode.num_rounds > 0:
         for i in 1..game_mode.num_rounds:
             play_round(dealer_index)
     else:
         play_round(dealer_index)
+    
+    announce_game_winner()

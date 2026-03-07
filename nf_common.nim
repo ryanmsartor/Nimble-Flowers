@@ -50,8 +50,8 @@ type
         captured*: Zone
         current_teyaku_score*: int
         current_dekiyaku_score*: int
-        current_card_score*: int
-        overall_score*: int
+        round_score*: int
+        match_score*: int
         rounds_won*: uint8
         play_style*: PlayStyle
 
@@ -60,8 +60,8 @@ type
         exclusivity_group*: string
         cards_group_1*: seq[Card]
         cards_group_2*: seq[Card]
-        num_group_1*: uint8
-        num_group_2*: uint8
+        num_group_1*: int
+        num_group_2*: int
 
     SetTeyaku* = object
         name*: string
