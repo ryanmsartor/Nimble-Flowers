@@ -16,7 +16,6 @@ PaPyr Flowers was created using Python 3.11.
 
 ### To decide:
 
-- do we really wanna go up to 8 players?
 - do we wanna include any non-fishing games?
 - how many game modes to include?
 - how many and what computer playstyles?
@@ -34,7 +33,7 @@ PaPyr Flowers was created using Python 3.11.
 - wild card rules
 - more/better animation in-game
 - round wrapup
-- dekiyaku scoring
+- communicating dekiyaku
 - teyaku... at all
 - add Card.jp_name
 - fill out Card.alt_names (take straight from PPF?)

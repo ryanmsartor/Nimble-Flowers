@@ -9,6 +9,7 @@ import std/strutils
 import std/tables
 import nf_common
 import nf_cards
+import nf_yaku
 
 randomize()
 # var my_seed: int64 = 1234
@@ -23,8 +24,6 @@ var
     p4* = Player(name:"Curt", play_style: always_choose_first)
     p5* = Player(name:"David", play_style: always_choose_first)
     p6* = Player(name:"Evelyn", play_style: always_choose_first)
-    p7* = Player(name:"Francis", play_style: always_choose_first)
-    p8* = Player(name:"Giovanni", play_style: always_choose_first)
     current_players*: seq[Player]
     dealer_index: int
     player_index: int
@@ -69,20 +68,54 @@ proc add_up_dekiyaku_points(zone: Zone): int =
             result.inc(value)
     return result
 
+proc count_each_card_type(zone:Zone): (int,int,int,int) =
+    var c,r,a,b = 0
+    for card in zone:
+        if card.hachihachi_value == 1:
+            c.inc(1)
+        elif card.hachihachi_value == 5:
+            r.inc(1)
+        elif card.hachihachi_value == 10:
+            a.inc(1)
+        elif card.hachihachi_value == 20:
+            b.inc(1)
+    return (c,r,a,b)
 
+proc normalize_to_4_chars(str:string): string =
+    case str.visibleLen:
+    of 0: return "    "
+    of 1: return "  " & str & " "
+    of 2: return " " & str & " "
+    of 3: return " " & str
+    else: return str
 
 
 proc print_all_players_scores() =
     let x = 63; let y = 21
+    var spacing = 2
+    if current_players.len == 2: spacing = 4
+    elif current_players.len == 3: spacing = 3
 
     for i, player in current_players:
         player.round_score = add_up_card_points(player.captured) + add_up_dekiyaku_points(player.captured)
-        move_cursor_to_pos(x, y+i)
-        stdout.write(player.name)
-        move_cursor_to_pos(x+6, y+i)
+
+        move_cursor_to_pos(x, y+(spacing*i))
+        stdout.write(text_bold & player.name)
+
+        move_cursor_to_pos(x+6, y+(spacing*i))
         stdout.write(": " & $player.round_score)
-        move_cursor_to_pos(x+12, y+i)
+
+        move_cursor_to_pos(x+12, y+(spacing*i))
         stdout.write("(" & $(player.match_score + player.round_score) & ")")
+
+        let (c,r,a,b) = count_each_card_type(player.captured)
+        let c_str = bg_grass & ($c).normalize_to_4_chars()
+        let r_str = bg_plum & ($r).normalize_to_4_chars()
+        let a_str = bg_clover & ($a).normalize_to_4_chars()
+        let b_str = bg_mum & ($b).normalize_to_4_chars()
+        move_cursor_to_pos(x,y+1+(spacing*i))
+        stdout.write(text_bold & b_str & a_str & r_str & c_str & text_reset)
+
     stdout.flushFile()
 
 proc add_round_scores_to_match_scores() =
@@ -217,24 +250,18 @@ proc get_deal_speed(): int =
 proc reset_zones*() =
     current_deck = full_deck
     field.setLen(0)
-
     p1.hand.setLen(0)
     p2.hand.setLen(0)
     p3.hand.setLen(0)
     p4.hand.setLen(0)
     p5.hand.setLen(0)
     p6.hand.setLen(0)
-    p7.hand.setLen(0)
-    p8.hand.setLen(0)
-
     p1.captured.setLen(0)
     p2.captured.setLen(0)
     p3.captured.setLen(0)
     p4.captured.setLen(0)
     p5.captured.setLen(0)
     p6.captured.setLen(0)
-    p7.captured.setLen(0)
-    p8.captured.setLen(0)
 
 
 proc gather_players(): seq[Player] =
@@ -243,8 +270,6 @@ proc gather_players(): seq[Player] =
     if game_mode.num_players >= 4: result.add(p4)
     if game_mode.num_players >= 5: result.add(p5)
     if game_mode.num_players >= 6: result.add(p6)
-    if game_mode.num_players >= 7: result.add(p7)
-    if game_mode.num_players >= 8: result.add(p8)
 
 
 proc choose_first_dealer(): int =
@@ -252,8 +277,9 @@ proc choose_first_dealer(): int =
     result = rand(count - 1)
 
 proc reset_scores() =
-    for player in [p1,p2,p3,p4,p5,p6,p7,p8]:
+    for player in [p1,p2,p3,p4,p5,p6]:
         player.teyaku_score = 0
+        player.current_dekiyaku = @[]
         player.match_score  = 0
         player.round_score  = 0
         player.rounds_won   = 0

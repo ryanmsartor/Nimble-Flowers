@@ -246,7 +246,7 @@ proc customize_rules*(game: RuleSet): RuleSet =
     of "2":
         result = game
 
-        result.num_players = ask_how_many("players",2,8,result).parseInt()
+        result.num_players = ask_how_many("players",2,6,result).parseInt()
 
         let decksize = 48 + game.cards_added.len - game.cards_stripped.len 
         let max_cards_hand = (decksize div 2) div result.num_players

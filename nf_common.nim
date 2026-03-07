@@ -49,6 +49,7 @@ type
         hand*: Zone
         captured*: Zone
         teyaku_score*: int
+        current_dekiyaku*: seq[Dekiyaku]
         round_score*: int
         match_score*: int
         rounds_won*: uint8
