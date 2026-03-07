@@ -48,8 +48,7 @@ type
         name*: string
         hand*: Zone
         captured*: Zone
-        current_teyaku_score*: int
-        current_dekiyaku_score*: int
+        teyaku_score*: int
         round_score*: int
         match_score*: int
         rounds_won*: uint8

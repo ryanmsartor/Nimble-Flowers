@@ -251,9 +251,17 @@ proc choose_first_dealer(): int =
     let count = game_mode.num_players
     result = rand(count - 1)
 
+proc reset_scores() =
+    for player in [p1,p2,p3,p4,p5,p6,p7,p8]:
+        player.teyaku_score = 0
+        player.match_score  = 0
+        player.round_score  = 0
+        player.rounds_won   = 0
+
 
 proc set_up_game*() =
-    reset_zones() # ensure fresh start
+    reset_zones()
+    reset_scores()
     current_players = gather_players()
     dealer_index = choose_first_dealer()
     let dealer = current_players[dealer_index]
