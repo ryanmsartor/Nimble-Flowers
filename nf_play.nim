@@ -143,6 +143,8 @@ proc announce_game_winner() =
     echo_centered("Press ENTER to return to main menu")
     discard prompt("")
 
+
+
 ##### DISPLAY STUFF: THE UI #####
 
 proc get_one_row_coords*(zoneLen: int, index: int,
@@ -316,7 +318,7 @@ proc deal*() =
             sleep(delay)
     
     display_gamestate()
-    in_game_message(dealer.name & " has distributed " & $game_mode.num_cards_field & " cards to the field.")
+    in_game_message(dealer.name & " distributed " & $game_mode.num_cards_field & " cards to the field.")
 
 
     for i in 1 .. game_mode.num_cards_hand:
@@ -329,6 +331,20 @@ proc deal*() =
     in_game_message("Each player received a " & $game_mode.num_cards_hand & "-card hand.")
 
 
+
+##### NAMING CARDS TO PLAY OR CAPTURE #####
+
+proc get_alt_names_for_zone(zone:Zone): seq[string] =
+    for card in zone:
+        result = result & card.alt_names
+    return result
+
+proc get_card_from_alt_name(name:string, zone:Zone): Card =
+    for card in zone:
+        if name in card.alt_names:
+            result = card
+            break
+    return result
 
 ##### GAMEPLAY STUFF: A TURN #####
 
@@ -448,7 +464,7 @@ proc take_turn*(player: Player) =
     # first, select a card from one's hand to play.
     case player.play_style:
     of human:
-        let options = generate_string_range(1,player.hand.len)
+        let options = generate_string_range(1,player.hand.len) & get_alt_names_for_zone(player.hand)
         while selected_index notin options:
             display_gamestate()
             move_cursor_to_pos(1,26)
@@ -460,8 +476,12 @@ proc take_turn*(player: Player) =
         in_game_message("It's " & player.name & "'s turn.")
         selected_index = "1"
 
-    # second, translate the index to a card
-    selected_card = player.hand[parseInt(selected_index) - 1]
+    # second, translate the index or user entry to a card
+    if selected_index in generate_string_range(1,player.hand.len):
+        selected_card = player.hand[parseInt(selected_index) - 1]
+    else: # they entered a successful alt_name
+        selected_card = get_card_from_alt_name(selected_index, player.hand)
+
 
     # third, count the number of matches and take the appropriate action.
     handle_matches(player, selected_card, "hand")
@@ -509,6 +529,8 @@ proc play_round(first_to_play: int) =
     add_round_scores_to_match_scores()
 
 
+
+##### PLAY A FULL GAME! #####
 
 proc play_full_match*() =
 
