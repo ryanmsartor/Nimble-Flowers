@@ -9,7 +9,6 @@ import std/strutils
 import std/tables
 import nf_common
 import nf_cards
-import nf_yaku
 
 randomize()
 # var my_seed: int64 = 1234

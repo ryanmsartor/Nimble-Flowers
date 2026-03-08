@@ -6,9 +6,25 @@ import nf_common
 const
     ascii_edge* = "|=========|"
     blank_ascii_row* = "|\e[1m.........\e[0m|"
-    back_ascii_row* = "|         |"
+    back_ascii_row*  = "|         |"
+    empty_ascii_row* = "           "
 
 const
+    no_card* = Card(
+        full_name: "nothing",
+        short_name: "nothing",
+        art0: empty_ascii_row,
+        art1: empty_ascii_row,
+        art2: empty_ascii_row,
+        art3: empty_ascii_row,
+        art4: empty_ascii_row,
+        art5: empty_ascii_row,
+        art6: empty_ascii_row,
+        art7: empty_ascii_row,
+        art8: empty_ascii_row,
+        art9: empty_ascii_row
+    )
+
     blank_card* = Card(
         full_name: "White card",
         short_name: "White card",
@@ -42,7 +58,8 @@ const
     pine_bright* = Card(
         full_name: fg_pine & "Pine with Crane" & text_reset,
         short_name: fg_pine & "Pine w/ Crane" & text_reset,
-        alt_names: @[""],
+        alt_names: @["pine bright", "pine crane", "crane", "pine", "bright", "matsu", "hikari",
+                     "tsuru", "matsu no hikari", "matsu ni tsuru", "light", "pine light"],
         standard_suit: 1,
         mushi_suit: 1, 
         nagoya_suit: 1, 
@@ -65,7 +82,10 @@ const
     pine_ribbon* = Card(
         full_name: fg_pine & "Pine with Poetry Ribbon" & text_reset,
         short_name: fg_pine & "Pine w/ P.Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["pine", "poetry ribbon", "pine ribbon", "pine poetry",
+                     "pine poetry ribbon", "ribbon", "poetry", "tanzaku", "akatan",
+                     "matsu", "matsu ni tanzaku", "matsu ni akatan", "redgud",
+                     "redgood", "RedGud", "red good", "red gud", "Red Gud"],
         standard_suit: 1,
         mushi_suit: 1,
         nagoya_suit: 1,
@@ -88,7 +108,8 @@ const
     pine_chaff_1* = Card(
         full_name: fg_pine & "Pine chaff" & text_reset,
         short_name: fg_pine & "Pine chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["pine", "chaff", "pine chaff", "matsu", "kasu", "matsu no kasu",
+                     "junk", "pine junk", "dregs", "pine dregs"],
         standard_suit: 1,
         mushi_suit: 1,
         nagoya_suit: 1,
@@ -111,7 +132,8 @@ const
     pine_chaff_2* = Card(
         full_name: fg_pine & "Pine chaff" & text_reset,
         short_name: fg_pine & "Pine chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["pine", "chaff", "pine chaff", "matsu", "kasu", "matsu no kasu",
+                     "junk", "pine junk", "dregs", "pine dregs"],
         standard_suit: 1,
         mushi_suit: 1,
         nagoya_suit: 1,
@@ -135,7 +157,12 @@ const
     plum_animal* = Card(
         full_name: fg_plum & "Plum Blossoms with Bush Warbler" & text_reset,
         short_name: fg_plum & "Plum w/ Warbler" & text_reset,
-        alt_names: @[""],
+        alt_names: @["plum", "warbler", "animal", "plum warbler", "plum animal",
+                     "ume", "tane", "ume no tane", "ume ni uguisu", "uguisu",
+                     "plum blossom", "plum blossom animal", "plum blossom warbler",
+                     "plum blossoms", "plum blossoms animal", "plum blossoms warbler",
+                     "bush warbler", "plum bush warbler", "plum blossom bush warbler",
+                     "plum blossoms bush warbler"],
         standard_suit: 2,
         mushi_suit: 2,
         nagoya_suit: 12,
@@ -158,7 +185,12 @@ const
     plum_ribbon* = Card(
         full_name: fg_plum & "Plum Blossoms with Poetry Ribbon" & text_reset,
         short_name: fg_plum & "Plum w/ P.Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["plum", "poetry", "ribbon", "plum poetry", "plum ribbon", "plum poetry ribbon", "poetry ribbon",
+                     "ume", "tanzaku", "akatan", "ume ni tanzaku", "ume ni akatan",
+                     "plum blossom", "plum blossoms", "plum blossom ribbon",
+                     "plum blossoms ribbon", "plum blossom poetry",
+                     "plum blossoms poetry", "plum blossom poetry ribbon",
+                     "plum blossoms poetry ribbon", "RedGr8", "redgr8", "redgreat"],
         standard_suit: 2,
         mushi_suit: 2,
         nagoya_suit: 12,
@@ -181,7 +213,10 @@ const
     plum_chaff_1* = Card(
         full_name: fg_plum & "Plum Blossom chaff" & text_reset,
         short_name: fg_plum & "Plum chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["plum", "chaff", "plum chaff", "ume", "kasu", "ume no kasu",
+                     "plum blossom", "plum blossoms", "plum blossom chaff",
+                     "plum blossoms chaff", "junk", "plum junk", "plum blossom junk",
+                     "dregs", "plum dregs", "plum blossom dregs"],
         standard_suit: 2,
         mushi_suit: 2,
         nagoya_suit: 12,
@@ -204,7 +239,10 @@ const
     plum_chaff_2* = Card(
         full_name: fg_plum & "Plum Blossom chaff" & text_reset,
         short_name: fg_plum & "Plum chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["plum", "chaff", "plum chaff", "ume", "kasu", "ume no kasu",
+                     "plum blossoms", "plum blossom", "plum blossoms chaff",
+                     "plum blossom chaff", "junk", "plum junk", "plum blossom junk",
+                     "dregs", "plum dregs", "plum blossom dregs"],
         standard_suit: 2,
         mushi_suit: 2,
         nagoya_suit: 12,
@@ -228,7 +266,11 @@ const
     cherry_bright* = Card(
         full_name: fg_cherry & "Cherry Blossoms with Curtain" & text_reset,
         short_name: fg_cherry & "Cherry w/ Curtain" & text_reset,
-        alt_names: @[""],
+        alt_names: @["cherry", "bright", "curtain", "cherry curtain", "cherry bright",
+                     "sakura", "hikari", "maku", "sakura no hikari", "sakura ni maku",
+                     "cherry blossom", "cherry blossoms", "cherry blossom bright",
+                     "cherry blossoms bright", "cherry blossom curtain",
+                     "cherry blossoms curtain", "light", "cherry light", "cherry blossom light"],
         standard_suit: 3,
         mushi_suit: 3, 
         nagoya_suit: 3, 
@@ -251,7 +293,14 @@ const
     cherry_ribbon* = Card(
         full_name: fg_cherry & "Cherry Blossoms with Poetry Ribbon" & text_reset,
         short_name: fg_cherry & "Cherry w/ P.Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["cherry", "poetry", "ribbon", "cherry poetry", "cherry ribbon",
+                     "poetry ribbon", "cherry poetry ribbon", "Yosino", "yosino",
+                     "miyosino", "miyoshino", "yoshino", "Yoshino", "cherry blossoms",
+                     "cherry blossom", "cherry blossom ribbon", "sakura ni tanzaku",
+                     "cherry blossoms ribbon", "cherry blossom poetry",
+                     "cherry blossoms poetry", "cherry blossom poetry ribbon",
+                     "cherry blossoms poetry ribbon", "sakura", "tanzaku", "akatan",
+                     "sakura ni akatan"],
         standard_suit: 3,
         mushi_suit: 3,
         nagoya_suit: 3,
@@ -274,7 +323,10 @@ const
     cherry_chaff_1* = Card(
         full_name: fg_cherry & "Cherry Blossom chaff" & text_reset,
         short_name: fg_cherry & "Cherry chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["cherry", "chaff", "cherry chaff", "sakura", "kasu", "junk", "cherry junk",
+                     "sakura no kasu", "cherry blossom", "cherry blossom chaff",
+                     "cherry blossoms", "cherry blossoms chaff", "cherry blossom junk",
+                     "dregs", "cherry blossom dregs", "cherry dregs"],
         standard_suit: 3,
         mushi_suit: 3,
         nagoya_suit: 3,
@@ -297,7 +349,10 @@ const
     cherry_chaff_2* = Card(
         full_name: fg_cherry & "Cherry Blossom chaff" & text_reset,
         short_name: fg_cherry & "Cherry chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["cherry", "chaff", "cherry chaff", "sakura", "kasu", "junk", "cherry junk",
+                     "sakura no kasu", "cherry blossom", "cherry blossom chaff",
+                     "cherry blossoms", "cherry blossoms chaff", "cherry blossom junk",
+                     "dregs", "cherry blossom dregs", "cherry dregs"],
         standard_suit: 3,
         mushi_suit: 3,
         nagoya_suit: 3,
@@ -321,7 +376,9 @@ const
     wisteria_animal* = Card(
         full_name: fg_wisteria & "Wisteria with Cuckoo" & text_reset,
         short_name: fg_wisteria & "Wisteria w/ Cuckoo" & text_reset,
-        alt_names: @[""],
+        alt_names: @["wisteria", "animal", "wisteria animal", "cuckoo",
+                     "wisteria cuckoo", "fuji", "tane", "fuji no tane", "hototogisu",
+                     "fuji ni hototogisu", "wist", "wist cuckoo", "wist animal"],
         standard_suit: 4,
         mushi_suit: 4,
         nagoya_suit: 4,
@@ -344,7 +401,8 @@ const
     wisteria_ribbon* = Card(
         full_name: fg_wisteria & "Wisteria with Ribbon" & text_reset,
         short_name: fg_wisteria & "Wisteria w/ Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["wisteria", "ribbon", "wisteria ribbon", "fuji", "tanzaku",
+                     "fuji ni tanzaku", "wist ribbon", "wist"],
         standard_suit: 4,
         mushi_suit: 4,
         nagoya_suit: 4,
@@ -367,7 +425,9 @@ const
     wisteria_chaff_1* = Card(
         full_name: fg_wisteria & "Wisteria chaff" & text_reset,
         short_name: fg_wisteria & "Wisteria chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["wisteria", "chaff", "wisteria chaff", "fuji", "kasu",
+                     "fuji no kasu", "wist", "wist chaff", "junk", "dregs", "wisteria junk",
+                     "wisteria dregs", "wist junk", "wist dregs"],
         standard_suit: 4,
         mushi_suit: 4,
         nagoya_suit: 4,
@@ -390,7 +450,9 @@ const
     wisteria_chaff_2* = Card(
         full_name: fg_wisteria & "Wisteria chaff" & text_reset,
         short_name: fg_wisteria & "Wisteria chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["wisteria", "chaff", "wisteria chaff", "fuji", "kasu",
+                     "fuji no kasu", "wist", "wist chaff", "junk", "dregs", "wisteria junk",
+                     "wisteria dregs", "wist junk", "wist dregs"],
         standard_suit: 4,
         mushi_suit: 4,
         nagoya_suit: 4,
@@ -414,7 +476,9 @@ const
     iris_animal* = Card(
         full_name: fg_iris & "Iris with 8-Plank Bridge" & text_reset,
         short_name: fg_iris & "Iris w/ Bridge" & text_reset,
-        alt_names: @[""],
+        alt_names: @["iris", "bridge", "animal", "iris bridge", "iris animal", "ayame", "tane",
+                     "yatsuhashi", "ayame ni yatsuhashi", "shoubu", "shoubu ni yatsuhashi",
+                     "ayame no tane", "shoubu no tane"],
         standard_suit: 5,
         mushi_suit: 5,
         nagoya_suit: 5,
@@ -437,7 +501,8 @@ const
     iris_ribbon* = Card(
         full_name: fg_iris & "Iris with Ribbon" & text_reset,
         short_name: fg_iris & "Iris w/ Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["iris", "ribbon", "iris ribbon", "ayame", "tanzaku", "ayame ni tanzaku",
+                     "shoubu", "shoubu ni tanzaku"],
         standard_suit: 5,
         mushi_suit: 5,
         nagoya_suit: 5,
@@ -460,7 +525,8 @@ const
     iris_chaff_1* = Card(
         full_name: fg_iris & "Iris chaff" & text_reset,
         short_name: fg_iris & "Iris chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["iris", "chaff", "iris chaff", "ayame", "kasu", "ayame no kasu",
+                     "shoubu", "shoubu no kasu", "junk", "iris junk", "dregs", "iris dregs"],
         standard_suit: 5,
         mushi_suit: 5,
         nagoya_suit: 5,
@@ -483,7 +549,8 @@ const
     iris_chaff_2* = Card(
         full_name: fg_iris & "Iris chaff" & text_reset,
         short_name: fg_iris & "Iris chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["iris", "chaff", "iris chaff", "ayame", "kasu", "ayame no kasu",
+                     "shoubu", "shoubu no kasu", "junk", "iris junk", "dregs", "iris dregs"],
         standard_suit: 5,
         mushi_suit: 5,
         nagoya_suit: 5,
@@ -507,7 +574,8 @@ const
     peony_animal* = Card(
         full_name: fg_peony & "Peony with Butterflies" & text_reset,
         short_name: fg_peony & "Peony w/ Butterflies" & text_reset,
-        alt_names: @[""],
+        alt_names: @["peony", "animal", "butterfly", "butterflies", "peony animal", "peony butterfly", "peony butterflies",
+                     "botan", "tane", "chou", "cho", "botan no tane", "botan ni chou", "botan ni cho"],
         standard_suit: 6,
         nagoya_suit: 11,
         hachihachi_value: 10,
@@ -529,7 +597,8 @@ const
     peony_ribbon* = Card(
         full_name: fg_peony & "Peony with Blue Ribbon" & text_reset,
         short_name: fg_peony & "Peony w/ B.Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["peony", "ribbon", "blue ribbon", "peony ribbon", "peony blue ribbon", "peony blue",
+                     "blue", "botan", "tanzaku", "aotan", "botan ni tanzaku", "botan ni aotan"],
         standard_suit: 6,
         nagoya_suit: 11,
         hachihachi_value: 5,
@@ -551,7 +620,8 @@ const
     peony_chaff_1* = Card(
         full_name: fg_peony & "Peony chaff" & text_reset,
         short_name: fg_peony & "Peony chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["peony", "chaff", "peony chaff", "botan", "kasu", "botan no kasu",
+                     "junk", "dregs", "peony dregs", "peony junk"],
         standard_suit: 6,
         nagoya_suit: 11,
         hachihachi_value: 1,
@@ -573,7 +643,8 @@ const
     peony_chaff_2* = Card(
         full_name: fg_peony & "Peony chaff" & text_reset,
         short_name: fg_peony & "Peony chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["peony", "chaff", "peony chaff", "botan", "kasu", "botan no kasu",
+                     "junk", "dregs", "peony dregs", "peony junk"],
         standard_suit: 6,
         nagoya_suit: 11,
         hachihachi_value: 1,
@@ -596,7 +667,9 @@ const
     clover_animal* = Card(
         full_name: fg_clover & "Bush Clover with Boar" & text_reset,
         short_name: fg_clover & "Clover w/ Boar" & text_reset,
-        alt_names: @[""],
+        alt_names: @["clover", "boar", "animal", "clover boar", "clover animal", "hagi", "tane", "ino",
+              "inoshishi", "inosisi", "hagi no tane", "hagi ni ino", "hagi ni inoshishi", "hagi ni inosisi", 
+              "bush clover", "bush clover animal", "bush clover boar"],
         standard_suit: 7,
         nagoya_suit: 7,
         hachihachi_value: 10,
@@ -618,7 +691,8 @@ const
     clover_ribbon* = Card(
         full_name: fg_clover & "Bush Clover with Ribbon" & text_reset,
         short_name: fg_clover & "Clover w/ Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["clover", "ribbon", "clover ribbon", "hagi", "tanzaku",
+                     "hagi ni tanzaku", "bush clover", "bush clover ribbon"],
         standard_suit: 7,
         nagoya_suit: 7,
         hachihachi_value: 5,
@@ -640,7 +714,12 @@ const
     clover_chaff_1* = Card(
         full_name: fg_clover & "Bush Clover chaff" & text_reset,
         short_name: fg_clover & "Clover chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["clover", "chaff", "clover chaff", "hagi", "kasu", "hagi no kasu",
+                     "bush clover", "bush clover chaff", "left chaff", "left clover",
+                     "left bush clover", "left clover chaff", "left bush clover chaff",
+                     "junk", "dregs", "clover junk", "clover dregs", "bush clover junk",
+                     "bush clover dregs", "left dregs", "left junk", "left clover junk",
+                     "left clover dregs", "left bush clover junk", "left bush clover dregs"],
         standard_suit: 7,
         nagoya_suit: 7,
         hachihachi_value: 1,
@@ -662,7 +741,12 @@ const
     clover_chaff_2* = Card(
         full_name: fg_clover & "Bush Clover chaff" & text_reset,
         short_name: fg_clover & "Clover chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["clover", "chaff", "clover chaff", "hagi", "kasu", "hagi no kasu",
+                     "bush clover", "bush clover chaff", "right chaff", "right clover",
+                     "right bush clover", "right clover chaff", "right bush clover chaff",
+                     "junk", "dregs", "clover junk", "clover dregs", "bush clover junk",
+                     "bush clover dregs", "right dregs", "right junk", "right clover junk",
+                     "right clover dregs", "right bush clover junk", "right bush clover dregs"],
         standard_suit: 7,
         nagoya_suit: 7,
         hachihachi_value: 1,
@@ -685,7 +769,12 @@ const
     grass_bright* = Card(
         full_name: fg_grass & "Silvergrass with Full Moon" & text_reset,
         short_name: fg_grass & "Hills w/ Moon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["grass", "bright", "moon", "full moon", "grass bright", "grass moon", "grass full moon",
+                     "yama", "susuki", "hikari", "yama no hikari", "susuki no hikari", "bozu", "bouzu", "tsuki",
+                     "yama ni tsuki", "susuki ni tsuki", "yama ni bozu", "hill moon", "yama ni bouzu", "susuki ni bozu",
+                     "susuki ni bouzu", "hills moon", "hill", "hills", "hill bright", "hills bright", "silvergrass",
+                     "silvergrass moon", "silvergrass bright", "silvergrass full moon",
+                     "light", "grass light", "hill light", "silvergrass light"],
         standard_suit: 8,
         mushi_suit: 8, 
         nagoya_suit: 8, 
@@ -708,7 +797,10 @@ const
     grass_animal* = Card(
         full_name: fg_grass & "Silvergrass with Geese" & text_reset,
         short_name: fg_grass & "Hills w/ Geese" & text_reset,
-        alt_names: @[""],
+        alt_names: @["grass", "animal", "grass animal", "geese", "grass geese", "susuki", "yama", "tane", "susuki no tane",
+                     "yama no tane", "susuki ni kari", "kari", "yama ni kari", "gan", "susuki ni gan", "yama ni gan", "hill", 
+                     "hills", "hill geese", "hills geese", "hill animal", "hills animal", "silvergrass",
+                     "silvergrass animal", "silvergrass geese"],
         standard_suit: 8,
         mushi_suit: 8,
         nagoya_suit: 8,
@@ -731,7 +823,13 @@ const
     grass_chaff_1* = Card(
         full_name: fg_grass & "Silvergrass chaff" & text_reset,
         short_name: fg_grass & "Hills chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["grass", "chaff", "grass chaff", "susuki", "yama", "kasu", "junk", "dregs",
+              "susuki no kasu", "yama no kasu", "hill", "hills", "hill chaff", "grass junk",
+              "hills chaff", "silvergrass", "silvergrass chaff", "low chaff", "grass dregs",
+              "low hill", "low hill chaff", "low grass", "low grass chaff", "hill junk",
+              "low silvergrass", "low silvergrass chaff", "hill dregs", "silvergrass junk",
+              "silvergrass dregs", "low junk", "low dregs", "low grass junk", "low grass dregs",
+              "low hill junk", "low hill dregs", "low silvergrass junk", "low silvergrass dregs"],
         standard_suit: 8,
         mushi_suit: 8,
         nagoya_suit: 8,
@@ -754,7 +852,12 @@ const
     grass_chaff_2* = Card(
         full_name: fg_grass & "Silvergrass chaff" & text_reset,
         short_name: fg_grass & "Hills chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["grass", "chaff", "grass chaff", "susuki", "yama", "kasu", "junk", "dregs", "susuki no kasu",
+                     "yama no kasu", "hill", "hills", "hill chaff", "grass junk", "hills chaff", "high chaff", 
+                     "high hill", "high hill chaff", "grass dregs", "high grass", "high grass chaff", "silvergrass",
+                     "hill junk", "hill dregs", "silvergrass chaff", "high silvergrass", "high silvergrass chaff",
+                     "silvergrass dregs", "silvergrass junk", "high junk", "high dregs", "high grass junk", "high grass dregs",
+                     "high silvergrass junk", "high silvergrass dregs", "high hill junk", "high hill dregs"],
         standard_suit: 8,
         mushi_suit: 8,
         nagoya_suit: 8,
@@ -778,7 +881,10 @@ const
     mum_animal* = Card(
         full_name: fg_mum & "Chrysanthemums with Sake Cup" & text_reset,
         short_name: fg_mum & "Mums w/ Sake Cup" & text_reset,
-        alt_names: @[""],
+        alt_names: @["chrysanthemum", "mum", "sake", "cup", "animal", "sake cup", "chrysanthemum sake", "mum sake",
+                     "chrysanthemum cup", "mum cup", "chrysanthemum sake cup", "mum sake cup", "chrysanthemum animal",
+                     "mum animal", "kiku", "tane", "sakazuki", "kiku no tane", "kiku ni sakazuki", "chrys cup", "chrys",
+                     "chrys sake", "chrys animal", "chrys sake cup", "mums", "mums cup", "mums animal", "mums sake", "mums sake cup"],
         standard_suit: 9,
         mushi_suit: 9,
         nagoya_suit: 9,
@@ -801,7 +907,10 @@ const
     mum_ribbon* = Card(
         full_name: fg_mum & "Chrysanthemums with Blue Ribbon" & text_reset,
         short_name: fg_mum & "Mums w/ B.Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["chrysanthemum", "mum", "blue", "ribbon", "chrysanthemum blue", "chrysanthemum ribbon", 
+                     "chrysanthemum blue ribbon", "mum blue", "mum ribbon", "mum blue ribbon", "kiku", "tanzaku",
+                     "aotan", "kiku ni tanzaku", "kiku ni aotan", "chrys", "chrys ribbon",
+                     "chrys blue ribbon", "mums", "mums ribbon", "mums blue ribbon"],
         standard_suit: 9,
         mushi_suit: 9,
         nagoya_suit: 9,
@@ -824,7 +933,10 @@ const
     mum_chaff_1* = Card(
         full_name: fg_mum & "Chrysanthemum chaff" & text_reset,
         short_name: fg_mum & "Mums chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["chrysanthemum", "chaff", "mum", "chrysanthemum chaff", "mum chaff",
+                     "kiku", "kasu", "kiku no kasu", "chrys", "chrys chaff", "mums",
+                     "mums chaff", "junk", "dregs", "chrysanthemum junk", "mums junk",
+                     "chrysanthemum dregs", "mums dregs", "mum junk", "mum dregs"],
         standard_suit: 9,
         mushi_suit: 9,
         nagoya_suit: 9,
@@ -847,7 +959,10 @@ const
     mum_chaff_2* = Card(
         full_name: fg_mum & "Chrysanthemum chaff" & text_reset,
         short_name: fg_mum & "Mums chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["chrysanthemum", "chaff", "mum", "chrysanthemum chaff", "mum chaff",
+                     "kiku", "kasu", "kiku no kasu", "chrys", "chrys chaff", "mums",
+                     "mums chaff", "junk", "dregs", "chrysanthemum junk", "mums junk",
+                     "chrysanthemum dregs", "mums dregs", "mum junk", "mum dregs"],
         standard_suit: 9,
         mushi_suit: 9,
         nagoya_suit: 9,
@@ -871,7 +986,8 @@ const
     maple_animal* = Card(
         full_name: fg_maple & "Maple Tree with Deer" & text_reset,
         short_name: fg_maple & "Maple w/ Deer" & text_reset,
-        alt_names: @[""],
+        alt_names: @["maple", "animal", "deer", "maple animal", "maple deer", "momiji", "kaede",
+                     "tane", "shika", "momiji no tane", "momiji ni shika", "kaede no tane", "kaede ni shika"],
         standard_suit: 10,
         mushi_suit: 10,
         nagoya_suit: 10,
@@ -894,7 +1010,9 @@ const
     maple_ribbon* = Card(
         full_name: fg_maple & "Maple Leaves with Blue Ribbon" & text_reset,
         short_name: fg_maple & "Maple w/ B. Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["maple", "ribbon", "maple ribbon", "blue", "blue ribbon", "maple blue", "maple blue ribbon",
+                     "momiji", "kaede", "tanzaku", "aotan", "momiji ni tanzaku", "kaede ni tanzaku",
+                     "momiji ni aotan", "kaede ni aotan"],
         standard_suit: 10,
         mushi_suit: 10,
         nagoya_suit: 10,
@@ -917,7 +1035,8 @@ const
     maple_chaff_1* = Card(
         full_name: fg_maple & "Maple chaff" & text_reset,
         short_name: fg_maple & "Maple chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["maple", "chaff", "maple chaff", "momiji", "kaede", "kasu", "momiji no kasu", "kaede no kasu",
+                     "junk", "dregs", "maple junk", "maple dregs"],
         standard_suit: 10,
         mushi_suit: 10,
         nagoya_suit: 10,
@@ -940,7 +1059,8 @@ const
     maple_chaff_2* = Card(
         full_name: fg_maple & "Maple chaff" & text_reset,
         short_name: fg_maple & "Maple chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["maple", "chaff", "maple chaff", "momiji", "kaede", "kasu", "momiji no kasu", "kaede no kasu",
+                     "junk", "dregs", "maple junk", "maple dregs"],
         standard_suit: 10,
         mushi_suit: 10,
         nagoya_suit: 10,
@@ -964,7 +1084,13 @@ const
     willow_bright* = Card(
         full_name: fg_willow & "Willow with Calligrapher" & text_reset,
         short_name: fg_willow & "Willow w/ Rain Man" & text_reset,
-        alt_names: @[""],
+        alt_names: @["willow", "rain", "bright", "man", "frog", "rain man", "willow man",
+                     "rain frog", "willow frog", "rainman", "willow rain man", "willow rainman",
+                     "rain bright", "willow bright", "yanagi", "ame", "hikari", "yanagi no hikari",
+                     "ame no hikari", "ono", "michikaze", "toufu", "tofu", "ono no toufu",
+                     "ono no tofu", "ame ni ono no toufu", "ame ni ono no tofu", "yanagi ni ono no tofu",
+                     "yanagi ni ono no toufu", "yanagi no hito", "yanagi ni hito", "ame no hito", "ame ni hito",
+                     "light", "willow light", "rain light"],
         standard_suit: 11,
         mushi_suit: 6,
         nagoya_suit: 2,
@@ -987,7 +1113,8 @@ const
     willow_animal* = Card(
         full_name: fg_willow & "Willow with Swallow" & text_reset,
         short_name: fg_willow & "Willow w/ Swallow" & text_reset,
-        alt_names: @[""],
+        alt_names: @["willow", "rain", "animal", "swallow", "willow animal", "rain animal", "willow swallow", "rain swallow",
+                     "yanagi", "ame", "tane", "tsubame", "yanagi no tane", "ame no tane", "yanagi ni tsubame", "ame ni tsubame"],
         standard_suit: 11,
         mushi_suit: 6,
         nagoya_suit: 2,
@@ -1010,7 +1137,8 @@ const
     willow_ribbon* = Card(
         full_name: fg_willow & "Willow with Ribbon" & text_reset,
         short_name: fg_willow & "Willow w/ Ribbon" & text_reset,
-        alt_names: @[""],
+        alt_names: @["willow", "rain", "ribbon", "willow ribbon", "rain ribbon", "yanagi", "ame", "tanzaku",
+                     "yanagi ni tanzaku", "ame ni tanzaku"],
         standard_suit: 11,
         mushi_suit: 6,
         nagoya_suit: 2,
@@ -1033,7 +1161,10 @@ const
     willow_chaff* = Card(
         full_name: fg_willow & "Willow with Lightning" & text_reset,
         short_name: fg_willow & "Willow w/ Lightning" & text_reset,
-        alt_names: @[""],
+        alt_names: @["willow", "chaff", "rain", "lightning", "willow chaff", "willow lightning",
+                     "rain chaff", "gaji", "oni", "oni no te", "ame ni oni", "yanagi ni oni",
+                     "yanagi", "ame", "kasu", "yanagi no kasu", "ame no kasu", "onifuda",
+                     "junk", "dregs", "willow junk", "willow dregs", "rain junk", "rain dregs"],
         standard_suit: 11,
         mushi_suit: 6,
         nagoya_suit: 2,
@@ -1057,7 +1188,10 @@ const
     paulownia_bright* = Card(
         full_name: fg_paulownia & "Paulownia with Phoenix" & text_reset,
         short_name: fg_paulownia & "Paulownia w/ Phoenix" & text_reset,
-        alt_names: @[""],
+        alt_names: @["paulownia", "bright", "phoenix", "paulownia bright", "paulownia phoenix", "kiri",
+                     "hikari", "kiri no hikari", "ho-oh", "ho-ou", "ho-o", "hoou", "kiri ni ho-oh",
+                     "kiri ni ho-ou", "kiri ni ho-o", "kiri ni hoou", "hooh", "ho o", "ho oh", "ho ou",
+                     "paul", "paul bright", "paul phoenix", "light", "paulownia light", "paul light"],
         standard_suit: 12,
         mushi_suit: 7,
         nagoya_suit: 6,
@@ -1080,7 +1214,14 @@ const
     paulownia_chaff_1* = Card(
         full_name: fg_paulownia & "Paulownia with yellow chaff" & text_reset,
         short_name: fg_paulownia & "Yellow Paulownia" & text_reset,
-        alt_names: @[""],
+        alt_names: @["paulownia", "chaff", "paulownia chaff", "kiri", "kasu", "kiri no kasu",
+                     "yellow", "yellow chaff", "yellow paulownia chaff", "yellow paulownia",
+                     "ki kasu", "ki kiri", "ki", "kiiru", "ki iru", "kiiru no kasu",
+                     "kiiru no kiri", "ki kiri no kasu", "junk", "dregs", "yellow junk",
+                     "yellow dregs", "paulownia junk", "paulownia dregs",
+                     "yellow paulownia junk", "yellow paulownia dregs", "rms", "RMS",
+                     "paul", "yellow paul", "paul junk", "paul dregs", "yellow paul junk",
+                     "yellow paul dregs"],
         standard_suit: 12,
         mushi_suit: 7,
         nagoya_suit: 6,
@@ -1103,7 +1244,16 @@ const
     paulownia_chaff_2* = Card(
         full_name: fg_paulownia & "Paulownia chaff" & text_reset,
         short_name: fg_paulownia & "Paulownia chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["paulownia", "chaff", "paulownia chaff", "kiri", "kasu",
+                     "kiri no kasu", "plain chaff", "white chaff", "normal chaff",
+                     "normal paulownia", "normal paulownia chaff", "junk", "dregs",
+                     "white paulownia chaff", "paulownia junk", "paulownia dregs",
+                     "white junk", "white dregs", "plain junk", "plain dregs",
+                     "white paulownia junk", "white paulownia dregs",
+                     "plain paulownia junk", "plain paulownia dregs",
+                     "paul", "paul chaff", "paul junk", "paul dregs",
+                     "white paul", "plain paul", "white paul junk",
+                     "plain paul junk", "white paul dregs", "plain paul dregs"],
         standard_suit: 12,
         mushi_suit: 7,
         nagoya_suit: 6,
@@ -1126,7 +1276,15 @@ const
     paulownia_chaff_3* = Card(
         full_name: fg_paulownia & "Paulownia chaff" & text_reset,
         short_name: fg_paulownia & "Paulownia chaff" & text_reset,
-        alt_names: @[""],
+        alt_names: @["paulownia", "chaff", "paulownia chaff", "kiri", "kasu",
+                     "kiri no kasu", "ASCIIBANA", "asciibana", "white chaff",
+                     "white paulownia chaff", "chaff with text", "text chaff",
+                     "junk", "dregs", "paulownia junk", "paulownia dregs", "white junk",
+                     "white dregs", "white paulownia junk", "white paulownia dregs",
+                     "text junk", "text dregs", "junk with text", "dregs with text",
+                     "ascii", "ASCII", "white paulownia", "paul", "white paul",
+                     "white paul junk", "white paul dregs", "text paul", "paul with text",
+                     "text paul junk", "text paul dregs"],
         standard_suit: 12,
         mushi_suit: 7,
         nagoya_suit: 6,
@@ -1162,17 +1320,6 @@ const
         paulownia_bright, paulownia_chaff_1, paulownia_chaff_2, paulownia_chaff_3
     ]
 
-proc print_single_card(card:Card) =
-    echo card.art0
-    echo card.art1
-    echo card.art2
-    echo card.art3
-    echo card.art4
-    echo card.art5
-    echo card.art6
-    echo card.art7
-    echo card.art8
-    echo card.art9
 
 proc print_suit(suit:Suit) =
     var s0,s1,s2,s3,s4,s5,s6,s7,s8,s9 = "  "
