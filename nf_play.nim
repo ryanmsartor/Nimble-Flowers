@@ -348,7 +348,7 @@ proc get_card_from_alt_name(name:string, zone:Zone): Card =
 
 ##### GAMEPLAY STUFF: A TURN #####
 
-proc get_matches*(mycard: Card, zone_to_check: Zone): seq[Card] =
+proc get_matches*(mycard: Card, zone_to_check: Zone): Zone =
     var mysuit, suit: Suit
     for card in zone_to_check:
         if game_mode.hachi_matching:
@@ -382,82 +382,101 @@ proc discard_to_field(player: Player, card: Card) =
     field.add(card)
 
 
-proc pick_to_capture_between(player: Player; c1, c2: Card): Card =
+proc pick_to_capture_among(player: Player, played_card: Card, choices: Zone): Card =
     var selection: string
 
     # Player.play_style determines HOW field card is chosen
     case player.play_style:
     of human:
-        let options = @["1","2"]
+        let options = generate_string_range(1,choices.len) & get_alt_names_for_zone(choices)
         while selection notin options:
             display_gamestate()
             move_cursor_to_pos(1,26)
-            selection = prompt(text_bold & "Select which card to capture [1 or 2] > ")
+            echo(player.name & " played " & played_card.short_name & ".")
+            selection = prompt(text_bold & "Pick which card to capture. > " & text_reset)
             if selection in quit_commands: quit_game()
 
     of always_choose_first:
         display_gamestate()
+        in_game_message(player.name & " played " & played_card.short_name & ".")
         selection = "1"
 
-    # translate the returned "1" or "2" to an actual card to return
-    if selection == "1": result = c1
-    else: result = c2
+    # translate the "1" or "2" or whatever to an actual card to return
+    if selection in generate_string_range(1,choices.len):
+        result = choices[parseInt(selection) - 1]
+    else: # they successfully entered a valid alt_name
+        result = get_card_from_alt_name(selection, choices)
 
-    # tell the player what the pick was.
+    # show and tell the player what the pick was.
+    let index_on_field = field.find(result)
+    let (x,y) = get_two_row_coords(field.len, index_on_field) # this is where we smack down our played card
     display_gamestate()
+    played_card.print_at_pos(x+2,y+1)
     in_game_message(player.name & " picked " & result.full_name & ".")
 
     return result
 
 
-proc handle_matches(player: Player, card:Card, hand_or_deck="hand") =
+proc handle_matches(player: Player, card:Card, card_is_from_deck=false) =
 
     var matches_on_field = card.get_matches(field)
     case matches_on_field.len():
     of 0:
-        player.discard_to_field(card)
-        
-        if hand_or_deck == "hand":
-            display_gamestate()
-            in_game_message(player.name & " played " & card.full_name & ".")
 
+        player.discard_to_field(card)
         display_gamestate()
+
+        if not card_is_from_deck: in_game_message(player.name & " played " & card.full_name & ".")
         in_game_message("No matches, so it sticks to the field.")
 
-    of 2:
-        let picked_card = player.pick_to_capture_between(matches_on_field[0], matches_on_field[1])
-        player.capture_cards(@[card, picked_card])
-        display_gamestate()
-        in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
-
-    else:       # 1, 3, or maaaybe even 4
+    of 1:
         let index_on_field = field.find(matches_on_field[0])
-        let (x,y) = get_two_row_coords(field.len, index_on_field)
+        let (x,y) = get_two_row_coords(field.len, index_on_field) # this is where we smack down our played card
 
-        if hand_or_deck == "hand":
+        if not card_is_from_deck:
             display_gamestate()
             card.print_at_pos(x+2,y+1)
             in_game_message(player.name & " played " & card.full_name & ".")
             player.capture_cards(@[card] & matches_on_field)
 
-        if matches_on_field.len == 1:
-            display_gamestate()
-            if hand_or_deck == "deck": card.print_at_pos(x+2,y+1)
-            in_game_message(player.name & " captured " & card.short_name & " & " & matches_on_field[0].short_name & ".")
+        display_gamestate()
+        if card_is_from_deck: card.print_at_pos(x+2,y+1)
+        in_game_message(player.name & " captured " & card.short_name & " & " & matches_on_field[0].short_name & ".")
+        if card_is_from_deck: player.capture_cards(@[card] & matches_on_field) # do this later to smooth the animations
 
-        elif matches_on_field.len == 3:
+    of 2:
+        let picked_card = player.pick_to_capture_among(card, matches_on_field)
+        player.capture_cards(@[card, picked_card])
+        display_gamestate()
+        in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
+
+    else:
+        if game_mode.hachi_matching:
+            let picked_card = player.pick_to_capture_among(card, matches_on_field)
+            player.capture_cards(@[card, picked_card])
             display_gamestate()
+            in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
+
+        else:   # non-hachi and non-wildcard: take the whole suit
+            let index_on_field = field.find(matches_on_field[0])
+            let (x,y) = get_two_row_coords(field.len, index_on_field)
+
+            if not card_is_from_deck:
+                display_gamestate()
+                card.print_at_pos(x+2,y+1)
+                in_game_message(player.name & " played " & card.full_name & ".")
+                player.capture_cards(@[card] & matches_on_field)
+
+            display_gamestate()
+            if card_is_from_deck: card.print_at_pos(x+2,y+1)
             in_game_message(player.name & " captured the whole suit!")
-
-        if hand_or_deck == "deck": player.capture_cards(@[card] & matches_on_field) # do this later to smooth the animations
+            if card_is_from_deck: player.capture_cards(@[card] & matches_on_field) # do this later to smooth the animations
 
         ## TODO: carve out len == 3 for wild card
-        ## TODO: len > 3 (follow similar logic to 3 for wild card)
-
 
 proc take_turn*(player: Player) =
     var 
-        selected_index = ""
+        selection = ""
         selected_card: Card
         deck_card: Card
 
@@ -465,26 +484,27 @@ proc take_turn*(player: Player) =
     case player.play_style:
     of human:
         let options = generate_string_range(1,player.hand.len) & get_alt_names_for_zone(player.hand)
-        while selected_index notin options:
+        while selection notin options:
             display_gamestate()
             move_cursor_to_pos(1,26)
-            selected_index = prompt(text_bold & "Play a card from your hand. > " & text_reset)
-            if selected_index in quit_commands: quit_game()
+            selection = prompt(text_bold & "Play a card from your hand. > " & text_reset)
+            if selection in quit_commands: quit_game()
 
     of always_choose_first:
         display_gamestate()
         in_game_message("It's " & player.name & "'s turn.")
-        selected_index = "1"
+        selection = "1"
 
-    # second, translate the index or user entry to a card
-    if selected_index in generate_string_range(1,player.hand.len):
-        selected_card = player.hand[parseInt(selected_index) - 1]
-    else: # they entered a successful alt_name
-        selected_card = get_card_from_alt_name(selected_index, player.hand)
+    # second, translate the user entry or CPU selection to a card
+    if selection in generate_string_range(1,player.hand.len):
+        selected_card = player.hand[parseInt(selection) - 1]
+    else: # they successfully entered a valid alt_name
+        selected_card = get_card_from_alt_name(selection, player.hand)
 
 
     # third, count the number of matches and take the appropriate action.
-    handle_matches(player, selected_card, "hand")
+    player.hand.keepItIf(it != selected_card) # if we don't do this, a human-played card can appear in 2 places at once
+    handle_matches(player, selected_card, false)
 
     # Next, flip a card from the deck!
     let h = get_deck_height()    # do this before the pop to ensure flipped card is at right coords
@@ -494,7 +514,7 @@ proc take_turn*(player: Player) =
     in_game_message(player.name & " revealed " & deck_card.short_name & ".")
 
     # and take the appropriate action based on number of matches of that one!
-    handle_matches(player, deck_card, "deck")
+    handle_matches(player, deck_card, true)
 
 
 
