@@ -349,9 +349,19 @@ proc get_card_from_alt_name(name:string, zone:Zone): Card =
 ##### GAMEPLAY STUFF: A TURN #####
 
 proc get_matches*(mycard: Card, zone_to_check: Zone): Zone =
-    var mysuit, suit: Suit
+
     for card in zone_to_check:
-        if game_mode.hachi_matching:
+
+        if mycard == game_mode.wild_card:
+            if game_mode.wild_card_rules == "Osaka style":
+                result = zone_to_check
+                result.keepItIf(it.standard_suit != mycard.standard_suit)
+            elif game_mode.wild_card_rules == "Six Hundred Style":
+                result = zone_to_check
+                result.keepItIf(it.ropyakken_value > 0)
+
+        elif game_mode.hachi_matching:
+            var mysuit, suit: Suit
             case game_mode.suit_system:
             of "standard":
                 mysuit = mycard.standard_suit
@@ -364,10 +374,11 @@ proc get_matches*(mycard: Card, zone_to_check: Zone): Zone =
                 suit = card.nagoya_suit
             if (mysuit + suit) mod 5 == 3:
                 result.add(card)
-        else:
+
+        else: # non-hachi, non-wild
             if mycard.standard_suit == card.standard_suit:
                 result.add(card)
-
+    return result
 
 proc capture_cards(player: Player, cards: seq[Card]) =
     for c in cards:
@@ -450,8 +461,8 @@ proc handle_matches(player: Player, card:Card, card_is_from_deck=false) =
         display_gamestate()
         in_game_message(player.name & " captured " & matches_on_field[0].short_name & " & " & matches_on_field[1].short_name & ".")
 
-    else:
-        if game_mode.hachi_matching:
+    else: # 3 or more matches
+        if game_mode.hachi_matching or card == game_mode.wild_card:
             let picked_card = player.pick_to_capture_among(card, matches_on_field)
             player.capture_cards(@[card, picked_card])
             display_gamestate()
@@ -472,7 +483,6 @@ proc handle_matches(player: Player, card:Card, card_is_from_deck=false) =
             in_game_message(player.name & " captured the whole suit!")
             if card_is_from_deck: player.capture_cards(@[card] & matches_on_field) # do this later to smooth the animations
 
-        ## TODO: carve out len == 3 for wild card
 
 proc take_turn*(player: Player) =
     var 
