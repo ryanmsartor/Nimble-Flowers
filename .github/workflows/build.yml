@@ -1,0 +1,98 @@
+name: build
+
+on:
+  push:
+    # optional: only run on main branch
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+
+          # Linux x86_64
+          - os: ubuntu-latest
+            name: linux-x64
+            exe: ""
+            nim_flags: "--cc:gcc --gcc.exe=musl-gcc --passL:-static"
+
+          # Linux ARM64
+          - os: ubuntu-24.04-arm
+            name: linux-arm64
+            exe: ""
+            nim_flags: "--cc:gcc --gcc.exe=musl-gcc --passL:-static"
+
+          # Linux ARMv7 (armhf)
+          - os: ubuntu-latest
+            name: linux-armv7
+            exe: ""
+            nim_flags: "--cpu:arm --cc:gcc --gcc.exe=musl-gcc --passC:-march=armv7-a --passC:-mfpu=neon --passC:-mfloat-abi=hard --passL:-static"
+
+          # Windows
+          - os: windows-latest
+            name: windows-x64
+            exe: ".exe"
+            nim_flags: ""
+
+          # macOS Intel
+          - os: macos-13
+            name: macos-x64
+            exe: ""
+            nim_flags: ""
+
+          # macOS Apple Silicon
+          - os: macos-latest
+            name: macos-arm64
+            exe: ""
+            nim_flags: ""
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install Nim
+      - name: Install Nim
+        uses: jiro4989/setup-nim-action@v2
+        with:
+          nim-version: stable
+
+      # Install musl for Linux
+      - name: Install musl toolchain
+        if: startsWith(matrix.name, 'linux')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y musl musl-tools gcc zip
+
+      # Build
+      - name: Build
+        run: |
+          nim c \
+            -d:release \
+            --opt:size \
+            --gc:orc \
+            -d:strip \
+            ${{ matrix.nim_flags }} \
+            -o:myprogram${{ matrix.exe }} \
+            myprogram.nim
+
+      # Zip Linux builds for convenience
+      - name: Zip Linux builds
+        if: startsWith(matrix.name, 'linux')
+        run: |
+          zip -r myprogram-${{ matrix.name }}.zip myprogram${{ matrix.exe }}
+
+      # Create or attach to GitHub release
+      - name: Upload to GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: CI-Builds
+          name: CI-Builds
+          files: |
+            myprogram${{ matrix.exe }}
+            myprogram-${{ matrix.name }}.zip
+          overwrite: true
