@@ -80,7 +80,6 @@ jobs:
         run: |
           nim c \
             -d:release \
-            --opt:size \
             --gc:orc \
             -d:strip \
             ${{ matrix.nim_flags }} \
