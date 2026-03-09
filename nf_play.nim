@@ -281,6 +281,7 @@ proc reset_scores() =
     for player in [p1,p2,p3,p4,p5,p6]:
         player.teyaku_score = 0
         player.current_dekiyaku = @[]
+        player.previous_dekiyaku = @[]
         player.match_score  = 0
         player.round_score  = 0
         player.rounds_won   = 0

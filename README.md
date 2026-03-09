@@ -19,25 +19,21 @@ PaPyr Flowers was created using Python 3.11.
 - do we wanna include any non-fishing games?
 - how many game modes to include?
 - how many and what computer playstyles?
-- how much narration?
-- how many, and which, game speeds?
 - support user-provided seeds?
 - always rotate dealer, or allow winner to deal?
 - what do we wanna call susuki in english?
 
 ### To do:
 
+- save globals and/or game preferences to external config
 - build script yuck
 - choose who goes first
-- hand card shouldn't be in two places at once
-- wild card rules
-- more/better animation in-game
+- further flesh out wild card rules
+- shuffle animation
 - round wrapup
 - communicating dekiyaku
 - teyaku... at all
 - add Card.jp_name
-- fill out Card.alt_names (take straight from PPF?)
-- select card by alt_names
 - change some strings to enums?
     - RuleSet.point_values
     - RuleSet.suit_system
