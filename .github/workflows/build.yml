@@ -77,14 +77,14 @@ jobs:
             --gc:orc \
             -d:strip \
             ${{ matrix.nim_flags }} \
-            -o:myprogram${{ matrix.exe }} \
-            myprogram.nim
+            -o:nimble_flowers${{ matrix.exe }} \
+            nimble_flowers.nim
 
       # Zip Linux builds for convenience
       - name: Zip Linux builds
         if: startsWith(matrix.name, 'linux')
         run: |
-          zip -r myprogram-${{ matrix.name }}.zip myprogram${{ matrix.exe }}
+          zip -r nimble_flowers-${{ matrix.name }}.zip nimble_flowers${{ matrix.exe }}
 
       # Create or attach to GitHub release
       - name: Upload to GitHub Release
@@ -93,6 +93,6 @@ jobs:
           tag: CI-Builds
           name: CI-Builds
           files: |
-            myprogram${{ matrix.exe }}
-            myprogram-${{ matrix.name }}.zip
+            nimble_flowers${{ matrix.exe }}
+            nimble_flowers-${{ matrix.name }}.zip
           overwrite: true
