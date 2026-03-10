@@ -144,12 +144,20 @@ jobs:
           zip -r nimble_flowers-${{ matrix.name }}.zip nimble_flowers-${{ matrix.name }}${{ matrix.exe }}
 
       # Upload to existing release
-      - name: Upload to GitHub Release
+      - name: Upload to GitHub Release (Linux)
+        if: startsWith(matrix.name, 'linux')
         uses: softprops/action-gh-release@v1
         with:
           tag_name: CI-Builds
-          files: |
-            nimble_flowers-${{ matrix.name }}${{ matrix.exe }}
-            nimble_flowers-${{ matrix.name }}.zip
+          files: nimble_flowers-${{ matrix.name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload to GitHub Release (Windows/macOS)
+        if: "!startsWith(matrix.name, 'linux')"
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: CI-Builds
+          files: nimble_flowers-${{ matrix.name }}${{ matrix.exe }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
