@@ -37,15 +37,9 @@ jobs:
             exe: ".exe"
             nim_flags: ""
 
-          # macOS Intel
-          - os: macos-13
-            name: macos-x64
-            exe: ""
-            nim_flags: ""
-
-          # macOS Apple Silicon
+          # macOS Universal (Apple Silicon + Intel)
           - os: macos-latest
-            name: macos-arm64
+            name: macos-universal
             exe: ""
             nim_flags: ""
 
@@ -61,6 +55,18 @@ jobs:
         with:
           nim-version: stable
 
+      # Cache Nim compilation artifacts
+      - name: Cache nimcache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.nimble
+            ~/.cache/nim
+            nimcache
+          key: ${{ runner.os }}-${{ matrix.name }}-nim-${{ hashFiles('*.nim') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.name }}-nim-
+
       # Install musl for Linux
       - name: Install musl toolchain
         if: startsWith(matrix.name, 'linux')
@@ -72,8 +78,9 @@ jobs:
         if: matrix.name == 'linux-armv7'
         run: sudo apt-get install -y gcc-arm-linux-gnueabihf
 
-      # Build
+      # Build (non-macOS)
       - name: Build
+        if: matrix.name != 'macos-universal'
         shell: bash
         run: |
           nim c \
@@ -83,6 +90,33 @@ jobs:
             ${{ matrix.nim_flags }} \
             -o:nimble_flowers${{ matrix.exe }} \
             nimble_flowers.nim
+
+      # Build macOS universal binary (ARM64 + x86_64)
+      - name: Build macOS Universal
+        if: matrix.name == 'macos-universal'
+        run: |
+          # Build for Apple Silicon (native)
+          nim c \
+            -d:release \
+            --gc:orc \
+            -d:strip \
+            -o:nimble_flowers-arm64 \
+            nimble_flowers.nim
+
+          # Build for Intel
+          nim c \
+            -d:release \
+            --gc:orc \
+            -d:strip \
+            --passC:"-target x86_64-apple-darwin" \
+            --passL:"-target x86_64-apple-darwin" \
+            -o:nimble_flowers-x64 \
+            nimble_flowers.nim
+
+          # Combine into universal binary
+          lipo -create -output nimble_flowers nimble_flowers-arm64 nimble_flowers-x64
+          echo "Universal binary architectures:"
+          lipo -info nimble_flowers
 
       # Zip Linux builds for convenience
       - name: Zip Linux builds
