@@ -14,6 +14,12 @@ PaPyr Flowers was created using Python 3.11.
 - https://github.com/ryanmsartor/PaPyr-Flowers
 
 
+## LICENSE
+
+Nimble Flowers is licensed [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
+
+
+
 ### To decide:
 
 - do we wanna include any non-fishing games?
