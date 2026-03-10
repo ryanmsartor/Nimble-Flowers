@@ -7,7 +7,19 @@ on:
   workflow_dispatch:
 
 jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create or update release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: CI-Builds
+          name: CI-Builds
+          allowUpdates: true
+          body: "Automated builds from the latest source."
+
   build:
+    needs: create-release
     strategy:
       fail-fast: false
       matrix:
@@ -131,14 +143,13 @@ jobs:
         run: |
           zip -r nimble_flowers-${{ matrix.name }}.zip nimble_flowers-${{ matrix.name }}${{ matrix.exe }}
 
-      # Create or attach to GitHub release
+      # Upload to existing release
       - name: Upload to GitHub Release
-        uses: ncipollo/release-action@v1
+        uses: softprops/action-gh-release@v1
         with:
-          tag: CI-Builds
-          name: CI-Builds
-          artifacts: |
+          tag_name: CI-Builds
+          files: |
             nimble_flowers-${{ matrix.name }}${{ matrix.exe }}
             nimble_flowers-${{ matrix.name }}.zip
-          allowUpdates: true
-          replacesArtifacts: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
