@@ -122,18 +122,22 @@ proc add_round_scores_to_match_scores() =
         player.round_score = add_up_card_points(player.captured) + add_up_dekiyaku_points(player.captured)
         player.match_score.inc(player.round_score)
 
-proc get_current_high_scoring_player(): Player =
+proc get_full_match_high_scoring_player(): Player =
     result = p1 # initialization here is a hack to avoid nil access attempt
     for player in current_players:
         if player.match_score > result.match_score:
             result = player
     return result
 
-proc announce_round_winner() =
-    discard
+proc get_current_round_high_scoring_player(): Player =
+    result = p1 # initialization here is a hack to avoid nil access attempt
+    for player in current_players:
+        if player.round_score > result.round_score:
+            result = player
+    return result
 
 proc announce_game_winner() =
-    let winner = get_current_high_scoring_player()
+    let winner = get_full_match_high_scoring_player()
     clear_screen()
     echo "\n\n\n\n\n\n\n\n\n"
     let rb = rainbow_fg(winner.name)
@@ -540,6 +544,45 @@ proc rotate_dealer() =
     if dealer_index >= current_players.len(): dealer_index = 0
 
 
+proc count_suit_in_zone(zone: Zone, suit: Suit): int =
+    for c in zone:
+        if c.standard_suit == suit:
+            result.inc(1)
+
+proc wrap_up_round() =
+
+    display_gamestate()
+    in_game_message("The round has ended!")
+
+    if game_mode.wild_card_rules == "Osaka style":
+        let leftovers = field.toSeq()
+        for leftover_card in leftovers:
+            # Case 1: Willow leftover
+            if leftover_card.standard_suit == game_mode.wild_card.standard_suit:
+                for player in current_players:
+                    let count = player.captured.count_suit_in_zone(leftover_card.standard_suit)
+                    if count >= 2:
+                        player.capture_cards(@[leftover_card])
+                        display_gamestate()
+                        in_game_message(player.name & " gets to take the " & leftover_card.short_name & ".")
+                        break
+            # Case 2: Suit captured via wildcard
+            else:
+                for player in current_players:
+                    let count = player.captured.count_suit_in_zone(leftover_card.standard_suit)
+                    if count == 1:
+                        player.capture_cards(@[leftover_card])
+                        display_gamestate()
+                        in_game_message(player.name & " gets to take the " & leftover_card.short_name & ".")
+                        break
+    
+    # display round winner for 2 beats
+    let round_winner = get_current_round_high_scoring_player()
+    display_gamestate()
+    in_game_message(round_winner.name & " has won the round with " & $round_winner.round_score & " points!")
+    in_game_message(round_winner.name & " has won the round with " & $round_winner.round_score & " points!")
+
+
 proc play_round(first_to_play: int) =
     player_index = first_to_play   # initialize turn tracker
 
@@ -556,8 +599,10 @@ proc play_round(first_to_play: int) =
             num_playable_cards_remaining.inc(p.hand.len)
 
         rotate_player()
+    wrap_up_round()
     rotate_dealer()
     add_round_scores_to_match_scores()
+
 
 
 
@@ -568,7 +613,7 @@ proc play_full_match*() =
     set_up_game()
 
     if game_mode.target_score > 0:
-        while get_current_high_scoring_player().match_score < game_mode.target_score:
+        while get_full_match_high_scoring_player().match_score < game_mode.target_score:
             play_round(dealer_index)
     elif game_mode.num_rounds > 0:
         for i in 1..game_mode.num_rounds:

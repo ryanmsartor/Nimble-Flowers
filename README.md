@@ -41,7 +41,6 @@ SundownerSport, for all his help with the GitHub actions, and also just being a 
 - choose who goes first
 - further flesh out wild card rules
 - shuffle animation
-- round wrapup
 - communicating dekiyaku
 - teyaku... at all
 - add Card.jp_name
