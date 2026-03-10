@@ -1,4 +1,4 @@
-# Nimble-Flowers
+# Nimble Flowers
 CLI hanafuda game written in Nim
 
 ## Unfinished predecessors
@@ -17,6 +17,9 @@ PaPyr Flowers was created using Python 3.11.
 ## LICENSE
 
 Nimble Flowers is licensed [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
+
+## SPECIAL THANKS
+SundownerSport, for all his help with the GitHub actions, and also just being a pal!
 
 ## internal babble
 
