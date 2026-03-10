@@ -13,8 +13,8 @@ jobs:
       - name: Create or update release
         uses: ncipollo/release-action@v1
         with:
-          tag: CI-Builds
-          name: CI-Builds
+          tag: CI-Builds-test
+          name: CI-Builds-test
           allowUpdates: true
           body: "Automated builds from the latest source."
 
@@ -148,7 +148,7 @@ jobs:
         if: startsWith(matrix.name, 'linux')
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: CI-Builds
+          tag_name: CI-Builds-test
           files: nimble_flowers-${{ matrix.name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -157,7 +157,7 @@ jobs:
         if: "!startsWith(matrix.name, 'linux')"
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: CI-Builds
+          tag_name: CI-Builds-test
           files: nimble_flowers-${{ matrix.name }}${{ matrix.exe }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

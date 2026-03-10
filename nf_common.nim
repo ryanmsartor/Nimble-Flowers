@@ -2,7 +2,6 @@
 
 import std/strutils
 import std/tables
-import re
 
 
 
@@ -173,7 +172,6 @@ const
     hide_cursor* = "\e[?25l"
     show_cursor* = "\e[?25h"
 
-let ansiRegex* = re"\e\[[0-9;]*m"
 
 
 
@@ -279,8 +277,20 @@ const
 var current_table_style* = defaultStyle
 
 # use this instead of string.len() to ignore control characters
+proc stripAnsi*(s: string): string =
+    var i = 0
+    while i < s.len:
+        if s[i] == '\e' and i + 1 < s.len and s[i + 1] == '[':
+            i += 2
+            while i < s.len and s[i] notin {'A'..'Z', 'a'..'z'}:
+                i += 1
+            if i < s.len: i += 1
+        else:
+            result.add(s[i])
+            i += 1
+
 proc visibleLen*(s: string): int =
-    result = s.replace(ansiRegex, "").len
+    result = s.stripAnsi().len
 
 proc echo_centered*(str: string)    # pre-declared proc to enable recursion
 
