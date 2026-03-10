@@ -49,23 +49,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install Nim
+      # Cache Nim installation + compilation artifacts
+      - name: Cache Nim
+        id: cache-nim
+        uses: actions/cache@v4
+        with:
+          path: |
+            .nim_runtime
+            ~/.nimble
+            nimcache
+          key: ${{ runner.os }}-${{ matrix.name }}-nim-stable
+
+      # Install Nim (skipped on cache hit)
       - name: Install Nim
+        if: steps.cache-nim.outputs.cache-hit != 'true'
         uses: jiro4989/setup-nim-action@v2
         with:
           nim-version: stable
 
-      # Cache Nim compilation artifacts
-      - name: Cache nimcache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.nimble
-            ~/.cache/nim
-            nimcache
-          key: ${{ runner.os }}-${{ matrix.name }}-nim-${{ hashFiles('*.nim') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.name }}-nim-
+      - name: Add Nim to PATH (from cache)
+        if: steps.cache-nim.outputs.cache-hit == 'true'
+        shell: bash
+        run: |
+          echo "$PWD/.nim_runtime/bin" >> "$GITHUB_PATH"
+          echo "$HOME/.nimble/bin" >> "$GITHUB_PATH"
 
       # Install musl for Linux
       - name: Install musl toolchain
