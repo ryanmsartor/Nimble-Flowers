@@ -34,6 +34,8 @@ SundownerSport, for all his help with the GitHub actions, and also just being a 
 
 ### To do:
 
+- instructions to run
+- instructions to play
 - save globals and/or game preferences to external config
 - build script yuck
 - choose who goes first
