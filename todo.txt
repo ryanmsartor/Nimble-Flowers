@@ -15,16 +15,21 @@
 - instructions to run
 - instructions to play
 
+- check each player's captured cards mid-game
+
 - per-RuleSet option for next dealer - rotate dealer, or allow winner to deal?
 - expose more RuleSet options
 
-- communicate new dekiyaku captured mid-round
 - communicate which dekiyaku captured at end of round
 - teyaku... period
 
+- handle 4-on-the-field deal-over
+- handle 4-in-the-hand deal-over
+- handle wild card on the field
 
 
 
 ### To do... eventually:
+
 - shuffle animation
 - save globals and/or game preferences to external config

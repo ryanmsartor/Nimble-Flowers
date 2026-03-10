@@ -145,7 +145,7 @@ proc announce_game_winner() =
     echo_centered(str)
     echo "\n\n\n\n"
     echo_centered("Press ENTER to return to main menu")
-    discard prompt("")
+    discard prompt("")    
 
 
 
@@ -489,6 +489,25 @@ proc handle_matches(player: Player, card:Card, card_is_from_deck=false) =
             if card_is_from_deck: player.capture_cards(@[card] & matches_on_field) # do this later to smooth the animations
 
 
+
+proc check_and_announce_new_dekiyaku(player: Player) =
+    for yaku, value in game_mode.yaku_set:
+        var count_1, count_2 = 0
+        for card in player.captured:
+            if card in yaku.cards_group_1:
+                count_1.inc(1)
+            if card in yaku.cards_group_2:
+                count_2.inc(1)
+        if count_1 >= yaku.num_group_1 and count_2 >= yaku.num_group_2:
+            player.current_dekiyaku.add(yaku)
+
+    let new_dekiyaku = player.current_dekiyaku.filterIt(it notin player.previous_dekiyaku)
+    for yaku in new_dekiyaku:
+        let rb_name = rainbow_fg(yaku.name)
+        display_gamestate()
+        in_game_message(player.name & " completed the " & rb_name & " yaku!")
+    player.previous_dekiyaku = player.current_dekiyaku
+
 proc take_turn*(player: Player) =
     var 
         selection = ""
@@ -530,6 +549,9 @@ proc take_turn*(player: Player) =
 
     # and take the appropriate action based on number of matches of that one!
     handle_matches(player, deck_card, true)
+    
+    # check if any new dekiyaku completed, and if so, announce them.
+    check_and_announce_new_dekiyaku(player)
 
 
 
