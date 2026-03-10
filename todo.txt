@@ -1,0 +1,30 @@
+### To decide:
+
+- do we wanna include any non-fishing games?
+- how many game modes to include?
+- how many and what computer playstyles?
+- support user-provided seeds?
+- add Card.jp_name that can be swapped in on a global setting?
+- what do we wanna call susuki in english?
+
+
+
+
+### To do before "first" release:
+
+- instructions to run
+- instructions to play
+
+- per-RuleSet option for next dealer - rotate dealer, or allow winner to deal?
+- expose more RuleSet options
+
+- communicate new dekiyaku captured mid-round
+- communicate which dekiyaku captured at end of round
+- teyaku... period
+
+
+
+
+### To do... eventually:
+- shuffle animation
+- save globals and/or game preferences to external config
