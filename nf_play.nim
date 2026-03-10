@@ -353,9 +353,16 @@ proc get_card_from_alt_name(name:string, zone:Zone): Card =
 
 ##### GAMEPLAY STUFF: A TURN #####
 
-proc get_matches*(mycard: Card, zone_to_check: Zone): Zone =
+proc get_matches*(mycard: Card, zone_to_check: Zone, mycard_is_from_deck = false): Zone =
 
     for card in zone_to_check:
+        
+        # for mushi, force the first applicable deck card
+        if card == game_mode.wild_card and mycard_is_from_deck == true:
+            if game_mode.wild_card_rules == "Osaka style":
+                if card.standard_suit != mycard.standard_suit:
+                    result = @[card]
+                    return result
 
         if mycard == game_mode.wild_card:
             if game_mode.wild_card_rules == "Osaka style":
@@ -382,7 +389,8 @@ proc get_matches*(mycard: Card, zone_to_check: Zone): Zone =
 
         else: # non-hachi, non-wild
             if mycard.standard_suit == card.standard_suit:
-                result.add(card)
+                if card != game_mode.wild_card or game_mode.wild_card_rules != "Osaka style":
+                    result.add(card)
     return result
 
 proc capture_cards(player: Player, cards: seq[Card]) =
@@ -435,7 +443,7 @@ proc pick_to_capture_among(player: Player, played_card: Card, choices: Zone): Ca
 
 proc handle_matches(player: Player, card:Card, card_is_from_deck=false) =
 
-    var matches_on_field = card.get_matches(field)
+    var matches_on_field = card.get_matches(field, card_is_from_deck)
     case matches_on_field.len():
     of 0:
 

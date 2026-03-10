@@ -25,9 +25,8 @@
 
 - handle 4-on-the-field deal-over
 - handle 4-in-the-hand deal-over
-- handle wild card on the field
 
-
+- double check wild rules for ropyakken
 
 ### To do... eventually:
 
