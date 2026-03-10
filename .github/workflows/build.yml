@@ -4,10 +4,6 @@ permissions:
   contents: write
 
 on:
-  push:
-    # optional: only run on main branch
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -100,7 +96,8 @@ jobs:
         with:
           tag: CI-Builds
           name: CI-Builds
-          files: |
+          artifacts: |
             nimble_flowers${{ matrix.exe }}
             nimble_flowers-${{ matrix.name }}.zip
-          overwrite: true
+          allowUpdates: true
+          replacesArtifacts: true
