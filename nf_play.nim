@@ -229,15 +229,15 @@ proc display_gamestate*() =
     print_all_players_scores()
 
 # you usually wanna use this immediately following display_gamestate()
-proc in_game_message*(str="") =
+proc in_game_message*(str="", beats=1) =
     move_cursor_to_pos(1,26)
     case game_speed:
-    of fastest: echo str; sleep(250)
-    of faster:  echo str; sleep(500)
-    of fast:    echo str; sleep(750)
-    of medium:  echo str; sleep(1000)
-    of slow:    echo str; sleep(1500)
-    of slower:  echo str; sleep(3000)
+    of fastest: echo str; sleep(250 * beats)
+    of faster:  echo str; sleep(500 * beats)
+    of fast:    echo str; sleep(750 * beats)
+    of medium:  echo str; sleep(1000 * beats)
+    of slow:    echo str; sleep(1500 * beats)
+    of slower:  echo str; sleep(3000 * beats)
     else:       discard prompt(str & " <enter>")  # on slowest setting, wait for user to press enter
 
 proc get_deal_speed(): int =
@@ -505,7 +505,7 @@ proc check_and_announce_new_dekiyaku(player: Player) =
     for yaku in new_dekiyaku:
         let rb_name = rainbow_fg(yaku.name)
         display_gamestate()
-        in_game_message(player.name & " completed the " & rb_name & " yaku!")
+        in_game_message(player.name & " completed the " & rb_name & " yaku!", 2)
     player.previous_dekiyaku = player.current_dekiyaku
 
 proc take_turn*(player: Player) =
@@ -601,8 +601,7 @@ proc wrap_up_round() =
     # display round winner for 2 beats
     let round_winner = get_current_round_high_scoring_player()
     display_gamestate()
-    in_game_message(round_winner.name & " has won the round with " & $round_winner.round_score & " points!")
-    in_game_message(round_winner.name & " has won the round with " & $round_winner.round_score & " points!")
+    in_game_message(round_winner.name & " has won the round with " & $round_winner.round_score & " points!", 2)
 
 
 proc play_round(first_to_play: int) =
