@@ -22,8 +22,8 @@
 
 - communicate which dekiyaku captured at end of round
 - teyaku... period
+- implement zero-sum scoring
 
-- handle 4-on-the-field deal-over
 - handle 4-in-the-hand deal-over
 
 - double check wild rules for ropyakken
@@ -32,3 +32,4 @@
 
 - shuffle animation
 - save globals and/or game preferences to external config
+- implement SFX

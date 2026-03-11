@@ -80,6 +80,11 @@ proc count_each_card_type(zone:Zone): (int,int,int,int) =
             b.inc(1)
     return (c,r,a,b)
 
+proc count_suit_in_zone(zone: Zone, suit: Suit): int =
+    for c in zone:
+        if c.standard_suit == suit:
+            result.inc(1)
+
 proc normalize_to_4_chars(str:string): string =
     case str.visibleLen:
     of 0: return "    "
@@ -304,7 +309,7 @@ proc set_up_game*() =
 
 ##### START OF ROUND: THE DEAL #####
 
-proc deal*() =
+proc deal() =
     let dealer = current_players[dealer_index]
     let delay = get_deal_speed()
     reset_zones() # make sure we get a clean start
@@ -325,7 +330,6 @@ proc deal*() =
     display_gamestate()
     in_game_message(dealer.name & " distributed " & $game_mode.num_cards_field & " cards to the field.")
 
-
     for i in 1 .. game_mode.num_cards_hand:
         for player in current_players:
             player.hand.add(current_deck.pop())
@@ -335,6 +339,33 @@ proc deal*() =
     display_gamestate()
     in_game_message("Each player received a " & $game_mode.num_cards_hand & "-card hand.")
 
+proc check_for_misdeal(): bool =
+
+    # if using hachi-style matching, there's no misdeals
+    if game_mode.hachi_matching: return false
+
+    # check for 3 non-wild of wild card's suit
+    if game_mode.wild_card_rules == "Osaka style":
+        let count = field.count_suit_in_zone(game_mode.wild_card.standard_suit)
+        if count == 3 and game_mode.wild_card notin field:
+            return true
+
+    # check for 4 of a kind of any and all suits
+    for suit in 0..15:
+        let count = field.count_suit_in_zone(suit)
+        if count == 4:
+            return true
+
+    return false # if none of the above encountered, it's not a misdeal.
+
+proc deal_until_not_misdeal() =
+    var needs_new_deal = true
+    while needs_new_deal:
+        deal()
+        needs_new_deal = check_for_misdeal()
+        if needs_new_deal:
+            display_gamestate()
+            in_game_message("A full suit was dealt to the field, so a re-deal is declared.")
 
 
 ##### NAMING CARDS TO PLAY OR CAPTURE #####
@@ -574,11 +605,6 @@ proc rotate_dealer() =
     if dealer_index >= current_players.len(): dealer_index = 0
 
 
-proc count_suit_in_zone(zone: Zone, suit: Suit): int =
-    for c in zone:
-        if c.standard_suit == suit:
-            result.inc(1)
-
 proc wrap_up_round() =
 
     display_gamestate()
@@ -615,7 +641,7 @@ proc wrap_up_round() =
 proc play_round(first_to_play: int) =
     player_index = first_to_play   # initialize turn tracker
 
-    deal()
+    deal_until_not_misdeal()
 
     var num_playable_cards_remaining = 1 # ensure there's always at least one turn
     while num_playable_cards_remaining > 0:

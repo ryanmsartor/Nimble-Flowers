@@ -117,6 +117,7 @@ type
 const
     quit_commands* = @["q","Q","quit","Quit","QUIT","exit","Exit","EXIT"]
     settings_commands* = @["s","S","setting","Setting","SETTING","settings","Settings","SETTINGS"]
+    help_commands* = @["h","H","help","Help","HELP"]
     affirmative_answers* = @["yes","Yes","YES","y","Y:"]
     negative_answers* = @["no","No","NO","n","N"]
     max_line_width* = 80
@@ -126,7 +127,7 @@ const
 
 ##### ANSI ESCAPE SEQUENCES #####
 
-# these are used in conjunction with stdout.write() and echo()
+# these are used in conjunction with stdout.write()
 # to control how the terminal displays stuff.
 
 const
@@ -168,7 +169,6 @@ const
 
     enter_alt_screen* = "\e[?1049h"
     exit_alt_screen* = "\e[?1049l"
-
     hide_cursor* = "\e[?25l"
     show_cursor* = "\e[?25h"
 
