@@ -15,7 +15,7 @@
 - instructions to run
 - instructions to play
 
-- check each player's captured cards mid-game
+- check each player's captured yaku mid-game
 
 - per-RuleSet option for next dealer - rotate dealer, or allow winner to deal?
 - expose more RuleSet options
@@ -33,3 +33,5 @@
 - shuffle animation
 - save globals and/or game preferences to external config
 - implement SFX
+- field multipliers
+- koikoi/sage / agari/shoubu mechanic

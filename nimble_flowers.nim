@@ -35,14 +35,6 @@ while true:
         play_full_match()
         program_state = "main menu"
 
-    # of "help":
-
-    # of "view rules":
-
-    # of "view yaku":
-
-    # of "view captured":
-
     else:
         quit_game()
 

@@ -141,22 +141,11 @@ proc get_current_round_high_scoring_player(): Player =
             result = player
     return result
 
-proc announce_game_winner() =
-    let winner = get_full_match_high_scoring_player()
-    clear_screen()
-    echo "\n\n\n\n\n\n\n\n\n"
-    let rb = rainbow_fg(winner.name)
-    let str = text_bold & "The winner is " & rb & " with " & $winner.match_score & " points!" & text_reset
-    echo_centered(str)
-    echo "\n\n\n\n"
-    echo_centered("Press ENTER to return to main menu")
-    discard prompt("")    
-
 
 
 ##### DISPLAY STUFF: THE UI #####
 
-proc get_one_row_coords*(zoneLen: int, index: int,
+proc get_one_row_coords(zoneLen: int, index: int,
                          xpos = 2, ypos = 31): (int, int) =
     var offset: int
 
@@ -171,13 +160,13 @@ proc get_one_row_coords*(zoneLen: int, index: int,
     let y = ypos
     (x, y)
 
-proc display_zone_ascii_one_row*(zone: Zone, xpos=2, ypos=31) =
+proc display_zone_ascii_one_row(zone: Zone, xpos=2, ypos=31) =
     for i, card in zone:
         let (x,y) = get_one_row_coords(zone.len,i,xpos,ypos)
         card.print_at_pos(x,y)
 
 
-proc get_two_row_coords*(zoneLen: int, index: int,
+proc get_two_row_coords(zoneLen: int, index: int,
                          xpos = 3, ypos = 3): (int, int) =
     var offset: int
 
@@ -198,7 +187,7 @@ proc get_two_row_coords*(zoneLen: int, index: int,
 
     (x, y)
 
-proc display_zone_ascii_two_rows*(zone: Zone, xpos=3, ypos=3) =
+proc display_zone_ascii_two_rows(zone: Zone, xpos=3, ypos=3) =
     for i, card in zone:
         let (x,y) = get_two_row_coords(zone.len,i,xpos,ypos)
         card.print_at_pos(x,y)
@@ -234,7 +223,7 @@ proc display_gamestate*() =
     print_all_players_scores()
 
 # you usually wanna use this immediately following display_gamestate()
-proc in_game_message*(str="", beats=1) =
+proc in_game_message(str="", beats=1) =
     move_cursor_to_pos(1,26)
     case game_speed:
     of fastest: echo str; sleep(250 * beats)
@@ -255,9 +244,44 @@ proc get_deal_speed(): int =
     of faster:  return 50
     else:       return 0          # on fastest setting, no sleep at all
 
+
+
+##### DISPLAY CAPTURED CARDS AND YAKU MID-GAME #####
+
+proc show_captured_cards(player: Player) =
+    var c,r,a,b: Zone
+    var x = 5
+    var y = 4
+    for card in player.captured:
+        if card.hachihachi_value == 1:
+            c.add(card)
+        elif card.hachihachi_value == 5:
+            r.add(card)
+        elif card.hachihachi_value == 10:
+            a.add(card)
+        elif card.hachihachi_value == 20:
+            b.add(card)
+
+
+    clear_screen()
+    move_cursor_to_pos(1,2)
+    echo_centered(player.name & ": Captured Cards and Yaku")
+    for zone in [b,a,r,c]:
+        if zone.len() >= 1:
+            zone.display_zone_ascii_one_row(x,y)
+            x.dec(1)
+            y.inc(7)
+
+    move_cursor_to_pos(1,39)
+    echo_centered("<ENTER>")
+    discard prompt("")
+
+
+
+
 ##### START OF GAME: SET UP AND CHOOSE A DEALER #####
 
-proc reset_zones*() =
+proc reset_zones() =
     current_deck = full_deck
     field.setLen(0)
     p1.hand.setLen(0)
@@ -296,7 +320,7 @@ proc reset_scores() =
         player.rounds_won   = 0
 
 
-proc set_up_game*() =
+proc set_up_game() =
     reset_zones()
     reset_scores()
     current_players = gather_players()
@@ -384,7 +408,7 @@ proc get_card_from_alt_name(name:string, zone:Zone): Card =
 
 ##### GAMEPLAY STUFF: A TURN #####
 
-proc get_matches*(mycard: Card, zone_to_check: Zone, mycard_is_from_deck = false): Zone =
+proc get_matches(mycard: Card, zone_to_check: Zone, mycard_is_from_deck = false): Zone =
 
     for card in zone_to_check:
         
@@ -547,7 +571,7 @@ proc check_and_announce_new_dekiyaku(player: Player) =
         in_game_message(player.name & " completed the " & rb_name & " yaku!", 2)
     player.previous_dekiyaku = player.current_dekiyaku
 
-proc take_turn*(player: Player) =
+proc take_turn(player: Player) =
     var 
         selection = ""
         selected_card: Card
@@ -562,6 +586,9 @@ proc take_turn*(player: Player) =
             move_cursor_to_pos(1,26)
             selection = prompt(text_bold & "Play a card from your hand. > " & text_reset)
             if selection in quit_commands: quit_game()
+            elif selection in show_cap_and_yaku_commands:
+                for player in current_players: player.show_captured_cards()
+
 
     of always_choose_first:
         display_gamestate()
@@ -637,7 +664,6 @@ proc wrap_up_round() =
     display_gamestate()
     in_game_message(round_winner.name & " has won the round with " & $round_winner.round_score & " points!", 2)
 
-
 proc play_round(first_to_play: int) =
     player_index = first_to_play   # initialize turn tracker
 
@@ -662,6 +688,20 @@ proc play_round(first_to_play: int) =
 
 
 ##### PLAY A FULL GAME! #####
+
+proc announce_game_winner() =
+    let winner = get_full_match_high_scoring_player()
+    clear_screen()
+    echo "\n\n\n\n\n\n\n\n\n"
+    let rb = rainbow_fg(winner.name)
+    let str = text_bold & "The winner is " & rb & " with " & $winner.match_score & " points!" & text_reset
+    echo_centered(str)
+    echo "\n\n\n\n"
+    echo_centered("Press ENTER to return to main menu")
+    discard prompt("")    
+
+
+
 
 proc play_full_match*() =
 

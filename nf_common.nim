@@ -118,6 +118,7 @@ const
     quit_commands* = @["q","Q","quit","Quit","QUIT","exit","Exit","EXIT"]
     settings_commands* = @["s","S","setting","Setting","SETTING","settings","Settings","SETTINGS"]
     help_commands* = @["h","H","help","Help","HELP"]
+    show_cap_and_yaku_commands* = @["check","Check","CHECK","cap","captured","Cap","Captured","CAP","CAPTURED","c","C","yaku","YAKU","Yaku"]
     affirmative_answers* = @["yes","Yes","YES","y","Y:"]
     negative_answers* = @["no","No","NO","n","N"]
     max_line_width* = 80
