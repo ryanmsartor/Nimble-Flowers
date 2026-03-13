@@ -8,23 +8,24 @@ import std/tables
 ##### CUSTOM TYPES AND OBJECTS #####
 
 type
-    Suit* = range[0..15]
     Decksize* = range[24..64]
     NumPlayers* = range[0..6]
     NumHands* = range[0..24]
     NumField* = range[0..48]
     PlayStyle* = enum
-        human, always_choose_first
+        human, always_choose_first, always_choose_high
     GameSpeed* = enum
         slowest, slower, slow, medium, fast, faster, fastest
-    
+    SortKey* = enum
+        sort_value, sort_suit
+
     Card* = object
         full_name*: string
         short_name*: string # 25 char at absolute max
         alt_names*: seq[string]
-        standard_suit*: Suit
-        mushi_suit*: Suit
-        nagoya_suit*: Suit
+        standard_suit*: int
+        mushi_suit*: int
+        nagoya_suit*: int
         hachihachi_value*: int
         hachi_value*: int
         ropyakken_value*: int

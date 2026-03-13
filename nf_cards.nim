@@ -1,6 +1,7 @@
 # imported by nimble_flowers.nim
 # contains all hanafuda cards as constants
 
+import std/algorithm
 import nf_common
 
 const
@@ -1321,7 +1322,7 @@ const
     ]
 
 
-proc print_suit(suit:Suit) =
+proc print_suit(suit:int) =
     var s0,s1,s2,s3,s4,s5,s6,s7,s8,s9 = "  "
     for card in full_deck:
         if card.standard_suit == suit:
@@ -1354,3 +1355,33 @@ proc print_at_pos*(card:Card, xpos=1, ypos=1) =
         move_cursor_to_pos(cur_x,cur_y)
         stdout.write(line)
         cur_y.inc(1)
+
+proc get_sort_value(c: Card, sort_key: SortKey): int =
+    case sort_key:
+    of sort_suit:
+        case game_mode.suit_system:
+        of "standard": c.standard_suit
+        of "mushi": c.mushi_suit
+        of "nagoya": c.nagoya_suit
+        else: c.standard_suit
+    of sort_value:
+        case game_mode.point_values
+        of "1, 5, 10, 20"  : c.hachihachi_value
+        of "0, 5, 10, 20"  : c.hachihachi_value # sorts the same whether chaff is 1 or 0
+        of "0, 10, 5, 20"  : c.sakura_value
+        of "0, 10, 10, 50" : c.ropyakken_value
+        of "10, 1, 10, 10" : c.hachi_value
+        of "10, 1, 5, 5"   : c.sudaoshi_value
+        else:                c.hachihachi_value
+    else: 0
+
+# default big first
+proc sort_cards_by*(zone: var Zone, sort_key: SortKey, descending=true) =
+    if zone.len <= 1: return
+
+    zone.sort(proc (a, b: Card): int =
+        if descending:
+            cmp(get_sort_value(b, sort_key), get_sort_value(a, sort_key))
+        else:
+            cmp(get_sort_value(a, sort_key), get_sort_value(b, sort_key))
+    )

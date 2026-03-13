@@ -18,7 +18,7 @@ var
     current_deck*: Zone
     field*: Zone
     p1* = Player(name:"You", play_style: human)
-    p2* = Player(name:"Al", play_style: always_choose_first)
+    p2* = Player(name:"Al", play_style: always_choose_high)
     p3* = Player(name:"Bri", play_style: always_choose_first)
     p4* = Player(name:"Curt", play_style: always_choose_first)
     p5* = Player(name:"David", play_style: always_choose_first)
@@ -80,7 +80,7 @@ proc count_each_card_type(zone:Zone): (int,int,int,int) =
             b.inc(1)
     return (c,r,a,b)
 
-proc count_suit_in_zone(zone: Zone, suit: Suit): int =
+proc count_suit_in_zone(zone: Zone, suit: int): int =
     for c in zone:
         if c.standard_suit == suit:
             result.inc(1)
@@ -262,7 +262,6 @@ proc show_captured_cards(player: Player) =
         elif card.hachihachi_value == 20:
             b.add(card)
 
-
     clear_screen()
     move_cursor_to_pos(1,2)
     echo_centered(player.name & ": Captured Cards and Yaku")
@@ -428,7 +427,7 @@ proc get_matches(mycard: Card, zone_to_check: Zone, mycard_is_from_deck = false)
                 result.keepItIf(it.ropyakken_value > 0)
 
         elif game_mode.hachi_matching:
-            var mysuit, suit: Suit
+            var mysuit, suit: int
             case game_mode.suit_system:
             of "standard":
                 mysuit = mycard.standard_suit
@@ -461,7 +460,7 @@ proc discard_to_field(player: Player, card: Card) =
     field.add(card)
 
 
-proc pick_to_capture_among(player: Player, played_card: Card, choices: Zone): Card =
+proc pick_to_capture_among(player: Player, played_card: Card, choices: var Zone): Card =
     var selection: string
 
     # Player.play_style determines HOW field card is chosen
@@ -474,11 +473,19 @@ proc pick_to_capture_among(player: Player, played_card: Card, choices: Zone): Ca
             echo(player.name & " played " & played_card.short_name & ".")
             selection = prompt(text_bold & "Pick which card to capture. > " & text_reset)
             if selection in quit_commands: quit_game()
+    else:
+        case player.play_style:
 
-    of always_choose_first:
-        display_gamestate()
-        in_game_message(player.name & " played " & played_card.short_name & ".")
-        selection = "1"
+        of always_choose_first:
+            selection = "1"
+
+        of always_choose_high:
+            choices.sort_cards_by(sort_value)
+            selection = "1"
+        
+        else: selection = "1"
+
+
 
     # translate the "1" or "2" or whatever to an actual card to return
     if selection in generate_string_range(1,choices.len):
@@ -501,11 +508,13 @@ proc handle_matches(player: Player, card:Card, card_is_from_deck=false) =
     var matches_on_field = card.get_matches(field, card_is_from_deck)
     case matches_on_field.len():
     of 0:
-
         player.discard_to_field(card)
-        display_gamestate()
 
-        if not card_is_from_deck: in_game_message(player.name & " played " & card.full_name & ".")
+        if not card_is_from_deck:
+            display_gamestate()
+            in_game_message(player.name & " played " & card.full_name & ".")
+
+        display_gamestate()
         in_game_message("No matches, so it sticks to the field.")
 
     of 1:
@@ -589,11 +598,20 @@ proc take_turn(player: Player) =
             elif selection in show_cap_and_yaku_commands:
                 for player in current_players: player.show_captured_cards()
 
-
-    of always_choose_first:
+    else:
         display_gamestate()
         in_game_message("It's " & player.name & "'s turn.")
-        selection = "1"
+
+        case player.play_style:
+        of always_choose_first:
+            selection = "1"
+
+        of always_choose_high:
+            player.hand.sort_cards_by(sort_value)
+            selection = "1"
+
+        else: selection = "1"
+
 
     # second, translate the user entry or CPU selection to a card
     if selection in generate_string_range(1,player.hand.len):
