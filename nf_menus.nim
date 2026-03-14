@@ -164,16 +164,11 @@ proc pre_game_config*(game: RuleSet) =
         echo ""
         user_selection = prompt(" > ")
     case user_selection:
-    of quit_commands:
-        quit_game()
-    of "1":
-        program_state = "play"
-    of "2":
-        program_state = "customize rules"
-    of "3":
-        program_state = "customize yaku"
-    of "4":
-        program_state = "main menu"
+    of quit_commands: quit_game()
+    of "1": program_state = "play"
+    of "2": program_state = "customize rules"
+    of "3": program_state = "customize yaku"
+    of "4": program_state = "main menu"
 
 
 ##### CUSTOMIZE RULES MENU #####
@@ -190,10 +185,19 @@ proc list_rules(game: RuleSet) =
     insert_row("Hand size:",$game.num_cards_hand & " cards","Field size:", $game.num_cards_field & " cards")
     insert_div(4)
     insert_row("Point values:", $game.point_values)
+
+    if game.target_score > 0:
+        insert_div()
+        insert_row("Target score:", $game.target_score & " points")
+    elif game.num_rounds > 0:
+        insert_div()
+        insert_row("Number of rounds:", $game.num_rounds)
+
     if game.wild_card_rules != "" and game.wild_card.full_name != "":
         insert_div(2)
         insert_row("Wild card rules:",game.wild_card_rules)
         insert_row("Wild card:",game.wild_card.full_name)
+        
     if game.hachi_matching or game.can_koikoi:
         insert_div(2)
         insert_row("Special rules:")
@@ -246,6 +250,28 @@ proc ask_which_point_set(game: RuleSet): string =
     of "5": return "10, 1, 10, 10"
     of "6": return "10, 1, 5, 5"
 
+proc ask_whether_target_score_or_rounds(game: RuleSet): (int, int) =
+    var user_selection = ""
+    while user_selection notin @["1","2"] & quit_commands:
+        clear_screen()
+        echo ""
+        game.list_rules
+        echo ""
+        echo_centered "1) Set target score"
+        echo_centered "2) Set number of rounds"
+        echo ""
+        user_selection = prompt(" > ")
+
+    case user_selection:
+    of quit_commands: quit_game()
+    of "1":
+        let target_score = ask_how_many("target score", 1, 10000, game).parseInt()
+        return (target_score, 0)
+    of "2":
+        let num_rounds = ask_how_many("rounds", 1, 12, game).parseInt()
+        return (0, num_rounds)
+
+
 
 proc customize_rules*(game: RuleSet): RuleSet =
     var user_selection = ""
@@ -279,7 +305,7 @@ proc customize_rules*(game: RuleSet): RuleSet =
         result.num_cards_field = ask_how_many("cards on the field",0,max_cards_field,result).parseInt()
 
         result.point_values = ask_which_point_set(result)
-
+        (result.target_score, result.num_rounds) = ask_whether_target_score_or_rounds(result)
     return result
 
 

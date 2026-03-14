@@ -34,7 +34,7 @@ const
             clover_chaff_2
         ],
         point_values: "1, 5, 10, 20",
-        suit_system: "mushi",
+        suit_system: "standard",
         num_rounds: 3
     )
 
