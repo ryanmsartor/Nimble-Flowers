@@ -1,11 +1,10 @@
-workspace
-build
-nimble_flowers
 nf_cards
+nf_common
 nf_menus
 nf_play
 nf_rulesets
-nf_common
 nf_yaku
+nimble_flowers
+nf.cfg
 PPF.py
 CLAUDE.md

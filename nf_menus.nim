@@ -1,5 +1,6 @@
 # contains the procedures for the main menu, etc.
 
+import std/parsecfg
 import std/strutils
 import std/tables
 import nf_common
@@ -80,7 +81,25 @@ proc configure_global_game_speed(): GameSpeed =
 
 proc configure_global_sfx_volume(): uint8 =
     var user_selection = ""
-    discard
+    while user_selection notin generate_string_range(0,255) & quit_commands:
+        clear_screen()
+        current_table_style = narrowStyle
+        echo "\n\n"
+        echo_centered "~ SFX Volume ~"
+        echo "\n"
+        insert_div()
+        insert_row("")
+        insert_row("SFX not yet implemented! Sorry!")
+        insert_row("")
+        insert_row("Enter a number from 0 to 255.")
+        insert_row("")
+        insert_div()
+        echo ""
+        user_selection = prompt(" > ")
+    case user_selection:
+    of quit_commands: quit_game()
+    else:
+        return uint8(parseInt(user_selection))
 
 
 
@@ -108,8 +127,11 @@ proc configure_global_settings*() =
             quit_game()
         of "1":
             game_speed = configure_global_game_speed()
+            nf_cfg.setSectionKey("Global", "Game speed", $game_speed)
         of "2":
             sfx_volume = configure_global_sfx_volume()
+            nf_cfg.setSectionKey("Global", "SFX volume", $sfx_volume)
+    nf_cfg.writeConfig(nf_cfg_path)
 
 
 

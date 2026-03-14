@@ -1,8 +1,9 @@
 # to be imported by most (all?) other .nim files
 
+import std/os
+import std/parsecfg
 import std/strutils
 import std/tables
-
 
 
 ##### CUSTOM TYPES AND OBJECTS #####
@@ -112,6 +113,45 @@ type
         width*: int
 
 
+##### EXTERNAL CONFIG FILE #####
+
+let nf_cfg_path* = getAppDir() / "nf.cfg"
+var nf_cfg* = newConfig()
+
+proc get_or_regen*(cfg: var Config, section,key,default: string):string =
+    let val = cfg.getSectionValue(section, key, "_MISSING_")
+    if val == "_MISSING_":
+        cfg.setSectionKey(section,key,default)
+        return default
+    else:
+        return val
+
+
+proc create_default_cfg() = 
+
+    nf_cfg.setSectionKey("Global", "Game speed", "medium")
+    nf_cfg.setSectionKey("Global", "SFX volume", "0")
+
+    nf_cfg.setSectionKey("Opponent1", "Name", "Al")
+    nf_cfg.setSectionKey("Opponent1", "Playstyle", "always_choose_high")
+
+    nf_cfg.setSectionKey("Opponent2", "Name", "Bri")
+    nf_cfg.setSectionKey("Opponent2", "Playstyle", "always_choose_first")
+
+    nf_cfg.setSectionKey("Opponent3", "Name", "Carl")
+    nf_cfg.setSectionKey("Opponent3", "Playstyle", "always_choose_high")
+
+    nf_cfg.setSectionKey("Opponent4", "Name", "David")
+    nf_cfg.setSectionKey("Opponent4", "Playstyle", "always_choose_first")
+
+    nf_cfg.setSectionKey("Opponent5", "Name", "Evelyn")
+    nf_cfg.setSectionKey("Opponent5", "Playstyle", "always_choose_high")
+
+    nf_cfg.writeConfig(nf_cfg_path)
+
+if not fileExists(nf_cfg_path):
+    create_default_cfg()
+nf_cfg = loadConfig(nf_cfg_path)
 
 ##### GENERAL GLOBAL CONSTANTS #####
 
@@ -176,8 +216,6 @@ const
 
 
 
-
-
 ##### ANSI CONTROL PROCS #####
 
 proc move_cursor_to_pos*(xpos=1, ypos=1) =
@@ -232,8 +270,8 @@ var program_state* = "main menu"
 var game_mode*: RuleSet
 
 # global settings
-var game_speed*: GameSpeed = medium
-var sfx_volume*: uint8
+var game_speed* = parseEnum[GameSpeed](nf_cfg.get_or_regen("Global","Game speed", "medium"))
+var sfx_volume* = uint8(parseInt(nf_cfg.get_or_regen("Global","SFX volume", "0")))
 
 proc prompt*(text: string): string =
     stdout.write(text)

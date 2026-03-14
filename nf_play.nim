@@ -3,6 +3,7 @@
 # This file contains all the stuff for actual gameplay, i.e. not menus and junk
 
 import std/os
+import std/parsecfg
 import std/random
 import std/sequtils
 import std/strutils
@@ -14,20 +15,31 @@ randomize()
 # var my_seed: int64 = 1234
 # randomize(my_seed)
 
+proc loadOpponent(n: int): Player =
+    let section = "Opponent" & $n
+    Player(
+        name: nf_cfg.get_or_regen(section, "Name", "CPU " & $n),
+        play_style: parseEnum[PlayStyle](
+            nf_cfg.get_or_regen(section, "Playstyle", "always_choose_high")
+        )
+    )
+
 var
     current_deck*: Zone
     field*: Zone
+
     p1* = Player(name:"You", play_style: human)
-    p2* = Player(name:"Al", play_style: always_choose_high)
-    p3* = Player(name:"Bri", play_style: always_choose_first)
-    p4* = Player(name:"Curt", play_style: always_choose_first)
-    p5* = Player(name:"David", play_style: always_choose_first)
-    p6* = Player(name:"Evelyn", play_style: always_choose_first)
+    p2* = loadOpponent(1)
+    p3* = loadOpponent(2)
+    p4* = loadOpponent(3)
+    p5* = loadOpponent(4)
+    p6* = loadOpponent(5)
+
     current_players*: seq[Player]
     dealer_index: int
     player_index: int
 
-
+nf_cfg.writeConfig(nf_cfg_path) # save the regen'd player names and styles
 
 ##### SCOREKEEPING STUFF #####
 
