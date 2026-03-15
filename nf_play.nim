@@ -15,26 +15,9 @@ randomize()
 # var my_seed: int64 = 1234
 # randomize(my_seed)
 
-proc loadOpponent(n: int): Player =
-    let section = "Opponent" & $n
-    Player(
-        name: nf_cfg.get_or_regen(section, "Name", "CPU " & $n),
-        play_style: parseEnum[PlayStyle](
-            nf_cfg.get_or_regen(section, "Playstyle", "always_choose_high")
-        )
-    )
-
 var
     current_deck*: Zone
     field*: Zone
-
-    p1* = Player(name:"You", play_style: human)
-    p2* = loadOpponent(1)
-    p3* = loadOpponent(2)
-    p4* = loadOpponent(3)
-    p5* = loadOpponent(4)
-    p6* = loadOpponent(5)
-
     current_players*: seq[Player]
     dealer_index: int
     player_index: int
@@ -488,10 +471,10 @@ proc pick_to_capture_among(player: Player, played_card: Card, choices: var Zone)
     else:
         case player.play_style:
 
-        of always_choose_first:
+        of choose_first:
             selection = "1"
 
-        of always_choose_high:
+        of choose_high:
             choices.sort_cards_by(sort_value)
             selection = "1"
         
@@ -615,10 +598,10 @@ proc take_turn(player: Player) =
         in_game_message("It's " & player.name & "'s turn.")
 
         case player.play_style:
-        of always_choose_first:
+        of choose_first:
             selection = "1"
 
-        of always_choose_high:
+        of choose_high:
             player.hand.sort_cards_by(sort_value)
             selection = "1"
 

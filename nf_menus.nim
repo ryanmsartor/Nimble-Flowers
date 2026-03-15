@@ -101,11 +101,76 @@ proc configure_global_sfx_volume(): uint8 =
     else:
         return uint8(parseInt(user_selection))
 
+proc rename_player(player: Player, i: int): string =
+    var user_selection = "xxxxxxxx"
+    while user_selection.len > 6:
+        clear_screen()
+        echo "\n\n"
+        echo_centered "~ CPU Settings ~"
+        echo "\n\n"
+        current_table_style = defaultStyle
+        insert_div()
+        insert_row("CPU num","Name","Playstyle")
+        insert_div(3)
+        for n,player in [p2,p3,p4,p5,p6]:
+            if i == n+1:
+                insert_row(text_bold & $(n+1) & ")", player.name, $player.play_style & text_reset)
+            else:
+                insert_row($(n+1) & ")", player.name, $player.play_style)
+        insert_div()
+        echo ""
+        echo_centered(text_bold & "Please enter a name for CPU player " & $i & "." & text_reset)
+        echo ""
+        echo_centered "Name must be 1-6 characters in length. Press ENTER to keep current name."
+        echo "\n"
+        user_selection = prompt(" > ")
+        if user_selection in quit_commands: quit_game()
+    if user_selection == "": user_selection = player.name
+    return user_selection
+
+proc set_playstyle(player: Player, i: int): PlayStyle = 
+    var user_selection = "xxxxxxx"
+    while user_selection notin generate_string_range(1,3) & @[""]:
+        clear_screen()
+        echo "\n\n"
+        echo_centered "~ CPU Settings ~"
+        echo "\n\n"
+        current_table_style = defaultStyle
+        insert_div()
+        insert_row("CPU num","Name","Playstyle")
+        insert_div(3)
+        for n,player in [p2,p3,p4,p5,p6]:
+            if i == n+1:
+                insert_row(text_bold & $(n+1) & ")", player.name, $player.play_style & text_reset)
+            else:
+                insert_row($(n+1) & ")", player.name, $player.play_style)
+        insert_div()
+        echo ""
+        echo_centered(text_bold & "Please select a playstyle for CPU player " & $i & "." & text_reset)
+        echo ""
+        echo_centered "1)  Choose first card"
+        echo_centered "2)   Choose high card"
+        echo_centered "3) Keep current style"
+        echo "\n"
+        user_selection = prompt(" > ")
+        if user_selection in quit_commands: quit_game()
+    case user_selection:
+    of "1": return choose_first
+    of "2": return choose_high
+    of "3","": return player.play_style
+
+proc configure_cpu_opponent_settings() =
+    for i, player in [p2,p3,p4,p5,p6]:
+        player.name = player.rename_player(i+1)
+        player.play_style = player.set_playstyle(i+1)
+        nf_cfg.setSectionKey("Opponent" & $(i+1), "Name", player.name)
+        nf_cfg.setSectionKey("Opponent" & $(i+1), "Playstyle", $player.play_style)
+        nf_cfg.writeConfig(nf_cfg_path)
 
 
 proc configure_global_settings*() =
     var user_selection = ""
-    while user_selection != "3":
+    while user_selection != "4":
         clear_screen()
         current_table_style = narrowStyle
         echo "\n\n"
@@ -117,7 +182,9 @@ proc configure_global_settings*() =
         insert_row("")
         insert_row("2)", "SFX Volume", text_bold & $sfx_volume & text_reset)
         insert_row("")
-        insert_row("3)", "Return to menu", "")
+        insert_row("3)", "CPU Settings", "")
+        insert_row("")
+        insert_row("4)", "Return to menu", "")
         insert_row("")
         insert_div()
         echo ""
@@ -131,6 +198,8 @@ proc configure_global_settings*() =
         of "2":
             sfx_volume = configure_global_sfx_volume()
             nf_cfg.setSectionKey("Global", "SFX volume", $sfx_volume)
+        of "3":
+            configure_cpu_opponent_settings()
     nf_cfg.writeConfig(nf_cfg_path)
 
 

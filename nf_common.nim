@@ -14,7 +14,7 @@ type
     NumHands* = range[0..24]
     NumField* = range[0..48]
     PlayStyle* = enum
-        human, always_choose_first, always_choose_high
+        human, choose_first, choose_high
     GameSpeed* = enum
         slowest, slower, slow, medium, fast, faster, fastest
     SortKey* = enum
@@ -126,6 +126,14 @@ proc get_or_regen*(cfg: var Config, section,key,default: string):string =
     else:
         return val
 
+proc loadOpponent(n: int): Player =
+    let section = "Opponent" & $n
+    Player(
+        name: nf_cfg.get_or_regen(section, "Name", "CPU " & $n),
+        play_style: parseEnum[PlayStyle](
+            nf_cfg.get_or_regen(section, "Playstyle", "choose_high")
+        )
+    )
 
 proc create_default_cfg() = 
 
@@ -133,19 +141,19 @@ proc create_default_cfg() =
     nf_cfg.setSectionKey("Global", "SFX volume", "0")
 
     nf_cfg.setSectionKey("Opponent1", "Name", "Al")
-    nf_cfg.setSectionKey("Opponent1", "Playstyle", "always_choose_high")
+    nf_cfg.setSectionKey("Opponent1", "Playstyle", "choose_high")
 
     nf_cfg.setSectionKey("Opponent2", "Name", "Bri")
-    nf_cfg.setSectionKey("Opponent2", "Playstyle", "always_choose_first")
+    nf_cfg.setSectionKey("Opponent2", "Playstyle", "choose_first")
 
     nf_cfg.setSectionKey("Opponent3", "Name", "Carl")
-    nf_cfg.setSectionKey("Opponent3", "Playstyle", "always_choose_high")
+    nf_cfg.setSectionKey("Opponent3", "Playstyle", "choose_high")
 
     nf_cfg.setSectionKey("Opponent4", "Name", "David")
-    nf_cfg.setSectionKey("Opponent4", "Playstyle", "always_choose_first")
+    nf_cfg.setSectionKey("Opponent4", "Playstyle", "choose_first")
 
     nf_cfg.setSectionKey("Opponent5", "Name", "Evelyn")
-    nf_cfg.setSectionKey("Opponent5", "Playstyle", "always_choose_high")
+    nf_cfg.setSectionKey("Opponent5", "Playstyle", "choose_high")
 
     nf_cfg.writeConfig(nf_cfg_path)
 
@@ -165,6 +173,13 @@ const
     max_line_width* = 80
     max_screen_height* = 40
 
+var
+    p1* = Player(name:"You", play_style: human)
+    p2* = loadOpponent(1)
+    p3* = loadOpponent(2)
+    p4* = loadOpponent(3)
+    p5* = loadOpponent(4)
+    p6* = loadOpponent(5)
 
 
 ##### ANSI ESCAPE SEQUENCES #####
