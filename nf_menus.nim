@@ -18,17 +18,17 @@ proc print_title_card() =
 
 proc present_game_modes() =
     current_table_style = narrowStyle
-    insert_div()
+    insert_div(1,".","-",".")
     insert_row(text_bold & "Choose a game mode by typing its number." & text_reset)
     insert_row("")
     insert_row(fg_pine,"1)", "Bakappana", fg_reset)
     insert_row(fg_plum,"2)", "Mushi", fg_reset)
     insert_row(fg_cherry,"3)","Ropyakken", fg_reset)
     insert_row(fg_wisteria,"4)", "Hachi", fg_reset)
-    insert_div()
+    insert_div(1,"|","-","|")
     insert_row("s) Settings")
     insert_row("q) QUIT Nimble Flowers")
-    insert_div()
+    insert_div(1,"'","-","'")
     echo ""
 
 proc select_game_mode*(): RuleSet =
@@ -109,7 +109,7 @@ proc rename_player(player: Player, i: int): string =
         echo_centered "~ CPU Settings ~"
         echo "\n\n"
         current_table_style = defaultStyle
-        insert_div()
+        insert_div(1,".","-",".")
         insert_row("CPU num","Name","Playstyle")
         insert_div(3)
         for n,player in [p2,p3,p4,p5,p6]:
@@ -117,7 +117,7 @@ proc rename_player(player: Player, i: int): string =
                 insert_row(text_bold & $(n+1) & ")", player.name, $player.play_style & text_reset)
             else:
                 insert_row($(n+1) & ")", player.name, $player.play_style)
-        insert_div()
+        insert_div(1,"'","-","'")
         echo ""
         echo_centered(text_bold & "Please enter a name for CPU player " & $i & "." & text_reset)
         echo ""
@@ -136,7 +136,7 @@ proc set_playstyle(player: Player, i: int): PlayStyle =
         echo_centered "~ CPU Settings ~"
         echo "\n\n"
         current_table_style = defaultStyle
-        insert_div()
+        insert_div(1,".","-",".")
         insert_row("CPU num","Name","Playstyle")
         insert_div(3)
         for n,player in [p2,p3,p4,p5,p6]:
@@ -144,7 +144,7 @@ proc set_playstyle(player: Player, i: int): PlayStyle =
                 insert_row(text_bold & $(n+1) & ")", player.name, $player.play_style & text_reset)
             else:
                 insert_row($(n+1) & ")", player.name, $player.play_style)
-        insert_div()
+        insert_div(1,"'","-","'")
         echo ""
         echo_centered(text_bold & "Please select a playstyle for CPU player " & $i & "." & text_reset)
         echo ""
@@ -176,7 +176,7 @@ proc configure_global_settings*() =
         echo "\n\n"
         echo_centered "~ Global Settings ~"
         echo "\n"
-        insert_div()
+        insert_div(1,".","-",".")
         insert_row("")
         insert_row("1)", "Game Speed", text_bold & $game_speed & text_reset)
         insert_row("")
@@ -186,7 +186,7 @@ proc configure_global_settings*() =
         insert_row("")
         insert_row("4)", "Return to menu", "")
         insert_row("")
-        insert_div()
+        insert_div(1,"'","-","'")
         echo ""
         user_selection = prompt(" > ")
         case user_selection:
